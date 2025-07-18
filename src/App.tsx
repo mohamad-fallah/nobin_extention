@@ -1,16 +1,15 @@
-import MainLayout from "./layouts/MainLayout";
-import WeatherWidget from "./features/weather/WeatherWidget";
-import SearchWidget from "./features/search/SearchWidget";
-import ProfileWidget from "./features/profile/ProfileWidget";
-import CurrencyWidget from "./features/currency/CurrencyWidget";
-import TodoWidget from "./features/todo/TodoWidget";
-import CalendarWidget from "./features/calendar/CalendarWidget";
+import MainLayout from "./layouts";
+import CalendarWidget from "./widgets/calendar/CalendarWidget";
+import CurrencyWidget from "./widgets/currency/CurrencyWidget";
+import ProfileWidget from "./widgets/profile/ProfileWidget";
+import SearchWidget from "./widgets/search/SearchWidget";
+import TodoWidget from "./widgets/todo/TodoWidget";
+import WeatherWidget from "./widgets/weather/WeatherWidget";
 
 function App() {
   return (
     <MainLayout>
       <div className="grid grid-cols-4 gap-4">
-        {/* ردیف اول */}
         <div className="col-span-1">
           <WeatherWidget />
         </div>
@@ -21,7 +20,6 @@ function App() {
           <ProfileWidget />
         </div>
 
-        {/* ردیف دوم */}
         <div className="col-span-1">
           <CurrencyWidget />
         </div>
