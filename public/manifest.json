@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "NobinEx New Tab",
+  "version": "1.0.0",
+  "description": "جایگزین صفحه اصلی (New Tab) گوگل کروم با NobinEx.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}
