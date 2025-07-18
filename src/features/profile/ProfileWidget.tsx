@@ -1,6 +1,8 @@
+import Card from "../../components/Card";
+
 export default function ProfileWidget() {
   return (
-    <div className="rounded-xl bg-white shadow-lg p-4 h-[200px] flex flex-col overflow-hidden">
+    <Card height="200px">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className="text-xl">👋</span>
@@ -32,6 +34,6 @@ export default function ProfileWidget() {
           <span className="text-lg">🎯</span>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

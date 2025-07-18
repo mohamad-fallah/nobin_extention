@@ -1,6 +1,8 @@
+import Card from "../../components/Card";
+
 export default function TodoWidget() {
   return (
-    <div className="rounded-xl bg-white shadow-lg p-4 h-[auto] flex flex-col overflow-hidden">
+    <Card>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className="text-lg">📋</span>
@@ -25,6 +27,6 @@ export default function TodoWidget() {
         <span className="text-lg">+</span>
         <span>...عنوان وظیفه جدید</span>
       </button>
-    </div>
+    </Card>
   );
 }

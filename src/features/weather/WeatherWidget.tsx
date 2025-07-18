@@ -1,6 +1,8 @@
+import Card from "../../components/Card";
+
 export default function WeatherWidget() {
   return (
-    <div className="rounded-xl bg-white shadow-lg p-4 flex flex-col justify-between h-[200px] overflow-hidden">
+    <Card className="justify-between" height="200px">
       <div className="flex items-center justify-between">
         <div>
           <div className="text-xs text-gray-500 mb-1">چهارشنبه</div>
@@ -36,6 +38,6 @@ export default function WeatherWidget() {
           <span>فیدبک برای ما مهمه!</span>
         </a>
       </div>
-    </div>
+    </Card>
   );
 }

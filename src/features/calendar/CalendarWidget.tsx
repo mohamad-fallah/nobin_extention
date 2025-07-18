@@ -1,3 +1,5 @@
+import Card from "../../components/Card";
+
 export default function CalendarWidget() {
   // تقویم تیرماه ۱۴۰۴
   const days = ["ش", "ی", "د", "س", "چ", "پ", "ج"];
@@ -10,7 +12,7 @@ export default function CalendarWidget() {
   ];
 
   return (
-    <div className="rounded-xl bg-white shadow-lg p-4 h-[auto] flex flex-col overflow-hidden">
+    <Card>
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1">
           <button className="text-blue-500 text-sm p-1">
@@ -85,6 +87,6 @@ export default function CalendarWidget() {
           <span>رویداد</span>
         </button>
       </div>
-    </div>
+    </Card>
   );
 }

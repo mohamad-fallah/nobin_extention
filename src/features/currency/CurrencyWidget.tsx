@@ -1,3 +1,5 @@
+import Card from "../../components/Card";
+
 const currencies = [
   { name: "US Dollar", code: "USD", value: "۸۸,۸۰۰", icon: "🇺🇸", trend: "up" },
   { name: "Euro", code: "EUR", value: "۱۰۲,۹۰۰", icon: "🇪🇺", trend: "up" },
@@ -6,7 +8,7 @@ const currencies = [
 
 export default function CurrencyWidget() {
   return (
-    <div className="rounded-xl bg-white shadow-lg p-4 h-[auto] flex flex-col overflow-hidden">
+    <Card>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className="text-lg">📊</span>
@@ -39,6 +41,6 @@ export default function CurrencyWidget() {
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 }
