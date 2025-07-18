@@ -1,14 +1,18 @@
 import { Avatar } from "@heroui/react";
 import { Button } from "@heroui/react";
 import { FiSettings, FiSearch, FiUsers } from "react-icons/fi";
+import { useState } from "react";
+import SettingsModals from "./modals";
 
 export default function Header() {
+  const [settingsOpen, setSettingsOpen] = useState(true);
   return (
     <header className="relative z-10 w-full flex items-center justify-between py-4 px-8 ">
       <div className="flex items-center gap-2">
         <Button
           className="w-12 h-12 rounded-full bg-white hover:bg-gray-100 flex items-center justify-center transition shadow-sm"
           variant="light"
+          onPress={() => setSettingsOpen(true)}
         >
           <FiSettings size={28} />
         </Button>
@@ -35,6 +39,7 @@ export default function Header() {
           />
         </div>
       </div>
+      <SettingsModals isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </header>
   );
 }
