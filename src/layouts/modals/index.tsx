@@ -50,13 +50,13 @@ export default function SettingsModals({
           <div className="flex h-[600px]" dir="rtl">
             {/* Header */}
             <div className="absolute top-0 left-0 right-0 h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 z-10">
+              <h2 className="text-xl font-semibold text-gray-800">تنظیمات</h2>
               <button
                 onClick={onClose}
                 className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-800 transition-colors"
               >
                 ✕
               </button>
-              <h2 className="text-xl font-semibold text-gray-800">تنظیمات</h2>
             </div>
 
             {/* Sidebar - تب‌ها */}
@@ -66,14 +66,14 @@ export default function SettingsModals({
                   <button
                     key={tab.key}
                     onClick={() => setSelectedTab(tab.key)}
-                    className={`w-full text-right px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 flex items-center justify-end gap-3 ${
+                    className={`w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 flex items-center justify-start gap-3 ${
                       selectedTab === tab.key
                         ? "bg-blue-500 text-white shadow-lg"
                         : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
                     }`}
                   >
-                    <span>{tab.name}</span>
                     <span className="text-lg">{tab.icon}</span>
+                    <span>{tab.name}</span>
                   </button>
                 ))}
               </div>
