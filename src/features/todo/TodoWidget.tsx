@@ -1,33 +1,29 @@
-import { useState } from "react";
-
-const fakeTodos = [
-  { id: 1, title: "Exam quiz", done: false },
-  { id: 2, title: "ES6/ES7 تمرین", done: true },
-];
-
 export default function TodoWidget() {
-  const [todos, setTodos] = useState(fakeTodos);
-
   return (
-    <div className="rounded-2xl bg-white/80 shadow p-6 flex flex-col min-w-[220px]">
-      <div className="flex items-center mb-4">
-        <span className="text-lg font-bold ml-2">وظایف امروز</span>
-        <span className="ml-auto text-xs text-gray-400">همه</span>
+    <div className="rounded-xl bg-white shadow-lg p-4 h-[auto] flex flex-col overflow-hidden">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <span className="text-lg">📋</span>
+          <span className="text-sm font-medium text-gray-700">وظایف امروز</span>
+        </div>
+        <div className="flex items-center gap-2 text-xs">
+          <button className="text-gray-500 hover:text-blue-500 transition">
+            <span>📅 لیست امروز</span>
+          </button>
+          <button className="text-gray-500 hover:text-blue-500 transition">
+            <span>⚙️</span>
+          </button>
+        </div>
       </div>
-      <div className="space-y-2">
-        {todos.length === 0 ? (
-          <div className="text-gray-400 text-center">وظیفه‌ای برای این روز وجود ندارد.</div>
-        ) : (
-          todos.map((todo) => (
-            <div key={todo.id} className="flex items-center justify-between">
-              <span className={todo.done ? "line-through text-gray-400" : ""}>{todo.title}</span>
-              <input type="checkbox" checked={todo.done} readOnly />
-            </div>
-          ))
-        )}
+
+      <div className="flex-1 flex flex-col items-center justify-center text-center px-4">
+        <div className="text-sm text-gray-600 mb-2">وظایف‌ای برای این روز وجود ندارد.</div>
+        <div className="text-xs text-gray-400">یک وظیفه جدید اضافه کنید.</div>
       </div>
-      <button className="mt-4 w-full rounded bg-blue-100 text-blue-600 py-1 text-sm">
-        + وظیفه جدید
+
+      <button className="w-full rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-600 py-2 text-sm font-medium transition-colors flex items-center justify-center gap-2">
+        <span className="text-lg">+</span>
+        <span>...عنوان وظیفه جدید</span>
       </button>
     </div>
   );

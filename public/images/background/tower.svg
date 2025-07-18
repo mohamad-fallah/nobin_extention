@@ -1,0 +1,33 @@
+<svg width="300" height="400" viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g opacity="0.3">
+    <!-- Base -->
+    <rect x="145" y="350" width="10" height="50" fill="white"/>
+    <rect x="135" y="340" width="30" height="10" fill="white"/>
+    
+    <!-- Main Tower -->
+    <rect x="147" y="100" width="6" height="250" fill="white"/>
+    
+    <!-- Cross beams -->
+    <rect x="120" y="150" width="60" height="3" fill="white"/>
+    <rect x="125" y="200" width="50" height="3" fill="white"/>
+    <rect x="130" y="250" width="40" height="3" fill="white"/>
+    <rect x="135" y="300" width="30" height="3" fill="white"/>
+    
+    <!-- Diagonal supports -->
+    <path d="M147 150L120 200L147 200" stroke="white" stroke-width="2" fill="none"/>
+    <path d="M153 150L180 200L153 200" stroke="white" stroke-width="2" fill="none"/>
+    <path d="M147 200L125 250L147 250" stroke="white" stroke-width="2" fill="none"/>
+    <path d="M153 200L175 250L153 250" stroke="white" stroke-width="2" fill="none"/>
+    <path d="M147 250L130 300L147 300" stroke="white" stroke-width="2" fill="none"/>
+    <path d="M153 250L170 300L153 300" stroke="white" stroke-width="2" fill="none"/>
+    
+    <!-- Top antenna -->
+    <rect x="149" y="80" width="2" height="20" fill="white"/>
+    <circle cx="150" cy="75" r="5" fill="white"/>
+    
+    <!-- Signal waves -->
+    <circle cx="150" cy="75" r="15" stroke="white" stroke-width="1" fill="none" opacity="0.5"/>
+    <circle cx="150" cy="75" r="25" stroke="white" stroke-width="1" fill="none" opacity="0.3"/>
+    <circle cx="150" cy="75" r="35" stroke="white" stroke-width="1" fill="none" opacity="0.2"/>
+  </g>
+</svg> 
