@@ -7,6 +7,7 @@ import { globalIgnores } from "eslint/config";
 import unusedImports from "eslint-plugin-unused-imports";
 import prettier from "eslint-config-prettier";
 import eslintPluginPrettier from "eslint-plugin-prettier";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 
 export default tseslint.config([
   globalIgnores(["dist"]),
@@ -18,10 +19,12 @@ export default tseslint.config([
       reactHooks.configs["recommended-latest"],
       reactRefresh.configs.vite,
       prettier,
+      ...pluginQuery.configs["flat/recommended"],
     ],
     plugins: {
       "unused-imports": unusedImports,
       prettier: eslintPluginPrettier,
+      "@tanstack/query": pluginQuery,
     },
     rules: {
       "unused-imports/no-unused-imports": "error",
