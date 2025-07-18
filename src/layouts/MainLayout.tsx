@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from "react";
+import Avatar from "../components/Avatar";
 
 export default function MainLayout({ children }: PropsWithChildren) {
   return (
@@ -45,9 +46,13 @@ export default function MainLayout({ children }: PropsWithChildren) {
 
         {/* لوگو و نام */}
         <div className="flex items-center gap-2">
-          <span className="text-white text-lg font-semibold">ویجت‌گاه</span>
+          <span className="text-white text-lg font-semibold">نوبین</span>
           <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm">
-            <span className="text-blue-600 text-lg font-bold">W</span>
+            <Avatar
+              src="/images/brand/ChatGPT Image Jul 18, 2025, 12_02_21 PM.png"
+              alt="logo"
+              size="md"
+            />
           </div>
         </div>
       </header>
