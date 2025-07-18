@@ -5,7 +5,7 @@ import { useState } from "react";
 import SettingsModals from "./modals";
 
 export default function Header() {
-  const [settingsOpen, setSettingsOpen] = useState(true);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   return (
     <header className="relative z-10 w-full flex items-center justify-between py-4 px-8 ">
       <div className="flex items-center gap-2">
