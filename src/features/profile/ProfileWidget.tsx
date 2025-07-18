@@ -1,8 +1,8 @@
-import Card from "../../components/Card";
+import { Card } from "@heroui/react";
 
 export default function ProfileWidget() {
   return (
-    <Card height="200px">
+    <Card className="bg-white rounded-xl p-4" style={{ height: "200px" }}>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className="text-xl">👋</span>

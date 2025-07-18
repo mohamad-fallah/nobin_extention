@@ -1,4 +1,5 @@
-import Card from "../../components/Card";
+import { Card } from "@heroui/react";
+import { Button } from "@heroui/react";
 
 export default function CalendarWidget() {
   // تقویم تیرماه ۱۴۰۴
@@ -12,18 +13,18 @@ export default function CalendarWidget() {
   ];
 
   return (
-    <Card>
+    <Card className="bg-white rounded-xl p-4">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1">
-          <button className="text-blue-500 text-sm p-1">
+          <Button className="text-blue-500 text-sm p-1" variant="light">
             <span>📅</span>
-          </button>
-          <button className="text-gray-400 text-sm p-1">
+          </Button>
+          <Button className="text-gray-400 text-sm p-1" variant="light">
             <span>👥</span>
-          </button>
-          <button className="text-gray-400 text-sm p-1">
+          </Button>
+          <Button className="text-gray-400 text-sm p-1" variant="light">
             <span>📊</span>
-          </button>
+          </Button>
         </div>
         <span className="text-xs font-medium text-gray-700">چهارشنبه، ۲۵ تیر ۱۴۰۴</span>
       </div>
@@ -78,14 +79,20 @@ export default function CalendarWidget() {
       </div>
 
       <div className="mt-2 pt-2 border-t flex items-center justify-center gap-4 text-xs">
-        <button className="flex items-center gap-1 text-gray-600 hover:text-blue-600 transition">
+        <Button
+          className="flex items-center gap-1 text-gray-600 hover:text-blue-600 transition"
+          variant="light"
+        >
           <span>📋</span>
           <span>وظیفه</span>
-        </button>
-        <button className="flex items-center gap-1 text-gray-600 hover:text-blue-600 transition">
+        </Button>
+        <Button
+          className="flex items-center gap-1 text-gray-600 hover:text-blue-600 transition"
+          variant="light"
+        >
           <span>📅</span>
           <span>رویداد</span>
-        </button>
+        </Button>
       </div>
     </Card>
   );

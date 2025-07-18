@@ -1,8 +1,9 @@
-import Card from "../../components/Card";
+import { Card } from "@heroui/react";
+import { Button } from "@heroui/react";
 
 export default function WeatherWidget() {
   return (
-    <Card className="justify-between" height="200px">
+    <Card className="bg-white rounded-xl p-4 justify-between" style={{ height: "200px" }}>
       <div className="flex items-center justify-between">
         <div>
           <div className="text-xs text-gray-500 mb-1">چهارشنبه</div>
@@ -23,10 +24,13 @@ export default function WeatherWidget() {
         <div className="text-xs text-gray-400">
           <span>☁️ کوک کندز</span>
         </div>
-        <button className="bg-blue-500 text-white px-2 py-1 rounded-md text-xs hover:bg-blue-600 transition flex items-center gap-1">
-          <span>🌤</span>
+        <Button
+          className="bg-blue-500 text-white px-2 py-1 rounded-md text-xs hover:bg-blue-600 transition flex items-center gap-1"
+          variant="solid"
+        >
+          <span>🌤️</span>
           <span>پیش بینی</span>
-        </button>
+        </Button>
       </div>
 
       <div className="text-center">

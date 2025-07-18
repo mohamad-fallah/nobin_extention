@@ -1,4 +1,5 @@
-import Card from "../../components/Card";
+import { Card } from "@heroui/react";
+import { Button } from "@heroui/react";
 
 const currencies = [
   { name: "US Dollar", code: "USD", value: "۸۸,۸۰۰", icon: "🇺🇸", trend: "up" },
@@ -8,16 +9,19 @@ const currencies = [
 
 export default function CurrencyWidget() {
   return (
-    <Card>
+    <Card className="bg-white rounded-xl p-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className="text-lg">📊</span>
           <span className="text-sm font-medium text-gray-700">اخبار</span>
         </div>
-        <button className="bg-blue-500 text-white px-2 py-1 rounded-md text-xs hover:bg-blue-600 transition flex items-center gap-1">
+        <Button
+          className="bg-blue-500 text-white px-2 py-1 rounded-md text-xs hover:bg-blue-600 transition flex items-center gap-1"
+          variant="solid"
+        >
           <span>🔄</span>
           <span>نرخ ارز</span>
-        </button>
+        </Button>
       </div>
 
       <div className="space-y-2 flex-1 overflow-y-auto">

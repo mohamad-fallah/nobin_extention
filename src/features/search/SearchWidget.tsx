@@ -1,8 +1,9 @@
-import Card from "../../components/Card";
+import { Card } from "@heroui/react";
+import { Button } from "@heroui/react";
 
 export default function SearchWidget() {
   return (
-    <Card height="200px">
+    <Card className="bg-white rounded-xl p-4" style={{ height: "200px" }}>
       <div className="relative mb-3">
         <input
           className="w-full rounded-lg bg-gray-50 pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 border border-gray-200"
@@ -13,9 +14,10 @@ export default function SearchWidget() {
       </div>
       <div className="grid grid-cols-5 gap-2 flex-1 px-2">
         {[...Array(5)].map((_, i) => (
-          <button
+          <Button
             key={i}
             className="aspect-square bg-gray-50 hover:bg-gray-100 rounded-lg flex items-center justify-center transition-all hover:scale-105 group"
+            variant="light"
           >
             <span className="text-gray-300 group-hover:text-gray-400 transition-colors">
               <svg
@@ -34,7 +36,7 @@ export default function SearchWidget() {
                 />
               </svg>
             </span>
-          </button>
+          </Button>
         ))}
       </div>
       <div className="flex justify-center gap-2 mt-2">
