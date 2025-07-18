@@ -1,9 +1,7 @@
-import React from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 
 function App() {
-  const [queryClient] = React.useState(() => new QueryClient());
-  return <QueryClientProvider client={queryClient}></QueryClientProvider>;
+  return <ReactQueryProvider></ReactQueryProvider>;
 }
 
 export default App;

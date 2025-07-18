@@ -38,6 +38,7 @@ export default tseslint.config([
         },
       ],
       "prettier/prettier": "error",
+      "linebreak-style": "off",
     },
     languageOptions: {
       ecmaVersion: 2020,
