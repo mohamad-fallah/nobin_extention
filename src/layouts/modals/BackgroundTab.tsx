@@ -158,7 +158,7 @@ export default function BackgroundTab() {
       )}
 
       <div className="flex justify-between items-center">
-        <Button color="primary" className="font-bold" onClick={() => fileInputRef.current?.click()}>
+        <Button color="primary" className="font-bold" onPress={() => fileInputRef.current?.click()}>
           آپلود تصویر جدید
         </Button>
         <input
