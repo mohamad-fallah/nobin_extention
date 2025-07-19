@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User, IUser } from "../models/User";
+import { User } from "../models/User";
 
 // Get all users (Admin only)
 export const getAllUsers = async (req: Request, res: Response): Promise<void> => {

@@ -42,17 +42,19 @@ const corsOptions = {
 };
 
 // Security middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "https:"],
+      },
     },
-  },
-  crossOriginEmbedderPolicy: false,
-}));
+    crossOriginEmbedderPolicy: false,
+  }),
+);
 
 // CORS middleware
 app.use(cors(corsOptions));
@@ -82,18 +84,22 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Body parsing middleware
-app.use(express.json({ 
-  limit: process.env.MAX_FILE_SIZE || "10mb",
-  verify: (req, res, buf) => {
-    // Store raw body for webhook verification if needed
-    (req as any).rawBody = buf;
-  }
-}));
+app.use(
+  express.json({
+    limit: process.env.MAX_FILE_SIZE || "10mb",
+    verify: (req, res, buf) => {
+      // Store raw body for webhook verification if needed
+      (req as any).rawBody = buf;
+    },
+  }),
+);
 
-app.use(express.urlencoded({ 
-  extended: true, 
-  limit: process.env.MAX_FILE_SIZE || "10mb" 
-}));
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: process.env.MAX_FILE_SIZE || "10mb",
+  }),
+);
 
 // Security headers for additional protection
 app.use((req, res, next) => {
@@ -137,7 +143,7 @@ app.use(globalErrorHandler);
 // Graceful shutdown
 const gracefulShutdown = (signal: string) => {
   console.log(`\n📥 Received ${signal}. Shutting down gracefully...`);
-  
+
   process.exit(0);
 };
 
@@ -149,11 +155,13 @@ const startServer = async () => {
   try {
     // Connect to MongoDB
     await connectDB();
-    
+
     app.listen(PORT, () => {
       console.log(`🚀 Server is running on http://localhost:${PORT}`);
       console.log(`📝 Environment: ${process.env.NODE_ENV || "development"}`);
-      console.log(`🔒 CORS enabled for: ${process.env.ALLOWED_ORIGINS || "localhost:5173,localhost:3000"}`);
+      console.log(
+        `🔒 CORS enabled for: ${process.env.ALLOWED_ORIGINS || "localhost:5173,localhost:3000"}`,
+      );
       console.log(`⏰ Started at: ${new Date().toISOString()}`);
     });
   } catch (error) {
@@ -164,4 +172,4 @@ const startServer = async () => {
 
 startServer();
 
-export default app; 
+export default app;

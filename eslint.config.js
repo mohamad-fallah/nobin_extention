@@ -3,28 +3,21 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
-import { globalIgnores } from "eslint/config";
 import unusedImports from "eslint-plugin-unused-imports";
 import prettier from "eslint-config-prettier";
 import eslintPluginPrettier from "eslint-plugin-prettier";
 import pluginQuery from "@tanstack/eslint-plugin-query";
 
 export default tseslint.config([
-  globalIgnores(["dist"]),
+  { ignores: ["**/dist/**", "**/node_modules/**"] },
+
+  // Base configuration for all TypeScript files
   {
     files: ["**/*.{ts,tsx}"],
-    extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
-      reactHooks.configs["recommended-latest"],
-      reactRefresh.configs.vite,
-      prettier,
-      ...pluginQuery.configs["flat/recommended"],
-    ],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended, prettier],
     plugins: {
       "unused-imports": unusedImports,
       prettier: eslintPluginPrettier,
-      "@tanstack/query": pluginQuery,
     },
     rules: {
       "unused-imports/no-unused-imports": "error",
@@ -39,10 +32,14 @@ export default tseslint.config([
       ],
       "prettier/prettier": "error",
       "linebreak-style": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-require-imports": "warn",
+      "@typescript-eslint/no-namespace": "warn",
+      "@typescript-eslint/no-unsafe-function-type": "warn",
     },
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
       parserOptions: {
         project: [
           "./client/tsconfig.app.json",
@@ -50,6 +47,36 @@ export default tseslint.config([
           "./server/tsconfig.json",
         ],
         tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+
+  // Frontend/Client specific configuration
+  {
+    files: ["client/**/*.{ts,tsx}"],
+    extends: [...pluginQuery.configs["flat/recommended"]],
+    plugins: {
+      "react-hooks": reactHooks,
+      "react-refresh": reactRefresh,
+      "@tanstack/query": pluginQuery,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+    },
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
+  },
+
+  // Backend/Server specific configuration
+  {
+    files: ["server/**/*.{ts}"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
       },
     },
   },

@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
-import { Types } from "mongoose";
 import { User } from "../models/User";
 import { generateTokens, verifyRefreshToken, TokenPayload, validatePassword } from "../utils/auth";
-import crypto from "crypto";
 
 /**
  * Register new user
