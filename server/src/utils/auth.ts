@@ -21,9 +21,9 @@ if (JWT_ACCESS_SECRET.length < 32 || JWT_REFRESH_SECRET.length < 32) {
   console.warn("⚠️  JWT secrets should be at least 32 characters long for security");
 }
 
-// Token expiration times
-const ACCESS_TOKEN_EXPIRES_IN = "15m";
-const REFRESH_TOKEN_EXPIRES_IN = "7d";
+// Token expiration times - حذف شد تا tokens هرگز expire نشوند
+// const ACCESS_TOKEN_EXPIRES_IN = "15m";
+// const REFRESH_TOKEN_EXPIRES_IN = "7d";
 
 // Security constants
 const BCRYPT_ROUNDS = parseInt(process.env.BCRYPT_ROUNDS || "12");
@@ -82,7 +82,7 @@ export const generateAccessToken = (payload: TokenPayload): string => {
     },
     JWT_ACCESS_SECRET,
     {
-      expiresIn: ACCESS_TOKEN_EXPIRES_IN,
+      // expiresIn حذف شد تا token هرگز expire نشود
       issuer: "nobin-ex-server",
       audience: "nobin-ex-client",
       subject: payload.userId,
@@ -104,7 +104,7 @@ export const generateRefreshToken = (payload: TokenPayload): string => {
     },
     JWT_REFRESH_SECRET,
     {
-      expiresIn: REFRESH_TOKEN_EXPIRES_IN,
+      // expiresIn حذف شد تا token هرگز expire نشود
       issuer: "nobin-ex-server",
       audience: "nobin-ex-client",
       subject: payload.userId,
@@ -120,8 +120,8 @@ export const generateTokens = (payload: TokenPayload): TokenResponse => {
   const accessToken = generateAccessToken(payload);
   const refreshToken = generateRefreshToken(payload);
 
-  // Calculate expiration time in seconds
-  const expiresIn = 15 * 60; // 15 minutes in seconds
+  // از آنجا که tokens دیگر expire نمی‌شوند، expiresIn را null قرار می‌دهیم
+  const expiresIn = 0; // 0 به معنای never expires
 
   return {
     accessToken,
@@ -253,6 +253,6 @@ export const getSecurityConstants = () => ({
   MAX_LOGIN_ATTEMPTS,
   ACCOUNT_LOCK_TIME,
   BCRYPT_ROUNDS,
-  ACCESS_TOKEN_EXPIRES_IN,
-  REFRESH_TOKEN_EXPIRES_IN,
+  // ACCESS_TOKEN_EXPIRES_IN و REFRESH_TOKEN_EXPIRES_IN حذف شدند
+  // چون tokens دیگر expire نمی‌شوند
 });
