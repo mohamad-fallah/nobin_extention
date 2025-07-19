@@ -27,7 +27,7 @@ export default function WeatherWidget() {
               mb: 0.5,
             }}
           >
-            آب‌وهوا
+            شنبه
           </Typography>
           <Typography
             variant="body1"
@@ -36,7 +36,7 @@ export default function WeatherWidget() {
               mb: 0.5,
             }}
           >
-            تهران
+            28 تیر ۱۴۰۴
           </Typography>
           <Typography
             variant="caption"
@@ -44,61 +44,95 @@ export default function WeatherWidget() {
               color: "text.secondary",
             }}
           >
-            امروز • 18 دی 1403
+            امروز
           </Typography>
         </Box>
-        <Typography variant="h3">☀️</Typography>
+        <Box sx={{ textAlign: "center" }}>
+          <Typography
+            variant="h2"
+            sx={{
+              fontWeight: "300",
+              lineHeight: 0.9,
+              color: "primary.main",
+              fontSize: "3rem",
+            }}
+          >
+            19
+          </Typography>
+          <Typography
+            variant="h2"
+            sx={{
+              fontWeight: "300",
+              lineHeight: 0.9,
+              color: "primary.main",
+              fontSize: "3rem",
+            }}
+          >
+            19
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+              mt: 0.5,
+              display: "block",
+            }}
+          >
+            میلادی
+          </Typography>
+        </Box>
       </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "space-between",
-          mt: 2,
-        }}
-      >
-        <Box>
-          <Typography
-            variant="h4"
+      <Box sx={{ mt: 2 }}>
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
+          <Button
+            size="small"
+            variant="contained"
             sx={{
-              fontWeight: "bold",
+              textTransform: "none",
+              fontFamily: "Vazirmatn",
+              borderRadius: 2,
+              fontSize: "0.75rem",
+              bgcolor: "orange.main",
+              "&:hover": {
+                bgcolor: "orange.dark",
+              },
             }}
           >
-            22°
-          </Typography>
-          <Typography
-            variant="caption"
+            یادها 📝
+          </Button>
+          <Button
+            size="small"
+            variant="contained"
             sx={{
-              color: "text.secondary",
+              textTransform: "none",
+              fontFamily: "Vazirmatn",
+              borderRadius: 2,
+              fontSize: "0.75rem",
+              bgcolor: "success.main",
+              "&:hover": {
+                bgcolor: "success.dark",
+              },
             }}
           >
-            آفتابی
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-end",
-          }}
-        >
-          <Typography
-            variant="caption"
+            گوگل کلندر 📅
+          </Button>
+          <Button
+            size="small"
+            variant="contained"
             sx={{
-              color: "text.secondary",
+              textTransform: "none",
+              fontFamily: "Vazirmatn",
+              borderRadius: 2,
+              fontSize: "0.75rem",
+              bgcolor: "info.main",
+              "&:hover": {
+                bgcolor: "info.dark",
+              },
             }}
           >
-            رطوبت: 45%
-          </Typography>
-          <Typography
-            variant="caption"
-            sx={{
-              color: "text.secondary",
-            }}
-          >
-            باد: 12 کیلومتر
-          </Typography>
+            پی درپی 🔄
+          </Button>
         </Box>
       </Box>
 
@@ -110,55 +144,41 @@ export default function WeatherWidget() {
           mt: 2,
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Box sx={{ textAlign: "center" }}>
-            <Typography variant="h6">🌤️</Typography>
-            <Typography
-              variant="caption"
-              sx={{
-                color: "text.secondary",
-              }}
-            >
-              فردا
-            </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography variant="h6">🔔</Typography>
+          <Box>
             <Typography
               variant="caption"
               sx={{
                 fontWeight: 500,
+                display: "block",
               }}
             >
-              18°
+              قیدت برای ما همیشه
             </Typography>
-          </Box>
-          <Box sx={{ textAlign: "center" }}>
-            <Typography variant="h6">⛅</Typography>
-            <Typography
-              variant="caption"
-              sx={{
-                color: "text.secondary",
-              }}
-            >
-              پس‌فردا
-            </Typography>
-            <Typography
-              variant="caption"
-              sx={{
-                fontWeight: 500,
-              }}
-            >
-              15°
-            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "warning.main",
+                }}
+              >
+                ⭐ همیشگی
+              </Typography>
+            </Box>
           </Box>
         </Box>
         <Button
           size="small"
-          variant="text"
+          variant="contained"
+          color="primary"
           sx={{
             textTransform: "none",
             fontFamily: "Vazirmatn",
+            borderRadius: 2,
           }}
         >
-          جزئیات
+          فیدبک 🔔
         </Button>
       </Box>
     </Card>

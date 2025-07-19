@@ -1,46 +1,12 @@
-import {
-  Card,
-  Button,
-  Box,
-  Typography,
-  Paper,
-  Checkbox,
-  TextField,
-  IconButton,
-} from "@mui/material";
-import { useState } from "react";
-import { FiPlus, FiTrash2 } from "react-icons/fi";
-
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+import { Card, Box, IconButton } from "@mui/material";
+import { FiBookmark } from "react-icons/fi";
 
 export default function TodoWidget() {
-  const [todos, setTodos] = useState<Todo[]>([
-    { id: 1, text: "بررسی ایمیل‌ها", completed: false },
-    { id: 2, text: "جلسه تیم", completed: true },
-    { id: 3, text: "بروزرسانی مستندات", completed: false },
-  ]);
-  const [newTodo, setNewTodo] = useState("");
-
-  const addTodo = () => {
-    if (newTodo.trim()) {
-      setTodos([...todos, { id: Date.now(), text: newTodo.trim(), completed: false }]);
-      setNewTodo("");
-    }
-  };
-
-  const toggleTodo = (id: number) => {
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)),
-    );
-  };
-
-  const deleteTodo = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
+  // Create 10 empty bookmark cards
+  const bookmarks = Array.from({ length: 10 }, (_, index) => ({
+    id: index + 1,
+    isEmpty: true,
+  }));
 
   return (
     <Card
@@ -49,150 +15,56 @@ export default function TodoWidget() {
         p: 2,
         borderRadius: 3,
         display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          display: "grid",
+          gridTemplateColumns: "repeat(5, 1fr)",
+          gridTemplateRows: "repeat(2, 1fr)",
+          gap: 1.5,
+          width: "100%",
+          height: "100%",
+          maxWidth: "400px",
+          maxHeight: "160px",
         }}
       >
-        <Box>
-          <Typography
-            variant="caption"
+        {bookmarks.map((bookmark) => (
+          <Card
+            key={bookmark.id}
             sx={{
-              color: "text.secondary",
-              mb: 0.5,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 2,
+              backgroundColor: "rgba(255, 255, 255, 0.9)",
+              border: "1px solid rgba(0, 0, 0, 0.08)",
+              cursor: "pointer",
+              transition: "all 0.2s ease-in-out",
+              minHeight: "60px",
+              "&:hover": {
+                backgroundColor: "rgba(255, 255, 255, 1)",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                transform: "translateY(-1px)",
+              },
             }}
           >
-            وظایف
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              fontWeight: "bold",
-              mb: 0.5,
-            }}
-          >
-            لیست کارها
-          </Typography>
-          <Typography
-            variant="caption"
-            sx={{
-              color: "text.secondary",
-            }}
-          >
-            {todos.filter((t) => !t.completed).length} کار باقی‌مانده
-          </Typography>
-        </Box>
-        <Typography variant="h3">📝</Typography>
-      </Box>
-
-      <Box sx={{ mt: 2, flex: 1, overflow: "hidden" }}>
-        <Box sx={{ display: "flex", gap: 1, mb: 1 }}>
-          <TextField
-            size="small"
-            value={newTodo}
-            onChange={(e) => setNewTodo(e.target.value)}
-            placeholder="کار جدید..."
-            onKeyPress={(e) => e.key === "Enter" && addTodo()}
-            sx={{ flex: 1 }}
-          />
-          <IconButton
-            size="small"
-            onClick={addTodo}
-            sx={{ bgcolor: "primary.main", color: "white", "&:hover": { bgcolor: "primary.dark" } }}
-          >
-            <FiPlus size={16} />
-          </IconButton>
-        </Box>
-
-        <Box sx={{ overflow: "auto", maxHeight: 80 }}>
-          {todos.slice(0, 3).map((todo) => (
-            <Paper
-              key={todo.id}
+            <IconButton
+              size="medium"
               sx={{
-                p: 1,
-                mb: 0.5,
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                backgroundColor: "grey.50",
-                borderRadius: 1,
+                color: "text.disabled",
+                "&:hover": {
+                  color: "primary.main",
+                  backgroundColor: "transparent",
+                },
               }}
             >
-              <Checkbox
-                size="small"
-                checked={todo.completed}
-                onChange={() => toggleTodo(todo.id)}
-              />
-              <Typography
-                variant="body2"
-                sx={{
-                  flex: 1,
-                  textDecoration: todo.completed ? "line-through" : "none",
-                  color: todo.completed ? "text.secondary" : "text.primary",
-                }}
-              >
-                {todo.text}
-              </Typography>
-              <IconButton
-                size="small"
-                onClick={() => deleteTodo(todo.id)}
-                sx={{ color: "error.main" }}
-              >
-                <FiTrash2 size={14} />
-              </IconButton>
-            </Paper>
-          ))}
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          mt: 2,
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography variant="h6">📋</Typography>
-          <Box>
-            <Typography
-              variant="caption"
-              sx={{
-                fontWeight: 500,
-                display: "block",
-              }}
-            >
-              مدیریت وظایف
-            </Typography>
-            <Box sx={{ display: "flex" }}>
-              <Typography
-                variant="caption"
-                sx={{
-                  color: "success.main",
-                }}
-              >
-                ✅ {todos.filter((t) => t.completed).length} انجام شده
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-        <Button
-          size="small"
-          variant="text"
-          sx={{
-            textTransform: "none",
-            fontFamily: "Vazirmatn",
-          }}
-        >
-          مشاهده همه
-        </Button>
+              <FiBookmark size={20} />
+            </IconButton>
+          </Card>
+        ))}
       </Box>
     </Card>
   );

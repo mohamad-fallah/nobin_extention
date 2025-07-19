@@ -1,11 +1,31 @@
-import { Card, Button, Box, Typography, Paper } from "@mui/material";
+import {
+  Card,
+  Button,
+  Box,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+} from "@mui/material";
+import { FiSettings, FiFilter } from "react-icons/fi";
 
 export default function CurrencyWidget() {
-  const currencies = [
-    { name: "دلار آمریکا", code: "USD", rate: "۵۸,۰۰۰", change: "+۲.۵%", trend: "up" },
-    { name: "یورو", code: "EUR", rate: "۶۲,۵۰۰", change: "-۱.۲%", trend: "down" },
-    { name: "پوند انگلیس", code: "GBP", rate: "۷۲,۸۰۰", change: "+۰.۸%", trend: "up" },
-    { name: "ین ژاپن", code: "JPY", rate: "۳۸۵", change: "-۰.۵%", trend: "down" },
+  const tasks = [
+    {
+      id: 1,
+      text: "۳ محصول مورد انتظار ایل آ که سرانجام یا پیتز اتصال عرضه می‌شوند",
+      completed: false,
+    },
+    {
+      id: 2,
+      text: "آپدیت ۴ Nothing OS به لیست دستگاه‌ها تاریخ انتشار",
+      completed: false,
+    },
+    {
+      id: 3,
+      text: "Nothing OS F در لیست کاری ۱۶ و لینک کاری Nothing OS F منتشر",
+      completed: true,
+    },
   ];
 
   return (
@@ -34,7 +54,7 @@ export default function CurrencyWidget() {
               mb: 0.5,
             }}
           >
-            نرخ ارز
+            امروز
           </Typography>
           <Typography
             variant="body1"
@@ -43,7 +63,7 @@ export default function CurrencyWidget() {
               mb: 0.5,
             }}
           >
-            بازار ارز
+            وظایف امروز
           </Typography>
           <Typography
             variant="caption"
@@ -51,62 +71,54 @@ export default function CurrencyWidget() {
               color: "text.secondary",
             }}
           >
-            امروز • 18 دی 1403
+            ۳ وظیفه برای امروز
           </Typography>
         </Box>
-        <Typography variant="h3">💱</Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+          <IconButton size="small">
+            <FiSettings size={14} />
+          </IconButton>
+          <IconButton size="small">
+            <FiFilter size={14} />
+          </IconButton>
+        </Box>
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 2 }}>
-        {currencies.slice(0, 3).map((currency, index) => (
-          <Paper
-            key={index}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 0.5,
+          mt: 1,
+          maxHeight: 100,
+          overflow: "auto",
+        }}
+      >
+        {tasks.map((task, index) => (
+          <FormControlLabel
+            key={task.id}
+            control={<Checkbox checked={task.completed} size="small" sx={{ py: 0 }} />}
+            label={
+              <Typography
+                variant="caption"
+                sx={{
+                  textDecoration: task.completed ? "line-through" : "none",
+                  color: task.completed ? "text.disabled" : "text.primary",
+                  lineHeight: 1.2,
+                  fontSize: "0.7rem",
+                }}
+              >
+                {task.text}
+              </Typography>
+            }
             sx={{
-              p: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              backgroundColor: "grey.50",
-              borderRadius: 1,
+              m: 0,
+              alignItems: "flex-start",
+              "& .MuiFormControlLabel-label": {
+                fontSize: "0.7rem",
+              },
             }}
-          >
-            <Box>
-              <Typography
-                variant="body2"
-                sx={{
-                  fontWeight: 500,
-                }}
-              >
-                {currency.name}
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{
-                  color: "text.secondary",
-                }}
-              >
-                {currency.code}
-              </Typography>
-            </Box>
-            <Box sx={{ textAlign: "right" }}>
-              <Typography
-                variant="body2"
-                sx={{
-                  fontWeight: "bold",
-                }}
-              >
-                {currency.rate}
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{
-                  color: currency.trend === "up" ? "success.main" : "error.main",
-                }}
-              >
-                {currency.change}
-              </Typography>
-            </Box>
-          </Paper>
+          />
         ))}
       </Box>
 
@@ -119,7 +131,7 @@ export default function CurrencyWidget() {
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography variant="h6">📈</Typography>
+          <Typography variant="h6">✓</Typography>
           <Box>
             <Typography
               variant="caption"
@@ -128,32 +140,28 @@ export default function CurrencyWidget() {
                 display: "block",
               }}
             >
-              بازار ارز
+              وظیفه جدید
             </Typography>
-            <Box sx={{ display: "flex" }}>
-              <Typography
-                variant="caption"
-                sx={{
-                  color: "success.main",
-                }}
-              >
-                📈 +۲.۱%
-              </Typography>
-            </Box>
+            <Typography
+              variant="caption"
+              sx={{
+                color: "success.main",
+                display: "block",
+              }}
+            >
+              + اضافه کنید
+            </Typography>
           </Box>
         </Box>
         <Button
           size="small"
-          variant="contained"
+          variant="text"
           sx={{
             textTransform: "none",
             fontFamily: "Vazirmatn",
           }}
         >
-          <Typography variant="body2" sx={{ mr: 0.5 }}>
-            🔄
-          </Typography>
-          <Typography variant="body2">نرخ ارز</Typography>
+          همه
         </Button>
       </Box>
     </Card>
