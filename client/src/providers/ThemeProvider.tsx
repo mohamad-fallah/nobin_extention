@@ -1,29 +1,17 @@
-import { createContext, useState, useEffect, type PropsWithChildren } from "react";
+import { useState, useEffect, type PropsWithChildren } from "react";
 import { ThemeProvider as MuiThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import rtlPlugin from "stylis-plugin-rtl";
 import { getPrimaryColor, getBorderRadius } from "../utils";
+import { ThemeContext } from "../context/ThemeContext";
 
 // Create RTL cache
 const cacheRtl = createCache({
   key: "muirtl",
   stylisPlugins: [rtlPlugin],
 });
-
-// Theme context type
-export interface ThemeContextType {
-  theme: "light" | "dark" | "system";
-  setTheme: (theme: "light" | "dark" | "system") => void;
-  primaryColor: string;
-  setPrimaryColor: (color: string) => void;
-  borderRadius: "none" | "small" | "medium" | "large";
-  setBorderRadius: (radius: "none" | "small" | "medium" | "large") => void;
-}
-
-// Create context
-export const ThemeContext = createContext<ThemeContextType | null>(null);
 
 // Theme provider component
 export default function ThemeProvider({ children }: PropsWithChildren) {

@@ -1,6 +1,8 @@
+import React from "react";
+
 // Theme helper functions
 export function getPrimaryColor(color: string): string {
-  const colors: { [key: string]: string } = {
+  const colors: Record<string, string> = {
     blue: "#1976d2",
     purple: "#9c27b0",
     green: "#2e7d32",
@@ -12,7 +14,7 @@ export function getPrimaryColor(color: string): string {
 }
 
 export function getBorderRadius(radius: string): number {
-  const radiuses: { [key: string]: number } = {
+  const radiuses: Record<string, number> = {
     none: 0,
     small: 4,
     medium: 8,
@@ -23,7 +25,7 @@ export function getBorderRadius(radius: string): number {
 
 // Profile helper functions
 export function getRoleDisplay(role: string): string {
-  const roleNames: { [key: string]: string } = {
+  const roleNames: Record<string, string> = {
     admin: "👑 مدیر",
     user: "👤 کاربر",
     vip: "⭐ ویژه",
@@ -32,7 +34,7 @@ export function getRoleDisplay(role: string): string {
 }
 
 export function getRoleEmoji(role: string): string {
-  const roleEmojis: { [key: string]: string } = {
+  const roleEmojis: Record<string, string> = {
     admin: "👑",
     user: "🎯",
     vip: "⭐",
@@ -122,16 +124,16 @@ export function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }
 
-export function isEmpty(obj: any): boolean {
-  if (obj === null || obj === undefined) return true;
-  if (typeof obj === "string") return obj.trim().length === 0;
-  if (Array.isArray(obj)) return obj.length === 0;
-  if (typeof obj === "object") return Object.keys(obj).length === 0;
+export function isEmpty(value: unknown): boolean {
+  if (value === null || value === undefined) return true;
+  if (typeof value === "string") return value.trim().length === 0;
+  if (Array.isArray(value)) return value.length === 0;
+  if (typeof value === "object") return Object.keys(value as Record<string, unknown>).length === 0;
   return false;
 }
 
 // Local storage helper functions
-export function getFromStorage(key: string): any {
+export function getFromStorage<T = unknown>(key: string): T | null {
   try {
     const item = localStorage.getItem(key);
     return item ? JSON.parse(item) : null;
@@ -141,7 +143,7 @@ export function getFromStorage(key: string): any {
   }
 }
 
-export function setToStorage(key: string, value: any): void {
+export function setToStorage(key: string, value: unknown): void {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
@@ -163,7 +165,7 @@ export function getQueryParam(url: string, param: string): string | null {
   return urlParams.get(param);
 }
 
-export function buildQueryString(params: Record<string, any>): string {
+export function buildQueryString(params: Record<string, unknown>): string {
   const searchParams = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
     if (value !== null && value !== undefined) {
@@ -203,11 +205,11 @@ export function rgbToHex(r: number, g: number, b: number): string {
 }
 
 // Debounce helper function
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number,
 ): (...args: Parameters<T>) => void {
-  let timeout: number;
+  let timeout: ReturnType<typeof setTimeout>;
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
@@ -215,11 +217,11 @@ export function debounce<T extends (...args: any[]) => any>(
 }
 
 // Throttle helper function
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number,
 ): (...args: Parameters<T>) => void {
-  let inThrottle: boolean;
+  let inThrottle = false;
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
       func(...args);
