@@ -1,8 +1,7 @@
-import { IconButton, Box, Typography, AppBar, Toolbar } from "@mui/material";
+import { IconButton, Box, Typography, AppBar, Toolbar, Avatar } from "@mui/material";
 import { FiSettings, FiSearch, FiUsers } from "react-icons/fi";
 import { useState } from "react";
 import SettingsModals from "./modals/settings";
-import { CustomAvatar } from "../components";
 
 export default function Header() {
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -21,40 +20,35 @@ export default function Header() {
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <IconButton
             onClick={() => setSettingsOpen(true)}
+            color="inherit"
             data-settings-trigger
             sx={{
               width: 48,
               height: 48,
               borderRadius: "50%",
-              backgroundColor: "white",
-              boxShadow: 1,
-              "&:hover": { backgroundColor: "grey.100" },
+
               transition: "all 0.2s",
             }}
           >
             <FiSettings size={28} />
           </IconButton>
           <IconButton
+            color="inherit"
             sx={{
               width: 48,
               height: 48,
               borderRadius: "50%",
-              backgroundColor: "white",
-              boxShadow: 1,
-              "&:hover": { backgroundColor: "grey.100" },
               transition: "all 0.2s",
             }}
           >
             <FiSearch size={28} />
           </IconButton>
           <IconButton
+            color="inherit"
             sx={{
               width: 48,
               height: 48,
               borderRadius: "50%",
-              backgroundColor: "white",
-              boxShadow: 1,
-              "&:hover": { backgroundColor: "grey.100" },
               transition: "all 0.2s",
             }}
           >
@@ -72,15 +66,9 @@ export default function Header() {
           >
             نوبین
           </Typography>
-          <CustomAvatar
-            src="/images/brand/ChatGPT Image Jul 18, 2025, 12_02_21 PM.png"
-            alt="نوبین"
-            name="نوبین"
-            size="md"
-            showFallback={true}
-            className="bg-white border-2 border-white shadow-sm"
-            fallbackClassName="from-blue-500 to-purple-600"
-          />
+          <Avatar alt="نوبین" sx={{ width: 40, height: 40 }}>
+            ن
+          </Avatar>
         </Box>
       </Toolbar>
       <SettingsModals isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />

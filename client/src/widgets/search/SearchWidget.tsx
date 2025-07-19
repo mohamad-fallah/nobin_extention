@@ -1,39 +1,32 @@
-import { Card, TextField, InputAdornment, IconButton } from "@mui/material";
+import { TextField, InputAdornment, IconButton } from "@mui/material";
 import { FiSearch, FiMic } from "react-icons/fi";
 
 export default function SearchWidget() {
   return (
-    <Card
+    <TextField
+      fullWidth
+      placeholder="جستجو ..."
+      variant="outlined"
+      size="medium"
       sx={{
-        height: 60,
-        p: 1.5,
-        borderRadius: 3,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <TextField
-        fullWidth
-        placeholder="جستجو ..."
-        variant="outlined"
-        size="medium"
-        sx={{
-          "& .MuiOutlinedInput-root": {
-            borderRadius: 3,
-            backgroundColor: "rgba(0,0,0,0.03)",
-            "& fieldset": {
-              border: "1px solid rgba(0,0,0,0.08)",
-            },
-            "&:hover fieldset": {
-              border: "1px solid rgba(0,0,0,0.15)",
-            },
-            "&.Mui-focused fieldset": {
-              border: "1px solid primary.main",
-            },
+        "& .MuiOutlinedInput-root": {
+          borderRadius: 3,
+          backgroundColor: "rgba(0,0,0,0.03)",
+          direction: "ltr",
+          textAlign: "left",
+          "& fieldset": {
+            border: "1px solid rgba(0,0,0,0.08)",
           },
-        }}
-        InputProps={{
+          "&:hover fieldset": {
+            border: "1px solid rgba(0,0,0,0.15)",
+          },
+          "&.Mui-focused fieldset": {
+            border: "1px solid primary.main",
+          },
+        },
+      }}
+      slotProps={{
+        input: {
           startAdornment: (
             <InputAdornment position="start">
               <FiSearch size={18} color="#888" />
@@ -46,8 +39,8 @@ export default function SearchWidget() {
               </IconButton>
             </InputAdornment>
           ),
-        }}
-      />
-    </Card>
+        },
+      }}
+    />
   );
 }
