@@ -1,69 +1,139 @@
-# React + TypeScript + Vite
+# Nobin-EX
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+یک داشبورد شخصی مدرن با ویجت‌های مختلف، ساخته شده با React + TypeScript + Vite در فرانت‌اند و Express.js در بک‌اند.
 
-Currently, two official plugins are available:
+## ویژگی‌ها
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🎨 رابط کاربری مدرن با HeroUI
+- 📱 طراحی واکنش‌گرا (Responsive)
+- 🌤️ ویجت آب و هوا
+- 📋 ویجت Todo
+- 📅 ویجت تقویم
+- 📰 ویجت اخبار
+- 👤 ویجت پروفایل
+- 🔍 ویجت جستجو
+- 💰 ویجت نرخ ارز
+- 🕒 ویجت ساعت
 
-## Expanding the ESLint configuration
+## ساختار پروژه
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```
+nobin-ex/
+├── client/          # فرانت‌اند (React + TypeScript + Vite)
+│   ├── src/
+│   │   ├── components/
+│   │   ├── widgets/
+│   │   ├── layouts/
+│   │   └── ...
+│   └── package.json
+├── server/          # بک‌اند (Express.js)
+│   ├── src/
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   └── ...
+│   └── package.json
+└── package.json     # Root workspace
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## نصب و راه‌اندازی
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+### پیش‌نیازها
 
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+- Node.js (نسخه 18 یا بالاتر)
+- pnpm
+
+### 1. کلون کردن پروژه
+
+```bash
+git clone <repository-url>
+cd nobin-ex
 ```
+
+### 2. نصب dependencies
+
+```bash
+pnpm install
+```
+
+### 3. اجرای پروژه
+
+#### اجرای فقط فرانت‌اند
+
+```bash
+pnpm dev:client
+```
+
+#### اجرای فقط بک‌اند
+
+```bash
+pnpm dev:server
+```
+
+#### اجرای همزمان فرانت‌اند و بک‌اند
+
+```bash
+pnpm dev:all
+```
+
+## دسترسی به برنامه
+
+- **فرانت‌اند**: http://localhost:5173
+- **بک‌اند API**: http://localhost:3001
+- **Health Check**: http://localhost:3001/health
+
+## API Endpoints
+
+- `GET /health` - بررسی وضعیت سرور
+- `GET /api/` - اطلاعات کلی API
+- `GET /api/data` - دریافت داده‌های نمونه
+- `GET /api/widgets` - اطلاعات ویجت‌ها
+- `POST /api/data` - ارسال داده
+
+## Scripts موجود
+
+```bash
+# Development
+pnpm dev:client      # اجرای فرانت‌اند
+pnpm dev:server      # اجرای بک‌اند
+pnpm dev:all         # اجرای همزمان
+
+# Build
+pnpm build:client    # ساخت فرانت‌اند
+pnpm build:server    # ساخت بک‌اند
+
+# Linting
+pnpm fix            # اصلاح خودکار کد
+pnpm check          # بررسی کد
+```
+
+## تکنولوژی‌های استفاده شده
+
+### فرانت‌اند
+
+- React 19
+- TypeScript
+- Vite
+- HeroUI
+- TailwindCSS
+- Framer Motion
+- React Query
+- Axios
+
+### بک‌اند
+
+- Express.js
+- CORS
+- Helmet
+- Morgan
+- Compression
+- dotenv
+
+## مشارکت
+
+برای مشارکت در پروژه:
+
+1. Fork کنید
+2. برنچ جدید ایجاد کنید (`git checkout -b feature/amazing-feature`)
+3. تغییرات را commit کنید (`git commit -m 'Add amazing feature'`)
+4. برنچ را push کنید (`git push origin feature/amazing-feature`)
+5. Pull Request ایجاد کنید

@@ -39,13 +39,13 @@ export default function SettingsModals({
       size="5xl"
       placement="center"
       scrollBehavior="inside"
-      hideCloseButton={false}
+      hideCloseButton={true}
       style={{ zIndex: 9999 }}
       portalContainer={document.getElementById("modal-root") || document.body}
       classNames={{
         wrapper: "fixed inset-0 z-[9999] flex items-center justify-center p-4",
         backdrop: "fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm",
-        base: "z-[9999]",
+        base: "z-[9999] max-w-[50vw] max-h-[60vh] w-full",
         body: "p-0",
       }}
     >

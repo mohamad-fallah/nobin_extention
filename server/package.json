@@ -1,0 +1,31 @@
+{
+  "name": "nobin-ex-server",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start:dev": "nodemon src/index.ts",
+    "clean": "rimraf dist",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "cors": "^2.8.5",
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0",
+    "dotenv": "^16.4.5",
+    "compression": "^1.7.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "typescript": "~5.8.3",
+    "ts-node": "^10.9.2",
+    "@types/node": "^24.0.15",
+    "@types/express": "^5.0.3",
+    "@types/cors": "^2.8.19",
+    "@types/morgan": "^1.9.10",
+    "@types/compression": "^1.8.1"
+  }
+}
