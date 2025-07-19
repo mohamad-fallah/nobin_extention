@@ -36,3 +36,9 @@ body {
   background: #a5b4fc;
   border-radius: 4px;
 }
+
+*,
+body,
+html {
+  font-family: "Vazirmatn", sans-serif;
+}

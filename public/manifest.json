@@ -11,5 +11,11 @@
   },
   "chrome_url_overrides": {
     "newtab": "index.html"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["fonts/vazir/*.woff2"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
