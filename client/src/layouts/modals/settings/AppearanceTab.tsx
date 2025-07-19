@@ -1,4 +1,5 @@
-import { RadioGroup, Radio } from "@heroui/react";
+import { RadioGroup, Radio, Button } from "@heroui/react";
+import clsx from "clsx";
 import { useState } from "react";
 
 const themes = [
@@ -33,15 +34,24 @@ export default function AppearanceTab() {
         <h2 className="text-lg font-bold mb-2">رنگ اصلی</h2>
         <div className="flex gap-4">
           {colors.map((c) => (
-            <button
+            <Button
               key={c.value}
-              onClick={() => setColor(c.value)}
-              className={`w-10 h-10 rounded-full border-2 flex items-center justify-center cursor-pointer ${c.class} ${
-                color === c.value ? "ring-2 ring-blue-500 border-blue-500" : "border-white"
-              }`}
+              isIconOnly
+              size="lg"
+              variant="light"
+              onPress={() => setColor(c.value)}
+              className={clsx(
+                // Layout
+                "w-10 h-10",
+                // Colors & Effects
+                c.class,
+                color === c.value ? "ring-2 ring-blue-500 border-blue-500" : "border-white",
+                // Layout
+                "rounded-full border-2",
+              )}
             >
               <span className="sr-only">{c.name}</span>
-            </button>
+            </Button>
           ))}
         </div>
       </div>

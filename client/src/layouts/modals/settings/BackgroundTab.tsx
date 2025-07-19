@@ -1,4 +1,5 @@
 import { Button } from "@heroui/react";
+import clsx from "clsx";
 import { useState, useEffect, useRef } from "react";
 
 const DEFAULT_BACKGROUNDS = [
@@ -106,15 +107,26 @@ export default function BackgroundTab() {
         )}
       </div>
       {canRemove && onRemove && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
+        <Button
+          isIconOnly
+          size="sm"
+          color="danger"
+          variant="solid"
+          onPress={() => {
             onRemove();
           }}
-          className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+          className={clsx(
+            // Layout
+            "absolute -top-2 -right-2",
+            // Colors & Effects
+            "opacity-0 group-hover:opacity-100",
+            "transition-opacity",
+            // Layout
+            "rounded-full",
+          )}
         >
           ×
-        </button>
+        </Button>
       )}
     </div>
   );

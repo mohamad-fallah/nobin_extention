@@ -1,4 +1,5 @@
 import { useState } from "react";
+import clsx from "clsx";
 import GeneralTab from "./GeneralTab";
 import AccountTab from "./AccountTab";
 import AppearanceTab from "./AppearanceTab";
@@ -72,18 +73,27 @@ export default function SettingsModals({
             <div className="w-64 bg-white border-l border-gray-100 flex flex-col">
               <div className="p-4 space-y-1">
                 {tabs.map((tab) => (
-                  <button
+                  <Button
                     key={tab.key}
-                    onClick={() => setSelectedTab(tab.key)}
-                    className={`w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 flex items-center justify-start gap-3 ${
-                      selectedTab === tab.key
-                        ? "bg-blue-500 text-white shadow-lg"
-                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
-                    }`}
+                    onPress={() => setSelectedTab(tab.key)}
+                    variant={selectedTab === tab.key ? "solid" : "light"}
+                    color={selectedTab === tab.key ? "primary" : "default"}
+                    className={clsx(
+                      // Layout
+                      "w-full justify-start",
+                      // Spacing
+                      "px-4 py-3",
+                      // Typography
+                      "text-base font-medium",
+                      // Layout
+                      "rounded-xl",
+                      // Interactions
+                      "transition-all duration-200",
+                    )}
+                    startContent={<span className="text-lg">{tab.icon}</span>}
                   >
-                    <span className="text-lg">{tab.icon}</span>
-                    <span>{tab.name}</span>
-                  </button>
+                    {tab.name}
+                  </Button>
                 ))}
               </div>
             </div>

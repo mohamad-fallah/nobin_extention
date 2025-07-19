@@ -215,7 +215,7 @@ export default function AccountTab() {
                 "transform hover:scale-[1.02]",
               )}
               startContent={<span className="text-lg">✏️</span>}
-              onClick={() => setMode("editProfile")}
+              onPress={() => setMode("editProfile")}
             >
               ویرایش پروفایل
             </Button>
@@ -238,7 +238,7 @@ export default function AccountTab() {
                 "transform hover:scale-[1.02]",
               )}
               startContent={<span className="text-lg">🔒</span>}
-              onClick={() => setMode("changePassword")}
+              onPress={() => setMode("changePassword")}
             >
               تغییر رمز عبور
             </Button>
@@ -262,7 +262,7 @@ export default function AccountTab() {
                 "transform hover:scale-[1.02]",
               )}
               startContent={<span className="text-lg">🚪</span>}
-              onClick={handleLogout}
+              onPress={handleLogout}
             >
               خروج از حساب کاربری
             </Button>
@@ -370,27 +370,15 @@ export default function AccountTab() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 classNames={{
-                  input: clsx(
-                    // Typography
-                    "text-right text-base",
-                    // Spacing
-                    "px-4 py-3",
-                  ),
+                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
                   inputWrapper: clsx(
-                    // Layout
                     "text-right",
-                    // Colors & Effects
-                    "border-2 border-gray-200",
-                    "hover:border-gray-300",
-                    "focus-within:border-blue-500",
                     "bg-gray-50 hover:bg-white",
-                    "focus-within:bg-white",
-                    // Spacing
                     "min-h-[52px]",
-                    // Layout
                     "rounded-lg",
-                    // Interactions
                     "transition-all duration-200",
+                    "border-2 border-gray-200 ",
+                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
                   ),
                 }}
               />
@@ -418,42 +406,30 @@ export default function AccountTab() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 endContent={
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    variant="light"
+                    onPress={() => setShowPassword(!showPassword)}
                     className={clsx(
-                      // Colors
                       "text-gray-400 hover:text-gray-600",
-                      // Interactions
-                      "focus:outline-none",
+                      "focus:outline-none outline-none",
                     )}
                   >
                     {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-                  </button>
+                  </Button>
                 }
                 required
                 classNames={{
-                  input: clsx(
-                    // Typography
-                    "text-right text-base",
-                    // Spacing
-                    "px-4 py-3",
-                  ),
+                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
                   inputWrapper: clsx(
-                    // Layout
                     "text-right",
-                    // Colors & Effects
-                    "border-2 border-gray-200",
-                    "hover:border-gray-300",
-                    "focus-within:border-blue-500",
                     "bg-gray-50 hover:bg-white",
-                    "focus-within:bg-white",
-                    // Spacing
                     "min-h-[52px]",
-                    // Layout
                     "rounded-lg",
-                    // Interactions
                     "transition-all duration-200",
+                    "border-2 border-gray-200 ",
+                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
                   ),
                 }}
               />
@@ -492,27 +468,15 @@ export default function AccountTab() {
                 onChange={(e) => setUsername(e.target.value)}
                 required
                 classNames={{
-                  input: clsx(
-                    // Typography
-                    "text-right text-base",
-                    // Spacing
-                    "px-4 py-3",
-                  ),
+                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
                   inputWrapper: clsx(
-                    // Layout
                     "text-right",
-                    // Colors & Effects
-                    "border-2 border-gray-200",
-                    "hover:border-gray-300",
-                    "focus-within:border-blue-500",
                     "bg-gray-50 hover:bg-white",
-                    "focus-within:bg-white",
-                    // Spacing
                     "min-h-[52px]",
-                    // Interactions
-                    "transition-all duration-200",
-                    // Layout
                     "rounded-lg",
+                    "transition-all duration-200",
+                    "border-2 border-gray-200 ",
+                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
                   ),
                 }}
               />
@@ -541,27 +505,15 @@ export default function AccountTab() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 classNames={{
-                  input: clsx(
-                    // Typography
-                    "text-right text-base",
-                    // Spacing
-                    "px-4 py-3",
-                  ),
+                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
                   inputWrapper: clsx(
-                    // Layout
                     "text-right",
-                    // Colors & Effects
-                    "border-2 border-gray-200",
-                    "hover:border-gray-300",
-                    "focus-within:border-blue-500",
                     "bg-gray-50 hover:bg-white",
-                    "focus-within:bg-white",
-                    // Spacing
                     "min-h-[52px]",
-                    // Interactions
-                    "transition-all duration-200",
-                    // Layout
                     "rounded-lg",
+                    "transition-all duration-200",
+                    "border-2 border-gray-200 ",
+                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
                   ),
                 }}
               />
@@ -618,8 +570,7 @@ export default function AccountTab() {
                       // Typography
                       "text-sm font-medium",
                       // Colors & Effects
-                      "bg-gradient-to-r from-purple-500 to-pink-500",
-                      "hover:from-purple-600 hover:to-pink-600",
+                      "bg-blue-500",
                       "text-white",
                       "shadow-md hover:shadow-lg",
                       "transition-all duration-200",
@@ -632,7 +583,6 @@ export default function AccountTab() {
                       "transform hover:scale-[1.02]",
                     )}
                   >
-                    <span className="text-base">📸</span>
                     <span>{avatarFile ? "تغییر عکس" : "انتخاب عکس"}</span>
                   </label>
                 </div>
@@ -645,9 +595,12 @@ export default function AccountTab() {
                     )}
                   >
                     <Avatar src={avatar} size="sm" className="w-10 h-10" showFallback />
-                    <button
-                      type="button"
-                      onClick={() => {
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      variant="light"
+                      color="danger"
+                      onPress={() => {
                         setAvatar(user?.avatar || "");
                         setAvatarFile(null);
                       }}
@@ -670,7 +623,7 @@ export default function AccountTab() {
                       title="حذف عکس"
                     >
                       <span className="text-sm">🗑️</span>
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>
@@ -708,42 +661,30 @@ export default function AccountTab() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   endContent={
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      variant="light"
+                      onPress={() => setShowPassword(!showPassword)}
                       className={clsx(
-                        // Colors
                         "text-gray-400 hover:text-gray-600",
-                        // Interactions
-                        "focus:outline-none",
+                        "focus:outline-none outline-none",
                       )}
                     >
                       {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-                    </button>
+                    </Button>
                   }
                   required
                   classNames={{
-                    input: clsx(
-                      // Typography
-                      "text-right text-base",
-                      // Spacing
-                      "px-4 py-3",
-                    ),
+                    input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
                     inputWrapper: clsx(
-                      // Layout
                       "text-right",
-                      // Colors & Effects
-                      "border-2 border-gray-200",
-                      "hover:border-gray-300",
-                      "focus-within:border-blue-500",
                       "bg-gray-50 hover:bg-white",
-                      "focus-within:bg-white",
-                      // Spacing
                       "min-h-[52px]",
-                      // Layout
                       "rounded-lg",
-                      // Interactions
                       "transition-all duration-200",
+                      "border-2 border-gray-200 ",
+                      "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
                     ),
                   }}
                 />
@@ -758,57 +699,41 @@ export default function AccountTab() {
                 )}
               >
                 <label
-                  className={clsx(
-                    // Typography
-                    "block text-sm font-medium text-gray-700",
-                    // Layout
-                    "text-right",
-                  )}
+                  className={clsx("block text-sm font-medium text-gray-700", "text-right mb-2")}
                 >
                   تکرار رمز عبور
                 </label>
+
                 <Input
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   endContent={
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      variant="light"
+                      onPress={() => setShowConfirmPassword(!showConfirmPassword)}
                       className={clsx(
-                        // Colors
                         "text-gray-400 hover:text-gray-600",
-                        // Interactions
-                        "focus:outline-none",
+                        "focus:outline-none outline-none",
                       )}
                     >
                       {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-                    </button>
+                    </Button>
                   }
                   required
                   classNames={{
-                    input: clsx(
-                      // Typography
-                      "text-right text-base",
-                      // Spacing
-                      "px-4 py-3",
-                    ),
+                    input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
                     inputWrapper: clsx(
-                      // Layout
                       "text-right",
-                      // Colors & Effects
-                      "border-2 border-gray-200",
-                      "hover:border-gray-300",
-                      "focus-within:border-blue-500",
                       "bg-gray-50 hover:bg-white",
-                      "focus-within:bg-white",
-                      // Spacing
                       "min-h-[52px]",
-                      // Layout
                       "rounded-lg",
-                      // Interactions
                       "transition-all duration-200",
+                      "border-2 border-gray-200 ",
+                      "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
                     ),
                   }}
                 />
@@ -869,6 +794,9 @@ export default function AccountTab() {
                     "transition-all duration-200",
                     // Layout
                     "rounded-lg",
+                    // Focus Effects
+                    "focus-within:ring-2 focus-within:ring-blue-200",
+                    "focus-within:shadow-md",
                   ),
                 }}
               />
@@ -952,9 +880,12 @@ export default function AccountTab() {
                     )}
                   >
                     <Avatar src={avatar} size="sm" className="w-10 h-10" showFallback />
-                    <button
-                      type="button"
-                      onClick={() => {
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      variant="light"
+                      color="danger"
+                      onPress={() => {
                         setAvatar(user?.avatar || "");
                         setAvatarFile(null);
                       }}
@@ -977,7 +908,7 @@ export default function AccountTab() {
                       title="حذف عکس"
                     >
                       <span className="text-sm">🗑️</span>
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>
@@ -1016,27 +947,15 @@ export default function AccountTab() {
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 required
                 classNames={{
-                  input: clsx(
-                    // Typography
-                    "text-right text-base",
-                    // Spacing
-                    "px-4 py-3",
-                  ),
+                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
                   inputWrapper: clsx(
-                    // Layout
                     "text-right",
-                    // Colors & Effects
-                    "border-2 border-gray-200",
-                    "hover:border-gray-300",
-                    "focus-within:border-blue-500",
                     "bg-gray-50 hover:bg-white",
-                    "focus-within:bg-white",
-                    // Spacing
                     "min-h-[52px]",
-                    // Interactions
-                    "transition-all duration-200",
-                    // Layout
                     "rounded-lg",
+                    "transition-all duration-200",
+                    "border-2 border-gray-200 ",
+                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
                   ),
                 }}
               />
@@ -1064,42 +983,30 @@ export default function AccountTab() {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 endContent={
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    variant="light"
+                    onPress={() => setShowPassword(!showPassword)}
                     className={clsx(
-                      // Colors
                       "text-gray-400 hover:text-gray-600",
-                      // Interactions
-                      "focus:outline-none",
+                      "focus:outline-none outline-none",
                     )}
                   >
                     {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-                  </button>
+                  </Button>
                 }
                 required
                 classNames={{
-                  input: clsx(
-                    // Typography
-                    "text-right text-base",
-                    // Spacing
-                    "px-4 py-3",
-                  ),
+                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
                   inputWrapper: clsx(
-                    // Layout
                     "text-right",
-                    // Colors & Effects
-                    "border-2 border-gray-200",
-                    "hover:border-gray-300",
-                    "focus-within:border-blue-500",
                     "bg-gray-50 hover:bg-white",
-                    "focus-within:bg-white",
-                    // Spacing
                     "min-h-[52px]",
-                    // Interactions
-                    "transition-all duration-200",
-                    // Layout
                     "rounded-lg",
+                    "transition-all duration-200",
+                    "border-2 border-gray-200 ",
+                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
                   ),
                 }}
               />
@@ -1114,12 +1021,12 @@ export default function AccountTab() {
             // Layout
             "w-full",
             // Typography
-            "font-bold text-lg",
+            " text-lg",
             // Spacing
             "py-3 px-6",
             // Colors & Effects
-            "bg-gradient-to-r from-blue-600 to-purple-600",
-            "hover:from-blue-700 hover:to-purple-700",
+            "text-white",
+            "bg-blue-500",
             "shadow-lg hover:shadow-xl",
             "transition-all duration-300",
             // Interactions
@@ -1128,17 +1035,6 @@ export default function AccountTab() {
             // Layout
             "rounded-lg",
           )}
-          startContent={
-            mode === "login" ? (
-              <span className="text-xl">🚀</span>
-            ) : mode === "register" ? (
-              <span className="text-xl">✨</span>
-            ) : mode === "editProfile" ? (
-              <span className="text-xl">💾</span>
-            ) : (
-              <span className="text-xl">🔐</span>
-            )
-          }
           isLoading={isSubmitting}
           disabled={isSubmitting}
         >
@@ -1169,7 +1065,7 @@ export default function AccountTab() {
               "rounded-lg",
             )}
             startContent={<span className="text-lg">↩️</span>}
-            onClick={() => {
+            onPress={() => {
               setMode("profile");
               resetForm();
             }}
@@ -1177,13 +1073,6 @@ export default function AccountTab() {
             انصراف
           </Button>
         )}
-
-        <Divider
-          className={clsx(
-            // Spacing
-            "my-4",
-          )}
-        />
 
         {mode === "login" ? (
           <div className="text-center">
@@ -1197,15 +1086,13 @@ export default function AccountTab() {
                 "text-sm font-medium",
                 // Colors & Effects
                 "hover:bg-purple-50",
-                "text-purple-600 hover:text-purple-700",
                 "transition-all duration-200",
                 // Spacing
                 "py-2",
                 // Layout
                 "rounded-lg",
               )}
-              startContent={<span className="text-base">👋</span>}
-              onClick={() => {
+              onPress={() => {
                 setMode("register");
                 resetForm();
               }}
@@ -1225,7 +1112,6 @@ export default function AccountTab() {
                 "text-sm font-medium",
                 // Colors & Effects
                 "hover:bg-blue-50",
-                "text-blue-600 hover:text-blue-700",
                 "transition-all duration-200",
                 // Spacing
                 "py-2",
@@ -1233,7 +1119,7 @@ export default function AccountTab() {
                 "rounded-lg",
               )}
               startContent={<span className="text-base">🔑</span>}
-              onClick={() => {
+              onPress={() => {
                 setMode("login");
                 resetForm();
               }}
