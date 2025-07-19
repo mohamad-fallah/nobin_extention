@@ -9,7 +9,7 @@ import {
   Typography,
   Divider,
 } from "@mui/material";
-import { useTheme } from "../../../providers/ThemeProvider";
+import { useTheme } from "../../../hooks";
 import { useState } from "react";
 
 export default function GeneralTab() {

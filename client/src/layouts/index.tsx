@@ -4,23 +4,13 @@ import { Box, Container } from "@mui/material";
 import Header from "./Header";
 import MainSection from "./MainSection";
 import Footer from "./Footer";
+import { applyBackground } from "../utils";
 
 export default function MainLayout({ children }: PropsWithChildren) {
   const [backgroundStyle, setBackgroundStyle] = useState({});
 
-  const applyBackground = (background: string) => {
-    if (background.startsWith("url(")) {
-      setBackgroundStyle({
-        backgroundImage: background,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      });
-    } else {
-      setBackgroundStyle({
-        background: background,
-      });
-    }
+  const handleBackgroundChange = (background: string) => {
+    setBackgroundStyle(applyBackground(background));
   };
 
   useEffect(() => {
@@ -29,17 +19,17 @@ export default function MainLayout({ children }: PropsWithChildren) {
     const defaultBackground = "linear-gradient(180deg, #be185d 0%, #818cf8 100%)";
 
     const background = savedBackground || defaultBackground;
-    applyBackground(background);
+    handleBackgroundChange(background);
 
     // Listen for background changes
-    const handleBackgroundChange = (event: CustomEvent) => {
-      applyBackground(event.detail.background);
+    const handleBackgroundChangeEvent = (event: CustomEvent) => {
+      handleBackgroundChange(event.detail.background);
     };
 
-    window.addEventListener("backgroundChanged", handleBackgroundChange as EventListener);
+    window.addEventListener("backgroundChanged", handleBackgroundChangeEvent as EventListener);
 
     return () => {
-      window.removeEventListener("backgroundChanged", handleBackgroundChange as EventListener);
+      window.removeEventListener("backgroundChanged", handleBackgroundChangeEvent as EventListener);
     };
   }, []);
 

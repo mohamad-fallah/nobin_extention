@@ -1,5 +1,5 @@
 import { Box, Typography, Paper } from "@mui/material";
-import { useTheme } from "../../../providers/ThemeProvider";
+import { useTheme } from "../../../hooks";
 
 const themes = [
   { name: "روشن", value: "light", preview: "☀️" },

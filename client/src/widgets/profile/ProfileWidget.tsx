@@ -1,6 +1,7 @@
 import { Card, Button, CircularProgress, Box, Typography } from "@mui/material";
 import { useAuth } from "../../context/AuthContext";
 import { CustomAvatar } from "../../components";
+import { getRoleDisplay, getRoleEmoji } from "../../utils";
 
 export default function ProfileWidget() {
   const { user, isAuthenticated, loading } = useAuth();
@@ -218,22 +219,3 @@ export default function ProfileWidget() {
     </Card>
   );
 }
-
-// Helper functions
-const getRoleDisplay = (role: string): string => {
-  const roleNames: { [key: string]: string } = {
-    admin: "👑 مدیر",
-    user: "👤 کاربر",
-    vip: "⭐ ویژه",
-  };
-  return roleNames[role] || role;
-};
-
-const getRoleEmoji = (role: string): string => {
-  const roleEmojis: { [key: string]: string } = {
-    admin: "👑",
-    user: "🎯",
-    vip: "⭐",
-  };
-  return roleEmojis[role] || "🎯";
-};

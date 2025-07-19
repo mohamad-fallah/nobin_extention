@@ -1,5 +1,6 @@
 import { Card, Button, Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
+import { formatTime, formatDate } from "../../utils";
 
 export default function ClockWidget() {
   const [time, setTime] = useState(new Date());
@@ -11,24 +12,6 @@ export default function ClockWidget() {
 
     return () => clearInterval(timer);
   }, []);
-
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString("fa-IR", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    });
-  };
-
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString("fa-IR", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
 
   return (
     <Card
