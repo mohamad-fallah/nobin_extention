@@ -1,5 +1,6 @@
-import { Card, Button, Spinner, Avatar } from "@heroui/react";
+import { Card, Button, Spinner } from "@heroui/react";
 import { useAuth } from "../../context/AuthContext";
+import { CustomAvatar } from "../../components";
 
 export default function ProfileWidget() {
   const { user, isAuthenticated, loading } = useAuth();
@@ -29,7 +30,7 @@ export default function ProfileWidget() {
             size="sm"
             color="primary"
             className="w-full"
-            onClick={() => {
+            onPress={() => {
               // This will be handled by opening settings modal with account tab
               const settingsBtn = document.querySelector("[data-settings-trigger]") as HTMLElement;
               settingsBtn?.click();
@@ -49,7 +50,15 @@ export default function ProfileWidget() {
           <span className="text-xl">👋</span>
           <span className="text-base font-semibold">سلام {user.username}</span>
         </div>
-        <Avatar src={user.avatar || "/images/avatar/mohammad-fallah.jpg"} />
+        <CustomAvatar
+          src={user.avatar || "/images/avatar/mohammad-fallah.jpg"}
+          alt={user.username}
+          name={user.username}
+          size="md"
+          showFallback={true}
+          className="border-2 border-white shadow-md"
+          fallbackClassName="from-blue-400 to-purple-500"
+        />
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center text-center px-2">

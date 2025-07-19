@@ -1,11 +1,12 @@
-import { Avatar } from "@heroui/react";
 import { Button } from "@heroui/react";
 import { FiSettings, FiSearch, FiUsers } from "react-icons/fi";
 import { useState } from "react";
 import SettingsModals from "./modals/settings";
+import { CustomAvatar } from "../components";
 
 export default function Header() {
   const [settingsOpen, setSettingsOpen] = useState(false);
+
   return (
     <header className="relative z-10 w-full flex items-center justify-between py-4 px-8 ">
       <div className="flex items-center gap-2">
@@ -32,10 +33,14 @@ export default function Header() {
       </div>
       <div className="flex items-center gap-2">
         <span className="text-white text-lg font-semibold">نوبین</span>
-        <Avatar
+        <CustomAvatar
           src="/images/brand/ChatGPT Image Jul 18, 2025, 12_02_21 PM.png"
           alt="نوبین"
-          size="sm"
+          name="نوبین"
+          size="md"
+          showFallback={true}
+          className="bg-white border-2 border-white shadow-sm"
+          fallbackClassName="from-blue-500 to-purple-600"
         />
       </div>
       <SettingsModals isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
