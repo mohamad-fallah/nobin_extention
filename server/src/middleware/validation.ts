@@ -281,3 +281,28 @@ export const sanitizeRequestBody = (req: Request, res: Response, next: NextFunct
 
   next();
 };
+
+// Validation middleware for role change
+export const validateRoleChange = (req: Request, res: Response, next: NextFunction): void => {
+  const { role } = req.body;
+  const errors: string[] = [];
+
+  // Role validation
+  if (!role) {
+    errors.push("نقش مورد نیاز است");
+  } else if (!["admin", "user", "vip"].includes(role)) {
+    errors.push("نقش نامعتبر است. نقش‌های مجاز: admin, user, vip");
+  }
+
+  if (errors.length > 0) {
+    res.status(400).json({
+      success: false,
+      message: "داده‌های ورودی نامعتبر",
+      errors,
+      code: "VALIDATION_ERROR",
+    });
+    return;
+  }
+
+  next();
+};

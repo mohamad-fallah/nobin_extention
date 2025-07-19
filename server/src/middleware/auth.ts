@@ -233,13 +233,89 @@ export const requireAdmin = async (
 
     const user = await User.findById(req.user._id);
 
-    // In a real app, you'd have a role field in the user schema
-    // For now, we'll check if username is 'admin' or has admin role
-    if (!user || (user.username !== "admin" && !(user as any).isAdmin)) {
+    if (!user || !user.isAdmin()) {
       res.status(403).json({
         success: false,
         message: "دسترسی مدیر مورد نیاز است",
         code: "ADMIN_ACCESS_REQUIRED",
+      });
+      return;
+    }
+
+    next();
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "خطا در بررسی دسترسی",
+      code: "ACCESS_CHECK_ERROR",
+    });
+  }
+};
+
+/**
+ * VIP only middleware
+ */
+export const requireVip = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "احراز هویت مورد نیاز است",
+        code: "AUTHENTICATION_REQUIRED",
+      });
+      return;
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if (!user || !user.isVip()) {
+      res.status(403).json({
+        success: false,
+        message: "دسترسی VIP مورد نیاز است",
+        code: "VIP_ACCESS_REQUIRED",
+      });
+      return;
+    }
+
+    next();
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "خطا در بررسی دسترسی",
+      code: "ACCESS_CHECK_ERROR",
+    });
+  }
+};
+
+/**
+ * Admin or VIP middleware
+ */
+export const requireAdminOrVip = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "احراز هویت مورد نیاز است",
+        code: "AUTHENTICATION_REQUIRED",
+      });
+      return;
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if (!user || (!user.isAdmin() && !user.isVip())) {
+      res.status(403).json({
+        success: false,
+        message: "دسترسی مدیر یا VIP مورد نیاز است",
+        code: "ELEVATED_ACCESS_REQUIRED",
       });
       return;
     }

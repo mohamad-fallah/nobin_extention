@@ -13,6 +13,7 @@ export default function Header() {
           className="w-12 h-12 rounded-full bg-white hover:bg-gray-100 flex items-center justify-center transition shadow-sm"
           variant="light"
           onPress={() => setSettingsOpen(true)}
+          data-settings-trigger
         >
           <FiSettings size={28} />
         </Button>

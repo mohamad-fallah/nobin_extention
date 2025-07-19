@@ -9,6 +9,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   avatar?: string;
+  role: "admin" | "user" | "vip";
   isActive: boolean;
   isVerified: boolean;
   refreshTokens: string[];
@@ -29,6 +30,8 @@ export interface IUser extends Document {
   resetLoginAttempts(): Promise<void>;
   generatePasswordResetToken(): string;
   generateEmailVerificationToken(): string;
+  isAdmin(): boolean;
+  isVip(): boolean;
 }
 
 const userSchema = new Schema<IUser>(
@@ -63,6 +66,12 @@ const userSchema = new Schema<IUser>(
       type: String,
       default: "",
       maxlength: [500, "آدرس تصویر نمی‌تواند بیشتر از 500 کاراکتر باشد"],
+    },
+    role: {
+      type: String,
+      enum: ["admin", "user", "vip"],
+      default: "user",
+      required: [true, "نقش کاربر مورد نیاز است"],
     },
     isActive: {
       type: Boolean,
@@ -230,11 +239,22 @@ userSchema.methods.generateEmailVerificationToken = function (): string {
   return verificationToken;
 };
 
+// Instance method to check if user is admin
+userSchema.methods.isAdmin = function (): boolean {
+  return this.role === "admin";
+};
+
+// Instance method to check if user is VIP
+userSchema.methods.isVip = function (): boolean {
+  return this.role === "vip";
+};
+
 // Indexes for better query performance
 // Note: email and username already have unique indexes from field definition
 userSchema.index({ passwordResetToken: 1 });
 userSchema.index({ emailVerificationToken: 1 });
 userSchema.index({ lockUntil: 1 });
+userSchema.index({ role: 1 });
 userSchema.index({ isActive: 1, isVerified: 1 });
 userSchema.index({ createdAt: -1 });
 userSchema.index({ lastLoginAt: -1 });
@@ -242,5 +262,6 @@ userSchema.index({ lastLoginAt: -1 });
 // Compound indexes for better performance
 userSchema.index({ email: 1, isActive: 1 });
 userSchema.index({ username: 1, isActive: 1 });
+userSchema.index({ role: 1, isActive: 1 });
 
 export const User = mongoose.model<IUser>("User", userSchema);

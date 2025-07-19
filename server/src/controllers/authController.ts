@@ -27,12 +27,17 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    // Check if this is the first user (should be admin)
+    const userCount = await User.countDocuments();
+    const role = userCount === 0 ? "admin" : "user";
+
     // Create new user
     const newUser = new User({
       username,
       email,
       password, // Will be hashed by the pre-save hook
       avatar,
+      role,
       isVerified: true, // In production, set to false and send verification email
     });
 
@@ -47,19 +52,27 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     const tokens = generateTokens(tokenPayload);
 
+    // Initialize refreshTokens array if not exists
+    if (!newUser.refreshTokens) {
+      newUser.refreshTokens = [];
+    }
+
     // Save refresh token
     newUser.refreshTokens.push(tokens.refreshToken);
     await newUser.save();
 
     res.status(201).json({
       success: true,
-      message: "ثبت‌نام با موفقیت انجام شد",
+      message: `ثبت‌نام با موفقیت انجام شد${
+        role === "admin" ? " - شما اولین کاربر و مدیر سیستم هستید" : ""
+      }`,
       data: {
         user: {
           id: newUser._id,
           username: newUser.username,
           email: newUser.email,
           avatar: newUser.avatar,
+          role: newUser.role,
           isVerified: newUser.isVerified,
           createdAt: newUser.createdAt,
         },
@@ -142,6 +155,11 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     const tokens = generateTokens(tokenPayload);
 
+    // Initialize refreshTokens array if not exists
+    if (!user.refreshTokens) {
+      user.refreshTokens = [];
+    }
+
     // Save refresh token
     user.refreshTokens.push(tokens.refreshToken);
 
@@ -161,6 +179,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
           username: user.username,
           email: user.email,
           avatar: user.avatar,
+          role: user.role,
           isVerified: user.isVerified,
           lastLoginAt: user.lastLoginAt,
         },
@@ -196,6 +215,11 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
 
     // Find user and check if refresh token exists
     const user = await User.findById(decoded.userId);
+
+    // Initialize refreshTokens array if not exists
+    if (!user?.refreshTokens) {
+      user!.refreshTokens = [];
+    }
 
     if (!user || !user.refreshTokens.includes(refreshToken)) {
       res.status(401).json({
@@ -347,6 +371,7 @@ export const getProfile = async (req: Request, res: Response): Promise<void> => 
           username: user.username,
           email: user.email,
           avatar: user.avatar,
+          role: user.role,
           isVerified: user.isVerified,
           lastLoginAt: user.lastLoginAt,
           createdAt: user.createdAt,
@@ -418,6 +443,7 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
           username: updatedUser.username,
           email: updatedUser.email,
           avatar: updatedUser.avatar,
+          role: updatedUser.role,
           isVerified: updatedUser.isVerified,
           lastLoginAt: updatedUser.lastLoginAt,
           createdAt: updatedUser.createdAt,

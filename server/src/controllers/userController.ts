@@ -7,14 +7,21 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const skip = (page - 1) * limit;
+    const role = req.query.role as string;
 
-    const users = await User.find({ isActive: true })
+    // Build filter
+    const filter: any = { isActive: true };
+    if (role && ["admin", "user", "vip"].includes(role)) {
+      filter.role = role;
+    }
+
+    const users = await User.find(filter)
       .select("-password -refreshTokens")
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });
 
-    const totalUsers = await User.countDocuments({ isActive: true });
+    const totalUsers = await User.countDocuments(filter);
 
     res.status(200).json({
       success: true,
@@ -25,6 +32,9 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
         totalUsers,
         hasNextPage: page * limit < totalUsers,
         hasPrevPage: page > 1,
+      },
+      filters: {
+        role: role || "all",
       },
     });
   } catch (error) {
@@ -271,4 +281,135 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
       error: error instanceof Error ? error.message : "Unknown error",
     });
   }
+};
+
+// Change user role (Admin only)
+export const changeUserRole = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+    const currentUserId = req.user?._id;
+
+    // Validate role
+    if (!role || !["admin", "user", "vip"].includes(role)) {
+      res.status(400).json({
+        success: false,
+        message: "نقش نامعتبر است. نقش‌های مجاز: admin, user, vip",
+        code: "INVALID_ROLE",
+      });
+      return;
+    }
+
+    // Find the target user
+    const targetUser = await User.findById(id);
+    if (!targetUser) {
+      res.status(404).json({
+        success: false,
+        message: "کاربر یافت نشد",
+        code: "USER_NOT_FOUND",
+      });
+      return;
+    }
+
+    // Prevent changing own role
+    if (id === currentUserId) {
+      res.status(400).json({
+        success: false,
+        message: "نمی‌توانید نقش خود را تغییر دهید",
+        code: "CANNOT_CHANGE_OWN_ROLE",
+      });
+      return;
+    }
+
+    // Check if trying to create another admin
+    if (role === "admin") {
+      const adminCount = await User.countDocuments({ role: "admin", isActive: true });
+      if (adminCount > 0) {
+        res.status(400).json({
+          success: false,
+          message: "فقط یک مدیر در سیستم مجاز است",
+          code: "SINGLE_ADMIN_POLICY",
+        });
+        return;
+      }
+    }
+
+    // Update user role
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { role },
+      { new: true, runValidators: true },
+    ).select("-password -refreshTokens");
+
+    if (!updatedUser) {
+      res.status(404).json({
+        success: false,
+        message: "کاربر یافت نشد",
+        code: "USER_NOT_FOUND",
+      });
+      return;
+    }
+
+    // Clear all sessions for role change
+    await User.findByIdAndUpdate(id, { refreshTokens: [] });
+
+    res.status(200).json({
+      success: true,
+      message: `نقش کاربر با موفقیت به ${getRoleName(role)} تغییر یافت`,
+      data: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "خطا در تغییر نقش کاربر",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
+
+// Get role statistics (Admin only)
+export const getRoleStats = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const stats = await User.aggregate([
+      { $match: { isActive: true } },
+      { $group: { _id: "$role", count: { $sum: 1 } } },
+      { $sort: { _id: 1 } },
+    ]);
+
+    const totalUsers = await User.countDocuments({ isActive: true });
+
+    const roleStats = {
+      admin: 0,
+      user: 0,
+      vip: 0,
+    };
+
+    stats.forEach((stat) => {
+      roleStats[stat._id as keyof typeof roleStats] = stat.count;
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        ...roleStats,
+        total: totalUsers,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "خطا در دریافت آمار نقش‌ها",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
+
+// Helper function to get role name in Persian
+const getRoleName = (role: string): string => {
+  const roleNames: { [key: string]: string } = {
+    admin: "مدیر",
+    user: "کاربر",
+    vip: "ویژه",
+  };
+  return roleNames[role] || role;
 };
