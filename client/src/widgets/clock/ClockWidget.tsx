@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import clsx from "clsx";
 
 function getTime() {
   const now = new Date();
@@ -28,10 +29,46 @@ export default function ClockWidget() {
   }, []);
 
   return (
-    <div className="rounded-2xl bg-white/80 shadow p-6 flex flex-col items-center justify-center text-center">
-      <div className="text-4xl font-bold text-blue-600">{time}</div>
-      <div className="mt-2 text-lg text-gray-700">{date}</div>
-      <div className="mt-1 text-sm text-gray-500">تهران</div>
+    <div
+      className={clsx(
+        // Layout
+        "flex flex-col items-center justify-center text-center",
+        // Background
+        "bg-white/80",
+        // Styling
+        "rounded-2xl shadow",
+        // Spacing
+        "p-6",
+      )}
+    >
+      <div
+        className={clsx(
+          // Typography
+          "text-4xl font-bold text-blue-600",
+        )}
+      >
+        {time}
+      </div>
+      <div
+        className={clsx(
+          // Typography
+          "text-lg text-gray-700",
+          // Spacing
+          "mt-2",
+        )}
+      >
+        {date}
+      </div>
+      <div
+        className={clsx(
+          // Typography
+          "text-sm text-gray-500",
+          // Spacing
+          "mt-1",
+        )}
+      >
+        تهران
+      </div>
     </div>
   );
 }

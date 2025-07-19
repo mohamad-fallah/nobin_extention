@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Header from "./Header";
 import MainSection from "./MainSection";
 import Footer from "./Footer";
+import clsx from "clsx";
 
 export default function MainLayout({ children }: PropsWithChildren) {
   const [backgroundStyle, setBackgroundStyle] = useState({});
@@ -46,7 +47,14 @@ export default function MainLayout({ children }: PropsWithChildren) {
   return (
     <HeroUIProvider>
       <div
-        className="min-h-screen w-full relative overflow-hidden flex flex-col"
+        className={clsx(
+          // Size & Position
+          "min-h-screen w-full relative",
+          // Layout
+          "flex flex-col",
+          // Overflow
+          "overflow-hidden",
+        )}
         style={backgroundStyle}
         data-main-layout
       >

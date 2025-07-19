@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import clsx from "clsx";
 
 interface CustomAvatarProps {
   src?: string;
@@ -49,36 +50,29 @@ export default function CustomAvatar({
     return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase();
   };
 
-  const baseClasses = `
-    ${sizeClasses[size]}
-    rounded-full
-    flex
-    items-center
-    justify-center
-    overflow-hidden
-    relative
-    transition-all
-    duration-200
-    ${className}
-  `
-    .trim()
-    .replace(/\s+/g, " ");
+  const baseClasses = clsx(
+    // Size (dynamic based on prop)
+    sizeClasses[size],
+    // Shape & Layout
+    "rounded-full flex items-center justify-center",
+    // Overflow & Position
+    "overflow-hidden relative",
+    // Effects
+    "transition-all duration-200",
+    // Additional classes from props
+    className,
+  );
 
-  const fallbackClasses = `
-    w-full
-    h-full
-    flex
-    items-center
-    justify-center
-    bg-gradient-to-br
-    from-gray-400
-    to-gray-600
-    text-white
-    font-semibold
-    ${fallbackClassName}
-  `
-    .trim()
-    .replace(/\s+/g, " ");
+  const fallbackClasses = clsx(
+    // Size & Layout
+    "w-full h-full flex items-center justify-center",
+    // Background
+    "bg-gradient-to-br from-gray-400 to-gray-600",
+    // Typography
+    "text-white font-semibold",
+    // Additional classes from props
+    fallbackClassName,
+  );
 
   const shouldShowFallback = !src || imageError || !imageLoaded;
 
@@ -88,7 +82,12 @@ export default function CustomAvatar({
         <img
           src={src}
           alt={alt}
-          className="w-full h-full object-cover rounded-full"
+          className={clsx(
+            // Size & Shape
+            "w-full h-full rounded-full",
+            // Image styling
+            "object-cover",
+          )}
           onError={handleImageError}
           onLoad={handleImageLoad}
           style={{

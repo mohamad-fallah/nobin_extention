@@ -1,31 +1,134 @@
 import { Card } from "@heroui/react";
 import { Button } from "@heroui/react";
+import clsx from "clsx";
 
 export default function WeatherWidget() {
   return (
-    <Card className="bg-white rounded-xl p-4 justify-between" style={{ height: "200px" }}>
-      <div className="flex items-center justify-between">
+    <Card
+      className={clsx(
+        // Background & Layout
+        "bg-white justify-between",
+        // Styling
+        "rounded-xl",
+        // Spacing
+        "p-4",
+      )}
+      style={{ height: "200px" }}
+    >
+      <div
+        className={clsx(
+          // Layout
+          "flex items-center justify-between",
+        )}
+      >
         <div>
-          <div className="text-xs text-gray-500 mb-1">چهارشنبه</div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-bold text-blue-600">20</span>
-            <span className="text-lg text-gray-400">10</span>
+          <div
+            className={clsx(
+              // Typography
+              "text-xs text-gray-500",
+              // Spacing
+              "mb-1",
+            )}
+          >
+            چهارشنبه
           </div>
-          <div className="text-sm text-gray-600 mt-1">تهران</div>
+          <div
+            className={clsx(
+              // Layout
+              "flex items-baseline",
+              // Spacing
+              "gap-2",
+            )}
+          >
+            <span
+              className={clsx(
+                // Typography
+                "text-4xl font-bold text-blue-600",
+              )}
+            >
+              20
+            </span>
+            <span
+              className={clsx(
+                // Typography
+                "text-lg text-gray-400",
+              )}
+            >
+              10
+            </span>
+          </div>
+          <div
+            className={clsx(
+              // Typography
+              "text-sm text-gray-600",
+              // Spacing
+              "mt-1",
+            )}
+          >
+            تهران
+          </div>
         </div>
 
-        <div className="text-center">
-          <div className="text-3xl font-bold text-blue-600 mb-1">25</div>
-          <div className="text-xs text-gray-500">تیر ۱۴۰۴</div>
+        <div
+          className={clsx(
+            // Layout
+            "text-center",
+          )}
+        >
+          <div
+            className={clsx(
+              // Typography
+              "text-3xl font-bold text-blue-600",
+              // Spacing
+              "mb-1",
+            )}
+          >
+            25
+          </div>
+          <div
+            className={clsx(
+              // Typography
+              "text-xs text-gray-500",
+            )}
+          >
+            تیر ۱۴۰۴
+          </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="text-xs text-gray-400">
+      <div
+        className={clsx(
+          // Layout
+          "flex items-center justify-between",
+        )}
+      >
+        <div
+          className={clsx(
+            // Typography
+            "text-xs text-gray-400",
+          )}
+        >
           <span>☁️ کوک کندز</span>
         </div>
         <Button
-          className="bg-blue-500 text-white px-2 py-1 rounded-md text-xs hover:bg-blue-600 transition flex items-center gap-1"
+          className={clsx(
+            // Background & Colors
+            "bg-blue-500 text-white",
+            // Spacing
+            "px-2 py-1",
+            // Styling
+            "rounded-md",
+            // Typography
+            "text-xs",
+            // Layout
+            "flex items-center",
+            // Spacing
+            "gap-1",
+            // Interactions
+            "hover:bg-blue-600",
+            // Effects
+            "transition",
+          )}
           variant="solid"
         >
           <span>🌤️</span>
@@ -33,10 +136,24 @@ export default function WeatherWidget() {
         </Button>
       </div>
 
-      <div className="text-center">
+      <div
+        className={clsx(
+          // Layout
+          "text-center",
+        )}
+      >
         <a
           href="#"
-          className="text-xs text-blue-500 hover:underline inline-flex items-center gap-1"
+          className={clsx(
+            // Typography
+            "text-xs text-blue-500",
+            // Layout
+            "inline-flex items-center",
+            // Spacing
+            "gap-1",
+            // Interactions
+            "hover:underline",
+          )}
         >
           <span>📡</span>
           <span>فیدبک برای ما مهمه!</span>
