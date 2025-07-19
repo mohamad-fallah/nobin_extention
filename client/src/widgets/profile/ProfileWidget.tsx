@@ -1,7 +1,6 @@
-import { Card, Button, Spinner } from "@heroui/react";
+import { Card, Button, CircularProgress, Box, Typography } from "@mui/material";
 import { useAuth } from "../../context/AuthContext";
 import { CustomAvatar } from "../../components";
-import clsx from "clsx";
 
 export default function ProfileWidget() {
   const { user, isAuthenticated, loading } = useAuth();
@@ -9,24 +8,22 @@ export default function ProfileWidget() {
   if (loading) {
     return (
       <Card
-        className={clsx(
-          // Background
-          "bg-white",
-          // Styling
-          "rounded-xl",
-          // Spacing
-          "p-4",
-        )}
-        style={{ height: "200px" }}
+        sx={{
+          height: 200,
+          p: 2,
+          borderRadius: 3,
+        }}
       >
-        <div
-          className={clsx(
-            // Layout
-            "flex items-center justify-center h-full",
-          )}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100%",
+          }}
         >
-          <Spinner size="md" color="primary" />
-        </div>
+          <CircularProgress size={40} />
+        </Box>
       </Card>
     );
   }
@@ -34,231 +31,190 @@ export default function ProfileWidget() {
   if (!isAuthenticated || !user) {
     return (
       <Card
-        className={clsx(
-          // Background
-          "bg-white",
-          // Styling
-          "rounded-xl",
-          // Spacing
-          "p-4",
-        )}
-        style={{ height: "200px" }}
+        sx={{
+          height: 200,
+          p: 2,
+          borderRadius: 3,
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
-        <div
-          className={clsx(
-            // Layout
-            "flex-1 flex flex-col items-center justify-center text-center",
-            // Spacing
-            "px-2",
-          )}
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            px: 1,
+          }}
         >
-          <div
-            className={clsx(
-              // Typography
-              "text-sm text-gray-600",
-              // Spacing
-              "mb-2",
-            )}
+          <Typography
+            variant="body2"
+            sx={{
+              color: "text.secondary",
+              mb: 1,
+            }}
           >
             برای استفاده از امکانات کامل وارد شوید
-          </div>
-          <div
-            className={clsx(
-              // Typography
-              "text-xs text-gray-400",
-              // Spacing
-              "px-2",
-            )}
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.disabled",
+              px: 1,
+            }}
           >
             با ورود به حساب کاربری از امکانات شخصی‌سازی شده استفاده کنید
-          </div>
-        </div>
+          </Typography>
+        </Box>
 
-        <div
-          className={clsx(
-            // Layout
-            "mt-auto",
-          )}
-        >
+        <Box sx={{ mt: "auto" }}>
           <Button
-            size="sm"
+            size="small"
+            variant="contained"
             color="primary"
-            className={clsx(
-              // Layout
-              "w-full",
-            )}
-            onPress={() => {
-              // This will be handled by opening settings modal with account tab
+            fullWidth
+            onClick={() => {
               const settingsBtn = document.querySelector("[data-settings-trigger]") as HTMLElement;
               settingsBtn?.click();
+            }}
+            sx={{
+              textTransform: "none",
+              fontFamily: "Vazirmatn",
             }}
           >
             ورود / ثبت‌نام
           </Button>
-        </div>
+        </Box>
       </Card>
     );
   }
 
   return (
     <Card
-      className={clsx(
-        // Background
-        "bg-white",
-        // Styling
-        "rounded-xl",
-        // Spacing
-        "p-4",
-      )}
-      style={{ height: "200px" }}
+      sx={{
+        height: 200,
+        p: 2,
+        borderRadius: 3,
+        display: "flex",
+        flexDirection: "column",
+      }}
     >
-      <div
-        className={clsx(
-          // Layout
-          "flex items-center justify-between",
-          // Spacing
-          "mb-3",
-        )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 1.5,
+        }}
       >
-        <div
-          className={clsx(
-            // Layout
-            "flex items-center",
-            // Spacing
-            "gap-2",
-          )}
-        >
-          <span
-            className={clsx(
-              // Typography
-              "text-xl",
-            )}
-          >
-            👋
-          </span>
-          <span
-            className={clsx(
-              // Typography
-              "text-base font-semibold",
-            )}
-          >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography variant="h5">👋</Typography>
+          <Typography variant="body1" sx={{ fontWeight: 600 }}>
             سلام {user.username}
-          </span>
-        </div>
+          </Typography>
+        </Box>
         <CustomAvatar
           src={user.avatar || "/images/avatar/mohammad-fallah.jpg"}
           alt={user.username}
           name={user.username}
           size="md"
           showFallback={true}
-          className={clsx(
-            // Border & Effects
-            "border-2 border-white shadow-md",
-          )}
+          className="border-2 border-white shadow-md"
           fallbackClassName="from-blue-400 to-purple-500"
         />
-      </div>
+      </Box>
 
-      <div
-        className={clsx(
-          // Layout
-          "flex-1 flex flex-col items-center justify-center text-center",
-          // Spacing
-          "px-2",
-        )}
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          px: 1,
+        }}
       >
-        <div
-          className={clsx(
-            // Typography
-            "text-sm text-gray-600",
-            // Spacing
-            "mb-2",
-          )}
+        <Typography
+          variant="body2"
+          sx={{
+            color: "text.secondary",
+            mb: 1,
+          }}
         >
           {user.isVerified ? "حساب شما تأیید شده است ✅" : "حساب شما در انتظار تأیید است ⏳"}
-        </div>
-        <div
-          className={clsx(
-            // Typography
-            "text-xs text-gray-400",
-            // Spacing
-            "px-2 mb-1",
-          )}
+        </Typography>
+        <Typography
+          variant="caption"
+          sx={{
+            color: "text.disabled",
+            px: 1,
+            mb: 0.5,
+          }}
         >
           نقش: {getRoleDisplay(user.role)}
-        </div>
-        <div
-          className={clsx(
-            // Typography
-            "text-xs text-gray-400",
-            // Spacing
-            "px-2",
-          )}
+        </Typography>
+        <Typography
+          variant="caption"
+          sx={{
+            color: "text.disabled",
+            px: 1,
+          }}
         >
           عضو از {new Date(user.createdAt).toLocaleDateString("fa-IR")}
-        </div>
-      </div>
+        </Typography>
+      </Box>
 
-      <div
-        className={clsx(
-          // Layout
-          "mt-auto flex items-center justify-between",
-        )}
+      <Box
+        sx={{
+          mt: "auto",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
-        <div
-          className={clsx(
-            // Layout
-            "flex items-center",
-            // Spacing
-            "gap-2",
-          )}
-        >
-          <span
-            className={clsx(
-              // Typography
-              "text-lg",
-            )}
-          >
-            {getRoleEmoji(user.role)}
-          </span>
-          <div>
-            <span
-              className={clsx(
-                // Typography
-                "text-xs font-medium",
-                // Display
-                "block",
-              )}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography variant="h6">{getRoleEmoji(user.role)}</Typography>
+          <Box>
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 500,
+                display: "block",
+              }}
             >
               پروفایل کامل
-            </span>
-            <div
-              className={clsx(
-                // Layout
-                "flex",
-                // Typography
-                "text-xs text-green-400",
-              )}
-            >
-              <span>★★★★★</span>
-            </div>
-          </div>
-        </div>
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "success.main",
+                }}
+              >
+                ★★★★★
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
         <Button
-          size="sm"
-          variant="light"
-          className={clsx(
-            // Typography
-            "text-xs",
-          )}
+          size="small"
+          variant="text"
           onClick={() => {
             const settingsBtn = document.querySelector("[data-settings-trigger]") as HTMLElement;
             settingsBtn?.click();
           }}
+          sx={{
+            textTransform: "none",
+            fontFamily: "Vazirmatn",
+          }}
         >
           مدیریت حساب
         </Button>
-      </div>
+      </Box>
     </Card>
   );
 }

@@ -1,123 +1,89 @@
-import { Button } from "@heroui/react";
+import { IconButton, Box, Typography, AppBar, Toolbar } from "@mui/material";
 import { FiSettings, FiSearch, FiUsers } from "react-icons/fi";
 import { useState } from "react";
 import SettingsModals from "./modals/settings";
 import { CustomAvatar } from "../components";
-import clsx from "clsx";
 
 export default function Header() {
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
-    <header
-      className={clsx(
-        // Position & Layout
-        "relative z-10 w-full",
-        "flex items-center justify-between",
-        // Spacing
-        "py-4 px-8",
-      )}
+    <AppBar
+      position="relative"
+      elevation={0}
+      sx={{
+        backgroundColor: "transparent",
+        zIndex: 10,
+        width: "100%",
+      }}
     >
-      <div
-        className={clsx(
-          // Layout
-          "flex items-center",
-          // Spacing
-          "gap-2",
-        )}
-      >
-        <Button
-          className={clsx(
-            // Size & Shape
-            "w-12 h-12 rounded-full",
-            // Layout
-            "flex items-center justify-center",
-            // Background & Colors
-            "bg-white",
-            // Effects
-            "shadow-sm",
-            // Interactions
-            "hover:bg-gray-100",
-            // Transitions
-            "transition",
-          )}
-          variant="light"
-          onPress={() => setSettingsOpen(true)}
-          data-settings-trigger
-        >
-          <FiSettings size={28} />
-        </Button>
-        <Button
-          className={clsx(
-            // Size & Shape
-            "w-12 h-12 rounded-full",
-            // Layout
-            "flex items-center justify-center",
-            // Background & Colors
-            "bg-white",
-            // Effects
-            "shadow-sm",
-            // Interactions
-            "hover:bg-gray-100",
-            // Transitions
-            "transition",
-          )}
-          variant="light"
-        >
-          <FiSearch size={28} />
-        </Button>
-        <Button
-          className={clsx(
-            // Size & Shape
-            "w-12 h-12 rounded-full",
-            // Layout
-            "flex items-center justify-center",
-            // Background & Colors
-            "bg-white",
-            // Effects
-            "shadow-sm",
-            // Interactions
-            "hover:bg-gray-100",
-            // Transitions
-            "transition",
-          )}
-          variant="light"
-        >
-          <FiUsers size={28} />
-        </Button>
-      </div>
-      <div
-        className={clsx(
-          // Layout
-          "flex items-center",
-          // Spacing
-          "gap-2",
-        )}
-      >
-        <span
-          className={clsx(
-            // Typography
-            "text-white text-lg font-semibold",
-          )}
-        >
-          نوبین
-        </span>
-        <CustomAvatar
-          src="/images/brand/ChatGPT Image Jul 18, 2025, 12_02_21 PM.png"
-          alt="نوبین"
-          name="نوبین"
-          size="md"
-          showFallback={true}
-          className={clsx(
-            // Background & Border
-            "bg-white border-2 border-white",
-            // Effects
-            "shadow-sm",
-          )}
-          fallbackClassName="from-blue-500 to-purple-600"
-        />
-      </div>
+      <Toolbar sx={{ justifyContent: "space-between", py: 2, px: 4 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <IconButton
+            onClick={() => setSettingsOpen(true)}
+            data-settings-trigger
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              backgroundColor: "white",
+              boxShadow: 1,
+              "&:hover": { backgroundColor: "grey.100" },
+              transition: "all 0.2s",
+            }}
+          >
+            <FiSettings size={28} />
+          </IconButton>
+          <IconButton
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              backgroundColor: "white",
+              boxShadow: 1,
+              "&:hover": { backgroundColor: "grey.100" },
+              transition: "all 0.2s",
+            }}
+          >
+            <FiSearch size={28} />
+          </IconButton>
+          <IconButton
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              backgroundColor: "white",
+              boxShadow: 1,
+              "&:hover": { backgroundColor: "grey.100" },
+              transition: "all 0.2s",
+            }}
+          >
+            <FiUsers size={28} />
+          </IconButton>
+        </Box>
+
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              color: "white",
+              fontWeight: 600,
+            }}
+          >
+            نوبین
+          </Typography>
+          <CustomAvatar
+            src="/images/brand/ChatGPT Image Jul 18, 2025, 12_02_21 PM.png"
+            alt="نوبین"
+            name="نوبین"
+            size="md"
+            showFallback={true}
+            className="bg-white border-2 border-white shadow-sm"
+            fallbackClassName="from-blue-500 to-purple-600"
+          />
+        </Box>
+      </Toolbar>
       <SettingsModals isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
-    </header>
+    </AppBar>
   );
 }

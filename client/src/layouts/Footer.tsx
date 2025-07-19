@@ -1,19 +1,28 @@
-import clsx from "clsx";
+import { Box, Typography, Container } from "@mui/material";
 
 export default function Footer() {
   return (
-    <footer
-      className={clsx(
-        // Position & Layout
-        "relative z-10 w-full",
-        "flex items-center justify-center",
-        // Spacing
-        "py-4 px-8",
-        // Typography
-        "text-xs text-white",
-      )}
+    <Box
+      component="footer"
+      sx={{
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        backdropFilter: "blur(10px)",
+        borderTop: "1px solid rgba(255, 255, 255, 0.2)",
+        py: 2,
+      }}
     >
-      © 2025 نوبین. همه حقوق محفوظ است.
-    </footer>
+      <Container maxWidth="xl">
+        <Typography
+          variant="body2"
+          align="center"
+          sx={{
+            color: "white",
+            opacity: 0.8,
+          }}
+        >
+          © ۱۴۰۳ نوبین - تمامی حقوق محفوظ است
+        </Typography>
+      </Container>
+    </Box>
   );
 }

@@ -1,100 +1,140 @@
-import { Button } from "@heroui/react";
-import { FiSearch, FiBookmark } from "react-icons/fi";
-import clsx from "clsx";
+import { Card, Button, Box, Typography, TextField, IconButton } from "@mui/material";
+import { FiSearch, FiMic, FiCamera } from "react-icons/fi";
 
 export default function SearchWidget() {
   return (
-    <div
-      className={clsx(
-        // Layout & Position
-        "relative",
-        // Styling
-        "rounded-2xl",
-      )}
-      style={{
-        minHeight: "200px",
+    <Card
+      sx={{
+        height: 200,
+        p: 2,
+        borderRadius: 3,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
-      {/* Search Bar */}
-      <div
-        className={clsx(
-          // Layout & Position
-          "relative",
-          // Spacing
-          "mb-6",
-        )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
-        <input
-          className={clsx(
-            // Layout
-            "w-full",
-            // Styling
-            "rounded-full bg-white",
-            // Spacing
-            "px-6 py-3",
-            // Typography
-            "text-sm placeholder-gray-400",
-            // Interactions
-            "focus:outline-none focus:ring-2 focus:ring-white/50",
-          )}
-          placeholder="جستجو ..."
-          dir="rtl"
-        />
-        <span
-          className={clsx(
-            // Position
-            "absolute left-4 top-1/2",
-            // Transform
-            "transform -translate-y-1/2",
-            // Colors
-            "text-gray-400",
-          )}
-        >
-          <FiSearch size={20} />
-        </span>
-      </div>
-
-      {/* Bookmarks Grid - 2 rows of 6 */}
-      <div
-        className={clsx(
-          // Layout
-          "grid grid-cols-6",
-          // Spacing
-          "gap-3 mb-2",
-        )}
-      >
-        {[...Array(12)].map((_, i) => (
-          <Button
-            key={i}
-            className={clsx(
-              // Size
-              "w-16 h-16",
-              // Background
-              "bg-white/90",
-              // Effects
-              "backdrop-blur-sm shadow-lg",
-              // Layout
-              "flex items-center justify-center",
-              // Styling
-              "rounded-2xl",
-              // Interactions
-              "hover:bg-white hover:scale-105",
-              // Transitions
-              "transition-all duration-200",
-            )}
-            variant="light"
+        <Box>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+              mb: 0.5,
+            }}
           >
-            <span
-              className={clsx(
-                // Colors
-                "text-gray-400",
-              )}
+            جستجو
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontWeight: "bold",
+              mb: 0.5,
+            }}
+          >
+            موتور جستجو
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+            }}
+          >
+            جستجوی سریع و آسان
+          </Typography>
+        </Box>
+        <Typography variant="h3">🔍</Typography>
+      </Box>
+
+      <Box sx={{ mt: 2 }}>
+        <Box sx={{ position: "relative", mb: 2 }}>
+          <TextField
+            fullWidth
+            placeholder="جستجو کنید..."
+            variant="outlined"
+            size="small"
+            InputProps={{
+              endAdornment: (
+                <Box sx={{ display: "flex", gap: 0.5 }}>
+                  <IconButton size="small">
+                    <FiMic size={16} />
+                  </IconButton>
+                  <IconButton size="small">
+                    <FiCamera size={16} />
+                  </IconButton>
+                </Box>
+              ),
+            }}
+          />
+        </Box>
+
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+          {["اخبار", "تصاویر", "ویدیو", "نقشه"].map((item, index) => (
+            <Button
+              key={index}
+              size="small"
+              variant="outlined"
+              sx={{
+                textTransform: "none",
+                fontFamily: "Vazirmatn",
+                borderRadius: 2,
+              }}
             >
-              <FiBookmark size={28} />
-            </span>
-          </Button>
-        ))}
-      </div>
-    </div>
+              {item}
+            </Button>
+          ))}
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mt: 2,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography variant="h6">🔍</Typography>
+          <Box>
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 500,
+                display: "block",
+              }}
+            >
+              جستجوی پیشرفته
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "success.main",
+                }}
+              >
+                ⚡ سریع و دقیق
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Button
+          size="small"
+          variant="contained"
+          startIcon={<FiSearch size={16} />}
+          sx={{
+            textTransform: "none",
+            fontFamily: "Vazirmatn",
+          }}
+        >
+          جستجو
+        </Button>
+      </Box>
+    </Card>
   );
 }

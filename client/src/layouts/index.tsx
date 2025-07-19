@@ -1,10 +1,9 @@
 import type { PropsWithChildren } from "react";
-import { HeroUIProvider } from "@heroui/react";
 import { useEffect, useState } from "react";
+import { Box, Container } from "@mui/material";
 import Header from "./Header";
 import MainSection from "./MainSection";
 import Footer from "./Footer";
-import clsx from "clsx";
 
 export default function MainLayout({ children }: PropsWithChildren) {
   const [backgroundStyle, setBackgroundStyle] = useState({});
@@ -45,25 +44,25 @@ export default function MainLayout({ children }: PropsWithChildren) {
   }, []);
 
   return (
-    <HeroUIProvider>
-      <div
-        className={clsx(
-          // Size & Position
-          "min-h-screen w-full relative",
-          // Layout
-          "flex flex-col",
-          // Overflow
-          "overflow-hidden",
-        )}
-        style={backgroundStyle}
+    <Container maxWidth={false} disableGutters>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          width: "100%",
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+          ...backgroundStyle,
+        }}
         data-main-layout
       >
         <Header />
         <MainSection>{children}</MainSection>
         <Footer />
-      </div>
+      </Box>
       {/* Portal container for modals */}
-      <div id="modal-root"></div>
-    </HeroUIProvider>
+      <Box id="modal-root" />
+    </Container>
   );
 }

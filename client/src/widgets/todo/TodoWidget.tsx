@@ -1,150 +1,199 @@
-import { Card } from "@heroui/react";
-import { Button } from "@heroui/react";
-import clsx from "clsx";
+import {
+  Card,
+  Button,
+  Box,
+  Typography,
+  Paper,
+  Checkbox,
+  TextField,
+  IconButton,
+} from "@mui/material";
+import { useState } from "react";
+import { FiPlus, FiTrash2 } from "react-icons/fi";
+
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
 
 export default function TodoWidget() {
+  const [todos, setTodos] = useState<Todo[]>([
+    { id: 1, text: "بررسی ایمیل‌ها", completed: false },
+    { id: 2, text: "جلسه تیم", completed: true },
+    { id: 3, text: "بروزرسانی مستندات", completed: false },
+  ]);
+  const [newTodo, setNewTodo] = useState("");
+
+  const addTodo = () => {
+    if (newTodo.trim()) {
+      setTodos([...todos, { id: Date.now(), text: newTodo.trim(), completed: false }]);
+      setNewTodo("");
+    }
+  };
+
+  const toggleTodo = (id: number) => {
+    setTodos(
+      todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)),
+    );
+  };
+
+  const deleteTodo = (id: number) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
   return (
     <Card
-      className={clsx(
-        // Background
-        "bg-white",
-        // Styling
-        "rounded-xl",
-        // Spacing
-        "p-4",
-      )}
+      sx={{
+        height: 200,
+        p: 2,
+        borderRadius: 3,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
     >
-      <div
-        className={clsx(
-          // Layout
-          "flex items-center justify-between",
-          // Spacing
-          "mb-3",
-        )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
-        <div
-          className={clsx(
-            // Layout
-            "flex items-center",
-            // Spacing
-            "gap-2",
-          )}
-        >
-          <span
-            className={clsx(
-              // Typography
-              "text-lg",
-            )}
+        <Box>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+              mb: 0.5,
+            }}
           >
-            📋
-          </span>
-          <span
-            className={clsx(
-              // Typography
-              "text-sm font-medium text-gray-700",
-            )}
+            وظایف
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontWeight: "bold",
+              mb: 0.5,
+            }}
           >
-            وظایف امروز
-          </span>
-        </div>
-        <div
-          className={clsx(
-            // Layout
-            "flex items-center",
-            // Spacing
-            "gap-2",
-            // Typography
-            "text-xs",
-          )}
-        >
-          <Button
-            className={clsx(
-              // Colors
-              "text-gray-500",
-              // Interactions
-              "hover:text-blue-500",
-              // Effects
-              "transition",
-            )}
-            variant="light"
+            لیست کارها
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+            }}
           >
-            <span>📅 لیست امروز</span>
-          </Button>
-          <Button
-            className={clsx(
-              // Colors
-              "text-gray-500",
-              // Interactions
-              "hover:text-blue-500",
-              // Effects
-              "transition",
-            )}
-            variant="light"
-          >
-            <span>⚙️</span>
-          </Button>
-        </div>
-      </div>
+            {todos.filter((t) => !t.completed).length} کار باقی‌مانده
+          </Typography>
+        </Box>
+        <Typography variant="h3">📝</Typography>
+      </Box>
 
-      <div
-        className={clsx(
-          // Layout
-          "flex-1 flex flex-col items-center justify-center text-center",
-          // Spacing
-          "px-4",
-        )}
-      >
-        <div
-          className={clsx(
-            // Typography
-            "text-sm text-gray-600",
-            // Spacing
-            "mb-2",
-          )}
-        >
-          وظایف‌ای برای این روز وجود ندارد.
-        </div>
-        <div
-          className={clsx(
-            // Typography
-            "text-xs text-gray-400",
-          )}
-        >
-          یک وظیفه جدید اضافه کنید.
-        </div>
-      </div>
+      <Box sx={{ mt: 2, flex: 1, overflow: "hidden" }}>
+        <Box sx={{ display: "flex", gap: 1, mb: 1 }}>
+          <TextField
+            size="small"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            placeholder="کار جدید..."
+            onKeyPress={(e) => e.key === "Enter" && addTodo()}
+            sx={{ flex: 1 }}
+          />
+          <IconButton
+            size="small"
+            onClick={addTodo}
+            sx={{ bgcolor: "primary.main", color: "white", "&:hover": { bgcolor: "primary.dark" } }}
+          >
+            <FiPlus size={16} />
+          </IconButton>
+        </Box>
 
-      <Button
-        className={clsx(
-          // Layout
-          "w-full flex items-center justify-center",
-          // Background
-          "bg-gray-50",
-          // Styling
-          "rounded-lg",
-          // Colors
-          "text-gray-600",
-          // Spacing
-          "py-2 gap-2",
-          // Typography
-          "text-sm font-medium",
-          // Interactions
-          "hover:bg-gray-100",
-          // Effects
-          "transition-colors",
-        )}
-        variant="light"
+        <Box sx={{ overflow: "auto", maxHeight: 80 }}>
+          {todos.slice(0, 3).map((todo) => (
+            <Paper
+              key={todo.id}
+              sx={{
+                p: 1,
+                mb: 0.5,
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                backgroundColor: "grey.50",
+                borderRadius: 1,
+              }}
+            >
+              <Checkbox
+                size="small"
+                checked={todo.completed}
+                onChange={() => toggleTodo(todo.id)}
+              />
+              <Typography
+                variant="body2"
+                sx={{
+                  flex: 1,
+                  textDecoration: todo.completed ? "line-through" : "none",
+                  color: todo.completed ? "text.secondary" : "text.primary",
+                }}
+              >
+                {todo.text}
+              </Typography>
+              <IconButton
+                size="small"
+                onClick={() => deleteTodo(todo.id)}
+                sx={{ color: "error.main" }}
+              >
+                <FiTrash2 size={14} />
+              </IconButton>
+            </Paper>
+          ))}
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mt: 2,
+        }}
       >
-        <span
-          className={clsx(
-            // Typography
-            "text-lg",
-          )}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography variant="h6">📋</Typography>
+          <Box>
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 500,
+                display: "block",
+              }}
+            >
+              مدیریت وظایف
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "success.main",
+                }}
+              >
+                ✅ {todos.filter((t) => t.completed).length} انجام شده
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Button
+          size="small"
+          variant="text"
+          sx={{
+            textTransform: "none",
+            fontFamily: "Vazirmatn",
+          }}
         >
-          +
-        </span>
-        <span>...عنوان وظیفه جدید</span>
-      </Button>
+          مشاهده همه
+        </Button>
+      </Box>
     </Card>
   );
 }

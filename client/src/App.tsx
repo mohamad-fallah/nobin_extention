@@ -1,4 +1,3 @@
-import { AuthProvider } from "./context/AuthContext";
 import MainLayout from "./layouts";
 import CalendarWidget from "./widgets/calendar/CalendarWidget";
 import CurrencyWidget from "./widgets/currency/CurrencyWidget";
@@ -9,31 +8,29 @@ import WeatherWidget from "./widgets/weather/WeatherWidget";
 
 function App() {
   return (
-    <AuthProvider>
-      <MainLayout>
-        <div className="grid grid-cols-4 gap-4">
-          <div className="col-span-1">
-            <WeatherWidget />
-          </div>
-          <div className="col-span-2">
-            <SearchWidget />
-          </div>
-          <div className="col-span-1">
-            <ProfileWidget />
-          </div>
-
-          <div className="col-span-1">
-            <CurrencyWidget />
-          </div>
-          <div className="col-span-2">
-            <TodoWidget />
-          </div>
-          <div className="col-span-1">
-            <CalendarWidget />
-          </div>
+    <MainLayout>
+      <div className="grid grid-cols-4 gap-4">
+        <div className="col-span-1">
+          <WeatherWidget />
         </div>
-      </MainLayout>
-    </AuthProvider>
+        <div className="col-span-2">
+          <SearchWidget />
+        </div>
+        <div className="col-span-1">
+          <ProfileWidget />
+        </div>
+
+        <div className="col-span-1">
+          <CurrencyWidget />
+        </div>
+        <div className="col-span-2">
+          <TodoWidget />
+        </div>
+        <div className="col-span-1">
+          <CalendarWidget />
+        </div>
+      </div>
+    </MainLayout>
   );
 }
 

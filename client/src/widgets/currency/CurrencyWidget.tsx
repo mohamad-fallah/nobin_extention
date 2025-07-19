@@ -1,175 +1,161 @@
-import { Card } from "@heroui/react";
-import { Button } from "@heroui/react";
-import clsx from "clsx";
-
-const currencies = [
-  { name: "US Dollar", code: "USD", value: "۸۸,۸۰۰", icon: "🇺🇸", trend: "up" },
-  { name: "Euro", code: "EUR", value: "۱۰۲,۹۰۰", icon: "🇪🇺", trend: "up" },
-  { name: "Gram", code: "GRAM", value: "۷۱,۰۷۲,۰۰۰", icon: "🟡", trend: "up" },
-];
+import { Card, Button, Box, Typography, Paper } from "@mui/material";
 
 export default function CurrencyWidget() {
+  const currencies = [
+    { name: "دلار آمریکا", code: "USD", rate: "۵۸,۰۰۰", change: "+۲.۵%", trend: "up" },
+    { name: "یورو", code: "EUR", rate: "۶۲,۵۰۰", change: "-۱.۲%", trend: "down" },
+    { name: "پوند انگلیس", code: "GBP", rate: "۷۲,۸۰۰", change: "+۰.۸%", trend: "up" },
+    { name: "ین ژاپن", code: "JPY", rate: "۳۸۵", change: "-۰.۵%", trend: "down" },
+  ];
+
   return (
     <Card
-      className={clsx(
-        // Background
-        "bg-white",
-        // Styling
-        "rounded-xl",
-        // Spacing
-        "p-4",
-      )}
+      sx={{
+        height: 200,
+        p: 2,
+        borderRadius: 3,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
     >
-      <div
-        className={clsx(
-          // Layout
-          "flex items-center justify-between",
-          // Spacing
-          "mb-3",
-        )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
-        <div
-          className={clsx(
-            // Layout
-            "flex items-center",
-            // Spacing
-            "gap-2",
-          )}
-        >
-          <span
-            className={clsx(
-              // Typography
-              "text-lg",
-            )}
+        <Box>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+              mb: 0.5,
+            }}
           >
-            📊
-          </span>
-          <span
-            className={clsx(
-              // Typography
-              "text-sm font-medium text-gray-700",
-            )}
+            نرخ ارز
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontWeight: "bold",
+              mb: 0.5,
+            }}
           >
-            اخبار
-          </span>
-        </div>
-        <Button
-          className={clsx(
-            // Background & Colors
-            "bg-blue-500 text-white",
-            // Spacing
-            "px-2 py-1 gap-1",
-            // Styling
-            "rounded-md",
-            // Typography
-            "text-xs",
-            // Layout
-            "flex items-center",
-            // Interactions
-            "hover:bg-blue-600",
-            // Effects
-            "transition",
-          )}
-          variant="solid"
-        >
-          <span>🔄</span>
-          <span>نرخ ارز</span>
-        </Button>
-      </div>
+            بازار ارز
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+            }}
+          >
+            امروز • 18 دی 1403
+          </Typography>
+        </Box>
+        <Typography variant="h3">💱</Typography>
+      </Box>
 
-      <div
-        className={clsx(
-          // Layout
-          "flex-1 overflow-y-auto",
-          // Spacing
-          "space-y-2",
-        )}
-      >
-        {currencies.map((item) => (
-          <div
-            key={item.code}
-            className={clsx(
-              // Layout
-              "flex items-center justify-between",
-              // Spacing
-              "px-1",
-            )}
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 2 }}>
+        {currencies.slice(0, 3).map((currency, index) => (
+          <Paper
+            key={index}
+            sx={{
+              p: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              backgroundColor: "grey.50",
+              borderRadius: 1,
+            }}
           >
-            <div
-              className={clsx(
-                // Layout
-                "flex items-center",
-                // Spacing
-                "gap-2",
-              )}
-            >
-              <span
-                className={clsx(
-                  // Typography
-                  "text-lg",
-                )}
+            <Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 500,
+                }}
               >
-                {item.icon}
-              </span>
-              <div
-                className={clsx(
-                  // Layout
-                  "min-w-0 flex-1",
-                )}
+                {currency.name}
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "text.secondary",
+                }}
               >
-                <span
-                  className={clsx(
-                    // Typography
-                    "text-sm font-medium",
-                    // Display
-                    "block truncate",
-                  )}
-                >
-                  {item.name}
-                </span>
-                <span
-                  className={clsx(
-                    // Typography
-                    "text-xs text-gray-500",
-                  )}
-                >
-                  {item.code}
-                </span>
-              </div>
-            </div>
-            <div
-              className={clsx(
-                // Layout
-                "text-right flex-shrink-0",
-              )}
-            >
-              <span
-                className={clsx(
-                  // Typography
-                  "font-bold text-xs",
-                  // Display
-                  "block",
-                )}
+                {currency.code}
+              </Typography>
+            </Box>
+            <Box sx={{ textAlign: "right" }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: "bold",
+                }}
               >
-                {item.value}
-              </span>
-              <span
-                className={clsx(
-                  // Typography
-                  "text-xs",
-                  // Conditional Colors
-                  {
-                    "text-green-500": item.trend === "up",
-                    "text-red-500": item.trend === "down",
-                  },
-                )}
+                {currency.rate}
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: currency.trend === "up" ? "success.main" : "error.main",
+                }}
               >
-                {item.trend === "up" ? "↑" : "↓"}
-              </span>
-            </div>
-          </div>
+                {currency.change}
+              </Typography>
+            </Box>
+          </Paper>
         ))}
-      </div>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mt: 2,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography variant="h6">📈</Typography>
+          <Box>
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 500,
+                display: "block",
+              }}
+            >
+              بازار ارز
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "success.main",
+                }}
+              >
+                📈 +۲.۱%
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Button
+          size="small"
+          variant="contained"
+          sx={{
+            textTransform: "none",
+            fontFamily: "Vazirmatn",
+          }}
+        >
+          <Typography variant="body2" sx={{ mr: 0.5 }}>
+            🔄
+          </Typography>
+          <Typography variant="body2">نرخ ارز</Typography>
+        </Button>
+      </Box>
     </Card>
   );
 }

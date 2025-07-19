@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Button, Input, Divider, Avatar, Spinner, Card, CardHeader, CardBody } from "@heroui/react";
+import {
+  Button,
+  TextField,
+  Divider,
+  Avatar,
+  CircularProgress,
+  Card,
+  CardHeader,
+  CardContent,
+} from "@mui/material";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import clsx from "clsx";
 import { useAuth } from "../../../context/AuthContext";
@@ -130,7 +139,7 @@ export default function AccountTab() {
           "h-64",
         )}
       >
-        <Spinner size="lg" color="primary" />
+        <CircularProgress size="lg" color="primary" />
       </div>
     );
   }
@@ -191,7 +200,7 @@ export default function AccountTab() {
               </p>
             </div>
           </CardHeader>
-          <CardBody
+          <CardContent
             className={clsx(
               // Spacing
               "space-y-3",
@@ -266,7 +275,7 @@ export default function AccountTab() {
             >
               خروج از حساب کاربری
             </Button>
-          </CardBody>
+          </CardContent>
         </Card>
       </div>
     );
@@ -363,24 +372,13 @@ export default function AccountTab() {
               >
                 ایمیل
               </label>
-              <Input
+              <TextField
                 type="email"
                 placeholder="example@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                classNames={{
-                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
-                  inputWrapper: clsx(
-                    "text-right",
-                    "bg-gray-50 hover:bg-white",
-                    "min-h-[52px]",
-                    "rounded-lg",
-                    "transition-all duration-200",
-                    "border-2 border-gray-200 ",
-                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
-                  ),
-                }}
+                className="w-full"
               />
             </div>
 
@@ -400,7 +398,7 @@ export default function AccountTab() {
               >
                 رمز عبور
               </label>
-              <Input
+              <TextField
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 value={password}
@@ -420,18 +418,7 @@ export default function AccountTab() {
                   </Button>
                 }
                 required
-                classNames={{
-                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
-                  inputWrapper: clsx(
-                    "text-right",
-                    "bg-gray-50 hover:bg-white",
-                    "min-h-[52px]",
-                    "rounded-lg",
-                    "transition-all duration-200",
-                    "border-2 border-gray-200 ",
-                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
-                  ),
-                }}
+                className="w-full"
               />
             </div>
           </div>
@@ -461,24 +448,13 @@ export default function AccountTab() {
               >
                 نام کاربری
               </label>
-              <Input
+              <TextField
                 type="text"
                 placeholder="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                classNames={{
-                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
-                  inputWrapper: clsx(
-                    "text-right",
-                    "bg-gray-50 hover:bg-white",
-                    "min-h-[52px]",
-                    "rounded-lg",
-                    "transition-all duration-200",
-                    "border-2 border-gray-200 ",
-                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
-                  ),
-                }}
+                className="w-full"
               />
             </div>
 
@@ -498,24 +474,13 @@ export default function AccountTab() {
               >
                 ایمیل
               </label>
-              <Input
+              <TextField
                 type="email"
                 placeholder="example@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                classNames={{
-                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
-                  inputWrapper: clsx(
-                    "text-right",
-                    "bg-gray-50 hover:bg-white",
-                    "min-h-[52px]",
-                    "rounded-lg",
-                    "transition-all duration-200",
-                    "border-2 border-gray-200 ",
-                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
-                  ),
-                }}
+                className="w-full"
               />
             </div>
 
@@ -655,7 +620,7 @@ export default function AccountTab() {
                 >
                   رمز عبور
                 </label>
-                <Input
+                <TextField
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
@@ -675,18 +640,7 @@ export default function AccountTab() {
                     </Button>
                   }
                   required
-                  classNames={{
-                    input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
-                    inputWrapper: clsx(
-                      "text-right",
-                      "bg-gray-50 hover:bg-white",
-                      "min-h-[52px]",
-                      "rounded-lg",
-                      "transition-all duration-200",
-                      "border-2 border-gray-200 ",
-                      "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
-                    ),
-                  }}
+                  className="w-full"
                 />
               </div>
 
@@ -704,7 +658,7 @@ export default function AccountTab() {
                   تکرار رمز عبور
                 </label>
 
-                <Input
+                <TextField
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={confirmPassword}
@@ -724,18 +678,7 @@ export default function AccountTab() {
                     </Button>
                   }
                   required
-                  classNames={{
-                    input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
-                    inputWrapper: clsx(
-                      "text-right",
-                      "bg-gray-50 hover:bg-white",
-                      "min-h-[52px]",
-                      "rounded-lg",
-                      "transition-all duration-200",
-                      "border-2 border-gray-200 ",
-                      "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
-                    ),
-                  }}
+                  className="w-full"
                 />
               </div>
             </div>
@@ -766,39 +709,13 @@ export default function AccountTab() {
               >
                 نام کاربری
               </label>
-              <Input
+              <TextField
                 type="text"
                 placeholder="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                classNames={{
-                  input: clsx(
-                    // Typography
-                    "text-right text-base",
-                    // Spacing
-                    "px-4 py-3",
-                  ),
-                  inputWrapper: clsx(
-                    // Layout
-                    "text-right",
-                    // Colors & Effects
-                    "border-2 border-gray-200",
-                    "hover:border-gray-300",
-                    "focus-within:border-blue-500",
-                    "bg-gray-50 hover:bg-white",
-                    "focus-within:bg-white",
-                    // Spacing
-                    "min-h-[52px]",
-                    // Interactions
-                    "transition-all duration-200",
-                    // Layout
-                    "rounded-lg",
-                    // Focus Effects
-                    "focus-within:ring-2 focus-within:ring-blue-200",
-                    "focus-within:shadow-md",
-                  ),
-                }}
+                className="w-full"
               />
             </div>
 
@@ -940,24 +857,13 @@ export default function AccountTab() {
               >
                 رمز عبور فعلی
               </label>
-              <Input
+              <TextField
                 type="password"
                 placeholder="••••••••"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 required
-                classNames={{
-                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
-                  inputWrapper: clsx(
-                    "text-right",
-                    "bg-gray-50 hover:bg-white",
-                    "min-h-[52px]",
-                    "rounded-lg",
-                    "transition-all duration-200",
-                    "border-2 border-gray-200 ",
-                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
-                  ),
-                }}
+                className="w-full"
               />
             </div>
 
@@ -977,7 +883,7 @@ export default function AccountTab() {
               >
                 رمز عبور جدید
               </label>
-              <Input
+              <TextField
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 value={newPassword}
@@ -997,18 +903,7 @@ export default function AccountTab() {
                   </Button>
                 }
                 required
-                classNames={{
-                  input: clsx("text-right text-base", "px-4 py-3", "border-none outline-none"),
-                  inputWrapper: clsx(
-                    "text-right",
-                    "bg-gray-50 hover:bg-white",
-                    "min-h-[52px]",
-                    "rounded-lg",
-                    "transition-all duration-200",
-                    "border-2 border-gray-200 ",
-                    "focus-within:outline focus-within:outline-2 focus-within:outline-blue-500",
-                  ),
-                }}
+                className="w-full"
               />
             </div>
           </div>

@@ -1,164 +1,166 @@
-import { Card } from "@heroui/react";
-import { Button } from "@heroui/react";
-import clsx from "clsx";
+import { Card, Button, Box, Typography } from "@mui/material";
 
 export default function WeatherWidget() {
   return (
     <Card
-      className={clsx(
-        // Background & Layout
-        "bg-white justify-between",
-        // Styling
-        "rounded-xl",
-        // Spacing
-        "p-4",
-      )}
-      style={{ height: "200px" }}
+      sx={{
+        height: 200,
+        p: 2,
+        borderRadius: 3,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
     >
-      <div
-        className={clsx(
-          // Layout
-          "flex items-center justify-between",
-        )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
-        <div>
-          <div
-            className={clsx(
-              // Typography
-              "text-xs text-gray-500",
-              // Spacing
-              "mb-1",
-            )}
+        <Box>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+              mb: 0.5,
+            }}
           >
-            چهارشنبه
-          </div>
-          <div
-            className={clsx(
-              // Layout
-              "flex items-baseline",
-              // Spacing
-              "gap-2",
-            )}
-          >
-            <span
-              className={clsx(
-                // Typography
-                "text-4xl font-bold text-blue-600",
-              )}
-            >
-              20
-            </span>
-            <span
-              className={clsx(
-                // Typography
-                "text-lg text-gray-400",
-              )}
-            >
-              10
-            </span>
-          </div>
-          <div
-            className={clsx(
-              // Typography
-              "text-sm text-gray-600",
-              // Spacing
-              "mt-1",
-            )}
+            آب‌وهوا
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontWeight: "bold",
+              mb: 0.5,
+            }}
           >
             تهران
-          </div>
-        </div>
-
-        <div
-          className={clsx(
-            // Layout
-            "text-center",
-          )}
-        >
-          <div
-            className={clsx(
-              // Typography
-              "text-3xl font-bold text-blue-600",
-              // Spacing
-              "mb-1",
-            )}
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+            }}
           >
-            25
-          </div>
-          <div
-            className={clsx(
-              // Typography
-              "text-xs text-gray-500",
-            )}
-          >
-            تیر ۱۴۰۴
-          </div>
-        </div>
-      </div>
+            امروز • 18 دی 1403
+          </Typography>
+        </Box>
+        <Typography variant="h3">☀️</Typography>
+      </Box>
 
-      <div
-        className={clsx(
-          // Layout
-          "flex items-center justify-between",
-        )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          mt: 2,
+        }}
       >
-        <div
-          className={clsx(
-            // Typography
-            "text-xs text-gray-400",
-          )}
+        <Box>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: "bold",
+            }}
+          >
+            22°
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+            }}
+          >
+            آفتابی
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+          }}
         >
-          <span>☁️ کوک کندز</span>
-        </div>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+            }}
+          >
+            رطوبت: 45%
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+            }}
+          >
+            باد: 12 کیلومتر
+          </Typography>
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mt: 2,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Box sx={{ textAlign: "center" }}>
+            <Typography variant="h6">🌤️</Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                color: "text.secondary",
+              }}
+            >
+              فردا
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 500,
+              }}
+            >
+              18°
+            </Typography>
+          </Box>
+          <Box sx={{ textAlign: "center" }}>
+            <Typography variant="h6">⛅</Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                color: "text.secondary",
+              }}
+            >
+              پس‌فردا
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 500,
+              }}
+            >
+              15°
+            </Typography>
+          </Box>
+        </Box>
         <Button
-          className={clsx(
-            // Background & Colors
-            "bg-blue-500 text-white",
-            // Spacing
-            "px-2 py-1",
-            // Styling
-            "rounded-md",
-            // Typography
-            "text-xs",
-            // Layout
-            "flex items-center",
-            // Spacing
-            "gap-1",
-            // Interactions
-            "hover:bg-blue-600",
-            // Effects
-            "transition",
-          )}
-          variant="solid"
+          size="small"
+          variant="text"
+          sx={{
+            textTransform: "none",
+            fontFamily: "Vazirmatn",
+          }}
         >
-          <span>🌤️</span>
-          <span>پیش بینی</span>
+          جزئیات
         </Button>
-      </div>
-
-      <div
-        className={clsx(
-          // Layout
-          "text-center",
-        )}
-      >
-        <a
-          href="#"
-          className={clsx(
-            // Typography
-            "text-xs text-blue-500",
-            // Layout
-            "inline-flex items-center",
-            // Spacing
-            "gap-1",
-            // Interactions
-            "hover:underline",
-          )}
-        >
-          <span>📡</span>
-          <span>فیدبک برای ما مهمه!</span>
-        </a>
-      </div>
+      </Box>
     </Card>
   );
 }

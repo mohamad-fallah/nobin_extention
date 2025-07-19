@@ -1,16 +1,19 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { HeroUIProvider } from "@heroui/react";
 import App from "./App";
 import "./styles/index.css";
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
+import { ThemeProvider } from "./providers/ThemeProvider";
+import { AuthProvider } from "./context/AuthContext";
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <HeroUIProvider>
+    <ThemeProvider>
       <ReactQueryProvider>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </ReactQueryProvider>
-    </HeroUIProvider>
+    </ThemeProvider>
   </React.StrictMode>,
 );

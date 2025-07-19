@@ -1,6 +1,4 @@
-import { Card } from "@heroui/react";
-import { Button } from "@heroui/react";
-import clsx from "clsx";
+import { Card, Button, Box, Typography, Paper } from "@mui/material";
 
 export default function CalendarWidget() {
   // تقویم تیرماه ۱۴۰۴
@@ -10,262 +8,168 @@ export default function CalendarWidget() {
     ["۶", "۷", "۸", "۹", "۱۰", "۱۱", "۱۲"],
     ["۱۳", "۱۴", "۱۵", "۱۶", "۱۷", "۱۸", "۱۹"],
     ["۲۰", "۲۱", "۲۲", "۲۳", "۲۴", "۲۵", "۲۶"],
-    ["۲۷", "۲۸", "۲۹", "۳۰", "۳۱", "۱", "۲"],
+    ["۲۷", "۲۸", "۲۹", "۳۰", "۱", "۲", "۳"],
   ];
+
+  const today = "۱۵"; // امروز ۱۵ تیر
 
   return (
     <Card
-      className={clsx(
-        // Background
-        "bg-white",
-        // Styling
-        "rounded-xl",
-        // Spacing
-        "p-4",
-      )}
+      sx={{
+        height: 200,
+        p: 2,
+        borderRadius: 3,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
     >
-      <div
-        className={clsx(
-          // Layout
-          "flex items-center justify-between",
-          // Spacing
-          "mb-2",
-        )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
-        <div
-          className={clsx(
-            // Layout
-            "flex items-center",
-            // Spacing
-            "gap-1",
-          )}
-        >
-          <Button
-            className={clsx(
-              // Colors
-              "text-blue-500",
-              // Typography
-              "text-sm",
-              // Spacing
-              "p-1",
-            )}
-            variant="light"
+        <Box>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+              mb: 0.5,
+            }}
           >
-            <span>📅</span>
-          </Button>
-          <Button
-            className={clsx(
-              // Colors
-              "text-gray-400",
-              // Typography
-              "text-sm",
-              // Spacing
-              "p-1",
-            )}
-            variant="light"
+            تقویم
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontWeight: "bold",
+              mb: 0.5,
+            }}
           >
-            <span>👥</span>
-          </Button>
-          <Button
-            className={clsx(
-              // Colors
-              "text-gray-400",
-              // Typography
-              "text-sm",
-              // Spacing
-              "p-1",
-            )}
-            variant="light"
+            تیر ۱۴۰۴
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+            }}
           >
-            <span>📊</span>
-          </Button>
-        </div>
-        <span
-          className={clsx(
-            // Typography
-            "text-xs font-medium text-gray-700",
-          )}
-        >
-          چهارشنبه، ۲۵ تیر ۱۴۰۴
-        </span>
-      </div>
+            امروز • ۱۵ تیر
+          </Typography>
+        </Box>
+        <Typography variant="h3">📅</Typography>
+      </Box>
 
-      <div
-        className={clsx(
-          // Layout
-          "text-center",
-          // Spacing
-          "mb-2",
-        )}
-      >
-        <div
-          className={clsx(
-            // Layout
-            "flex items-center justify-between",
-            // Spacing
-            "px-2 mb-1",
-          )}
+      <Box sx={{ mt: 2 }}>
+        {/* روزهای هفته */}
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(7, 1fr)",
+            gap: 0.5,
+            mb: 1,
+          }}
         >
-          <span
-            className={clsx(
-              // Typography
-              "text-xs text-gray-400",
-              // Interactions
-              "cursor-pointer",
-            )}
-          >
-            خرداد
-          </span>
-          <span
-            className={clsx(
-              // Typography
-              "text-sm font-medium",
-            )}
-          >
-            تیر
-          </span>
-          <span
-            className={clsx(
-              // Typography
-              "text-xs text-gray-400",
-              // Interactions
-              "cursor-pointer",
-            )}
-          >
-            مرداد
-          </span>
-        </div>
-        <div
-          className={clsx(
-            // Typography
-            "text-xs text-gray-500",
-          )}
+          {days.map((day, index) => (
+            <Typography
+              key={index}
+              variant="caption"
+              sx={{
+                textAlign: "center",
+                color: "text.secondary",
+                fontWeight: 500,
+              }}
+            >
+              {day}
+            </Typography>
+          ))}
+        </Box>
+
+        {/* تاریخ‌ها */}
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(7, 1fr)",
+            gap: 0.5,
+          }}
         >
-          مناسبت روز امروز
-        </div>
-        <div
-          className={clsx(
-            // Typography
-            "text-xs text-gray-600",
-          )}
-        >
-          روز بهزیستی و تامین اجتماعی
-        </div>
-      </div>
-
-      <div
-        className={clsx(
-          // Layout
-          "grid grid-cols-7 flex-1 text-center",
-          // Typography
-          "text-xs",
-          // Spacing
-          "gap-0.5 px-1",
-        )}
-      >
-        {/* Header */}
-        {days.map((day, i) => (
-          <div
-            key={i}
-            className={clsx(
-              // Typography
-              "text-gray-500 text-xs font-medium",
-              // Spacing
-              "pb-1",
-            )}
-          >
-            {day}
-          </div>
-        ))}
-
-        {/* Dates */}
-        {dates.map((week, weekIndex) =>
-          week.map((day, dayIndex) => {
-            const isToday = day === "۲۵";
-            const isPrevMonth =
-              (weekIndex === 0 && parseInt(day) > 20) || (weekIndex === 4 && parseInt(day) < 10);
-            const isHoliday = day === "۱۳" || day === "۲۰" || day === "۲۷";
-
-            return (
-              <div
-                key={`${weekIndex}-${dayIndex}`}
-                className={clsx(
-                  // Base Layout & Size
-                  "py-1 px-1 min-h-[20px]",
-                  "flex items-center justify-center",
-                  // Styling
-                  "rounded cursor-pointer",
-                  // Typography
-                  "text-xs",
-                  // Conditional Styling
-                  {
-                    // Today
-                    "bg-blue-500 text-white font-bold": isToday,
-                    // Previous month
-                    "text-gray-300": isPrevMonth && !isToday,
-                    // Holiday
-                    "text-red-500": isHoliday && !isToday && !isPrevMonth,
-                    // Normal hover
-                    "hover:bg-gray-100": !isToday && !isPrevMonth,
-                  },
-                )}
+          {dates.flat().map((date, index) => (
+            <Paper
+              key={index}
+              sx={{
+                p: 0.5,
+                textAlign: "center",
+                borderRadius: 1,
+                backgroundColor: date === today ? "primary.main" : "transparent",
+                color: date === today ? "white" : "text.primary",
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor: date === today ? "primary.dark" : "grey.100",
+                },
+                minHeight: 24,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography
+                variant="caption"
+                sx={{
+                  fontWeight: date === today ? "bold" : "normal",
+                }}
               >
-                {day}
-              </div>
-            );
-          }),
-        )}
-      </div>
+                {date}
+              </Typography>
+            </Paper>
+          ))}
+        </Box>
+      </Box>
 
-      <div
-        className={clsx(
-          // Layout
-          "flex items-center justify-center",
-          // Spacing
-          "mt-2 pt-2 gap-4",
-          // Styling
-          "border-t",
-          // Typography
-          "text-xs",
-        )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mt: 2,
+        }}
       >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography variant="h6">📅</Typography>
+          <Box>
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 500,
+                display: "block",
+              }}
+            >
+              تقویم کامل
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "success.main",
+                }}
+              >
+                📅 ۱۵ تیر ۱۴۰۴
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
         <Button
-          className={clsx(
-            // Layout
-            "flex items-center",
-            // Spacing
-            "gap-1",
-            // Colors
-            "text-gray-600",
-            // Interactions
-            "hover:text-blue-600",
-            // Effects
-            "transition",
-          )}
-          variant="light"
+          size="small"
+          variant="text"
+          sx={{
+            textTransform: "none",
+            fontFamily: "Vazirmatn",
+          }}
         >
-          <span>📋</span>
-          <span>وظیفه</span>
+          جزئیات
         </Button>
-        <Button
-          className={clsx(
-            // Layout
-            "flex items-center",
-            // Spacing
-            "gap-1",
-            // Colors
-            "text-gray-600",
-            // Interactions
-            "hover:text-blue-600",
-            // Effects
-            "transition",
-          )}
-          variant="light"
-        >
-          <span>📅</span>
-          <span>رویداد</span>
-        </Button>
-      </div>
+      </Box>
     </Card>
   );
 }

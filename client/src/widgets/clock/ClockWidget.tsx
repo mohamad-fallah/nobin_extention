@@ -1,74 +1,157 @@
-import { useEffect, useState } from "react";
-import clsx from "clsx";
-
-function getTime() {
-  const now = new Date();
-  return now.toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" });
-}
-
-function getDate() {
-  const now = new Date();
-  return now.toLocaleDateString("fa-IR", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
+import { Card, Button, Box, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
 
 export default function ClockWidget() {
-  const [time, setTime] = useState(getTime());
-  const [date, setDate] = useState(getDate());
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTime(getTime());
-      setDate(getDate());
+      setTime(new Date());
     }, 1000);
+
     return () => clearInterval(timer);
   }, []);
 
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString("fa-IR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+  };
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString("fa-IR", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
-    <div
-      className={clsx(
-        // Layout
-        "flex flex-col items-center justify-center text-center",
-        // Background
-        "bg-white/80",
-        // Styling
-        "rounded-2xl shadow",
-        // Spacing
-        "p-6",
-      )}
+    <Card
+      sx={{
+        height: 200,
+        p: 2,
+        borderRadius: 3,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
     >
-      <div
-        className={clsx(
-          // Typography
-          "text-4xl font-bold text-blue-600",
-        )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
-        {time}
-      </div>
-      <div
-        className={clsx(
-          // Typography
-          "text-lg text-gray-700",
-          // Spacing
-          "mt-2",
-        )}
+        <Box>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+              mb: 0.5,
+            }}
+          >
+            ساعت
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontWeight: "bold",
+              mb: 0.5,
+            }}
+          >
+            ساعت دیجیتال
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+            }}
+          >
+            {formatDate(time)}
+          </Typography>
+        </Box>
+        <Typography variant="h3">🕐</Typography>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+        }}
       >
-        {date}
-      </div>
-      <div
-        className={clsx(
-          // Typography
-          "text-sm text-gray-500",
-          // Spacing
-          "mt-1",
-        )}
+        <Typography
+          variant="h2"
+          sx={{
+            fontWeight: "bold",
+            fontFamily: "monospace",
+            color: "primary.main",
+          }}
+        >
+          {formatTime(time)}
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            color: "text.secondary",
+            mt: 1,
+          }}
+        >
+          تهران، ایران
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mt: 2,
+        }}
       >
-        تهران
-      </div>
-    </div>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography variant="h6">⏰</Typography>
+          <Box>
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 500,
+                display: "block",
+              }}
+            >
+              ساعت جهانی
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "success.main",
+                }}
+              >
+                🕐 دقیق و به‌روز
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Button
+          size="small"
+          variant="text"
+          sx={{
+            textTransform: "none",
+            fontFamily: "Vazirmatn",
+          }}
+        >
+          تنظیمات
+        </Button>
+      </Box>
+    </Card>
   );
 }

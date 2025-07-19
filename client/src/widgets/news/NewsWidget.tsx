@@ -1,52 +1,147 @@
-import clsx from "clsx";
+import { Card, Button, Box, Typography, Paper } from "@mui/material";
 
 export default function NewsWidget() {
+  const news = [
+    { title: "اخبار فناوری", category: "تکنولوژی", time: "۲ ساعت پیش" },
+    { title: "اخبار ورزشی", category: "ورزش", time: "۴ ساعت پیش" },
+    { title: "اخبار اقتصادی", category: "اقتصاد", time: "۶ ساعت پیش" },
+  ];
+
   return (
-    <div
-      className={clsx(
-        // Layout
-        "flex flex-col",
-        // Size
-        "min-w-[220px]",
-        // Background
-        "bg-white/80",
-        // Styling
-        "rounded-2xl shadow",
-        // Spacing
-        "p-6",
-      )}
+    <Card
+      sx={{
+        height: 200,
+        p: 2,
+        borderRadius: 3,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
     >
-      <div
-        className={clsx(
-          // Layout
-          "flex items-center",
-          // Spacing
-          "mb-4",
-        )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
-        <span
-          className={clsx(
-            // Typography
-            "text-lg font-bold",
-            // Spacing
-            "ml-2",
-          )}
+        <Box>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+              mb: 0.5,
+            }}
+          >
+            اخبار
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontWeight: "bold",
+              mb: 0.5,
+            }}
+          >
+            آخرین اخبار
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+            }}
+          >
+            امروز • 18 دی 1403
+          </Typography>
+        </Box>
+        <Typography variant="h3">📰</Typography>
+      </Box>
+
+      <Box sx={{ mt: 2, display: "flex", flexDirection: "column", gap: 1 }}>
+        {news.map((item, index) => (
+          <Paper
+            key={index}
+            sx={{
+              p: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              backgroundColor: "grey.50",
+              borderRadius: 1,
+            }}
+          >
+            <Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 500,
+                }}
+              >
+                {item.title}
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "text.secondary",
+                }}
+              >
+                {item.category}
+              </Typography>
+            </Box>
+            <Typography
+              variant="caption"
+              sx={{
+                color: "text.secondary",
+              }}
+            >
+              {item.time}
+            </Typography>
+          </Paper>
+        ))}
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mt: 2,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography variant="h6">📰</Typography>
+          <Box>
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 500,
+                display: "block",
+              }}
+            >
+              اخبار کامل
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "success.main",
+                }}
+              >
+                📰 به‌روزرسانی خودکار
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Button
+          size="small"
+          variant="text"
+          sx={{
+            textTransform: "none",
+            fontFamily: "Vazirmatn",
+          }}
         >
-          اخبار
-        </span>
-      </div>
-      <ul
-        className={clsx(
-          // Typography
-          "text-sm text-gray-700",
-          // Spacing
-          "space-y-1",
-        )}
-      >
-        <li>قیمت دلار افزایش یافت.</li>
-        <li>آب و هوای تهران آفتابی است.</li>
-        <li>بورس امروز مثبت بود.</li>
-      </ul>
-    </div>
+          مشاهده همه
+        </Button>
+      </Box>
+    </Card>
   );
 }
