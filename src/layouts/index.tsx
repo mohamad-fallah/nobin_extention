@@ -54,6 +54,8 @@ export default function MainLayout({ children }: PropsWithChildren) {
         <MainSection>{children}</MainSection>
         <Footer />
       </div>
+      {/* Portal container for modals */}
+      <div id="modal-root"></div>
     </HeroUIProvider>
   );
 }

@@ -2,7 +2,7 @@ import { Avatar } from "@heroui/react";
 import { Button } from "@heroui/react";
 import { FiSettings, FiSearch, FiUsers } from "react-icons/fi";
 import { useState } from "react";
-import SettingsModals from "./modals";
+import SettingsModals from "./modals/settings";
 
 export default function Header() {
   const [settingsOpen, setSettingsOpen] = useState(false);

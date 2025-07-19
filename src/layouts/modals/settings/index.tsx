@@ -3,11 +3,12 @@ import GeneralTab from "./GeneralTab";
 import AccountTab from "./AccountTab";
 import AppearanceTab from "./AppearanceTab";
 import BackgroundTab from "./BackgroundTab";
-import WeatherTab from "./WeatherTab";
+
 import PetTab from "./PetTab";
 import MinersTab from "./MinersTab";
 import AboutTab from "./AboutTab";
-import { Modal, ModalContent, ModalBody } from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Button } from "@heroui/react";
+import WeatherTab from "./WeatherTab";
 
 const tabs = [
   { name: "عمومی", key: "general", component: <GeneralTab />, icon: "⚙️" },
@@ -27,7 +28,7 @@ export default function SettingsModals({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const [selectedTab, setSelectedTab] = useState("weather");
+  const [selectedTab, setSelectedTab] = useState("background");
 
   const currentTab = tabs.find((tab) => tab.key === selectedTab);
 
@@ -35,32 +36,40 @@ export default function SettingsModals({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      size="4xl"
+      size="5xl"
       placement="center"
-      hideCloseButton={true}
+      scrollBehavior="inside"
+      hideCloseButton={false}
+      style={{ zIndex: 9999 }}
+      portalContainer={document.getElementById("modal-root") || document.body}
       classNames={{
-        base: "bg-transparent",
-        backdrop: "bg-black/30 backdrop-blur-sm",
-        wrapper: "flex items-center justify-center p-4",
+        wrapper: "fixed inset-0 z-[9999] flex items-center justify-center p-4",
+        backdrop: "fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm",
+        base: "z-[9999]",
         body: "p-0",
       }}
     >
-      <ModalContent className="max-w-4xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden">
-        <ModalBody className="p-0">
+      <ModalContent className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <ModalHeader className="p-0">
+          <div
+            className="w-full h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6"
+            dir="rtl"
+          >
+            <h2 className="text-xl font-semibold text-gray-800">تنظیمات</h2>
+            <Button
+              isIconOnly
+              variant="light"
+              onPress={onClose}
+              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800"
+            >
+              ✕
+            </Button>
+          </div>
+        </ModalHeader>
+        <ModalBody>
           <div className="flex h-[600px]" dir="rtl">
-            {/* Header */}
-            <div className="absolute top-0 left-0 right-0 h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 z-10">
-              <h2 className="text-xl font-semibold text-gray-800">تنظیمات</h2>
-              <button
-                onClick={onClose}
-                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                ✕
-              </button>
-            </div>
-
             {/* Sidebar - تب‌ها */}
-            <div className="w-64 bg-white border-l border-gray-100 flex flex-col pt-16">
+            <div className="w-64 bg-white border-l border-gray-100 flex flex-col">
               <div className="p-4 space-y-1">
                 {tabs.map((tab) => (
                   <button
@@ -80,7 +89,7 @@ export default function SettingsModals({
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 pt-16 bg-gray-50">
+            <div className="flex-1 bg-gray-50">
               <div className="p-8 overflow-y-auto h-full">
                 <div className="max-w-2xl">{currentTab?.component}</div>
               </div>
