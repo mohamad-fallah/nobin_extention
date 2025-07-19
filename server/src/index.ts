@@ -32,10 +32,25 @@ const corsOptions = {
     // Allow requests with no origin (mobile apps, curl, postman)
     if (!origin) return callback(null, true);
 
+    // Allow Chrome extension origins
+    if (origin && origin.startsWith("chrome-extension://")) {
+      return callback(null, true);
+    }
+
+    // Allow Firefox extension origins
+    if (origin && origin.startsWith("moz-extension://")) {
+      return callback(null, true);
+    }
+
+    // Allow Edge extension origins
+    if (origin && origin.startsWith("ms-browser-extension://")) {
+      return callback(null, true);
+    }
+
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS policy"));
+      callback(new Error(`Not allowed by CORS policy: ${origin}`));
     }
   },
   credentials: true,

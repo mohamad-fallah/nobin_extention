@@ -12,9 +12,11 @@
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["http://localhost:3001/*", "https://*/*"],
   "web_accessible_resources": [
     {
-      "resources": ["fonts/vazir/*.woff2"],
+      "resources": ["fonts/vazir/*.woff2", "images/**/*", "icons/*"],
       "matches": ["<all_urls>"]
     }
   ]
