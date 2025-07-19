@@ -266,7 +266,7 @@ export const validatePasswordChange = (req: Request, res: Response, next: NextFu
  */
 export const sanitizeRequestBody = (req: Request, res: Response, next: NextFunction): void => {
   if (req.body && typeof req.body === "object") {
-    const sanitizedBody: any = {};
+    const sanitizedBody: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(req.body)) {
       if (typeof value === "string") {

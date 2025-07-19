@@ -5,12 +5,12 @@ export const globalErrorHandler = (
   err: Error,
   req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ): void => {
   console.error("Error:", err);
 
   // MongoDB duplicate key error
-  if (err.name === "MongoError" && (err as any).code === 11000) {
+  if (err.name === "MongoError" && (err as Error & { code?: number }).code === 11000) {
     res.status(400).json({
       success: false,
       message: "داده تکراری است",
@@ -21,7 +21,9 @@ export const globalErrorHandler = (
 
   // MongoDB validation error
   if (err.name === "ValidationError") {
-    const validationErrors = Object.values((err as any).errors).map((error: any) => error.message);
+    const validationErrors = Object.values(
+      (err as Error & { errors?: Record<string, { message: string }> }).errors || {},
+    ).map((error) => error.message);
 
     res.status(400).json({
       success: false,

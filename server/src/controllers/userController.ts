@@ -10,7 +10,7 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
     const role = req.query.role as string;
 
     // Build filter
-    const filter: any = { isActive: true };
+    const filter: Record<string, unknown> = { isActive: true };
     if (role && ["admin", "user", "vip"].includes(role)) {
       filter.role = role;
     }
@@ -64,7 +64,7 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
     // Check if user is trying to access their own data or is admin
     const currentUser = await User.findById(currentUserId);
     const isAdmin =
-      currentUser && (currentUser.username === "admin" || (currentUser as any).isAdmin);
+      currentUser && (currentUser.username === "admin" || currentUser.role === "admin");
 
     if (id !== currentUserId && !isAdmin) {
       res.status(403).json({
@@ -130,7 +130,11 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     });
 
     const savedUser = await newUser.save();
-    const { password: _, refreshTokens: __, ...userResponse } = savedUser.toObject();
+    const {
+      password: _password,
+      refreshTokens: _refreshTokens,
+      ...userResponse
+    } = savedUser.toObject();
 
     res.status(201).json({
       success: true,
@@ -165,7 +169,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
     // Check if user is trying to update their own data or is admin
     const currentUser = await User.findById(currentUserId);
     const isAdmin =
-      currentUser && (currentUser.username === "admin" || (currentUser as any).isAdmin);
+      currentUser && (currentUser.username === "admin" || currentUser.role === "admin");
 
     if (id !== currentUserId && !isAdmin) {
       res.status(403).json({

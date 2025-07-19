@@ -166,7 +166,7 @@ export const verifyRefreshToken = (token: string): TokenPayload => {
     }) as TokenPayload;
 
     // Check if it's actually a refresh token
-    if ((decoded as any).tokenType !== "refresh") {
+    if ((decoded as TokenPayload & { tokenType?: string }).tokenType !== "refresh") {
       throw new Error("Invalid token type");
     }
 

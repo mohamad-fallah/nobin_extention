@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import * as crypto from "crypto";
 import { hashPassword, comparePassword, getSecurityConstants } from "../utils/auth";
 
 // Get security constants
@@ -121,7 +122,7 @@ const userSchema = new Schema<IUser>(
   {
     timestamps: true,
     toJSON: {
-      transform: function (doc, ret: any) {
+      transform: function (doc, ret: Record<string, unknown>) {
         // Remove sensitive fields when converting to JSON
         delete ret.password;
         delete ret.refreshTokens;
@@ -134,7 +135,7 @@ const userSchema = new Schema<IUser>(
       },
     },
     toObject: {
-      transform: function (doc, ret: any) {
+      transform: function (doc, ret: Record<string, unknown>) {
         // Remove sensitive fields when converting to Object
         delete ret.password;
         delete ret.refreshTokens;
@@ -204,7 +205,9 @@ userSchema.methods.incrementLoginAttempts = async function (): Promise<void> {
 
   // If we've reached max attempts and it's not locked, lock the account
   if (this.loginAttempts + 1 >= MAX_LOGIN_ATTEMPTS && !this.isLocked()) {
-    (updates as any).$set = { lockUntil: new Date(Date.now() + ACCOUNT_LOCK_TIME) };
+    (updates as Record<string, unknown>).$set = {
+      lockUntil: new Date(Date.now() + ACCOUNT_LOCK_TIME),
+    };
   }
 
   return this.updateOne(updates);
@@ -219,7 +222,6 @@ userSchema.methods.resetLoginAttempts = async function (): Promise<void> {
 
 // Instance method to generate password reset token
 userSchema.methods.generatePasswordResetToken = function (): string {
-  const crypto = require("crypto");
   const resetToken = crypto.randomBytes(32).toString("hex");
 
   this.passwordResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
@@ -230,7 +232,6 @@ userSchema.methods.generatePasswordResetToken = function (): string {
 
 // Instance method to generate email verification token
 userSchema.methods.generateEmailVerificationToken = function (): string {
-  const crypto = require("crypto");
   const verificationToken = crypto.randomBytes(32).toString("hex");
 
   this.emailVerificationToken = crypto.createHash("sha256").update(verificationToken).digest("hex");

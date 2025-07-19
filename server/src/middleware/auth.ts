@@ -120,7 +120,7 @@ export const optionalAuth = async (
     }
 
     next();
-  } catch (error) {
+  } catch (_error) {
     // Continue without authentication for optional auth
     next();
   }
@@ -243,7 +243,7 @@ export const requireAdmin = async (
     }
 
     next();
-  } catch (error) {
+  } catch (_error) {
     res.status(500).json({
       success: false,
       message: "خطا در بررسی دسترسی",
@@ -282,7 +282,7 @@ export const requireVip = async (
     }
 
     next();
-  } catch (error) {
+  } catch (_error) {
     res.status(500).json({
       success: false,
       message: "خطا در بررسی دسترسی",
@@ -321,7 +321,7 @@ export const requireAdminOrVip = async (
     }
 
     next();
-  } catch (error) {
+  } catch (_error) {
     res.status(500).json({
       success: false,
       message: "خطا در بررسی دسترسی",

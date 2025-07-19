@@ -20,7 +20,10 @@ app.set("trust proxy", 1);
 
 // CORS configuration
 const corsOptions = {
-  origin: (origin: string | undefined, callback: Function) => {
+  origin: (
+    origin: string | undefined,
+    callback: (error: Error | null, allow?: boolean) => void,
+  ) => {
     const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [
       "http://localhost:5173",
       "http://localhost:3000",
@@ -89,7 +92,7 @@ app.use(
     limit: process.env.MAX_FILE_SIZE || "10mb",
     verify: (req, res, buf) => {
       // Store raw body for webhook verification if needed
-      (req as any).rawBody = buf;
+      (req as unknown as Request & { rawBody?: Buffer }).rawBody = buf;
     },
   }),
 );
