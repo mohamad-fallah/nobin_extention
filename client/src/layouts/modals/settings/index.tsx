@@ -45,7 +45,7 @@ export default function SettingsModals({
       classNames={{
         wrapper: "fixed inset-0 z-[9999] flex items-center justify-center p-4",
         backdrop: "fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm",
-        base: "z-[9999] max-w-[50vw] max-h-[75vh] w-full",
+        base: "z-[9999] max-w-[50vw] max-h-[73vh] w-full",
         body: "p-0",
       }}
     >

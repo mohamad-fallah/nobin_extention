@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Input, Divider, Avatar, Spinner, Card, CardHeader, CardBody } from "@heroui/react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import clsx from "clsx";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -21,6 +22,7 @@ export default function AccountTab() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [username, setUsername] = useState(user?.username || "");
   const [avatar, setAvatar] = useState(user?.avatar || "");
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
@@ -30,6 +32,7 @@ export default function AccountTab() {
     setConfirmPassword("");
     setUsername(user?.username || "");
     setAvatar(user?.avatar || "");
+    setAvatarFile(null);
     setCurrentPassword("");
     setNewPassword("");
     setError("");
@@ -46,6 +49,17 @@ export default function AccountTab() {
 
     try {
       let result;
+      let finalAvatar = avatar;
+
+      // Convert file to base64 if a file is selected
+      if (avatarFile) {
+        const reader = new FileReader();
+        finalAvatar = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(avatarFile);
+        });
+      }
 
       switch (mode) {
         case "login":
@@ -61,7 +75,7 @@ export default function AccountTab() {
             setError("رمز عبور و تکرار آن یکسان نیستند");
             return;
           }
-          result = await register({ username, email, password, avatar });
+          result = await register({ username, email, password, avatar: finalAvatar });
           if (result.success) {
             setMode("profile");
             resetForm();
@@ -69,7 +83,7 @@ export default function AccountTab() {
           break;
 
         case "editProfile":
-          result = await updateProfile({ username, avatar });
+          result = await updateProfile({ username, avatar: finalAvatar });
           if (result.success) {
             setSuccess("پروفایل با موفقیت به‌روزرسانی شد");
             setMode("profile");
@@ -195,6 +209,8 @@ export default function AccountTab() {
                 "hover:from-blue-600 hover:to-indigo-600",
                 "shadow-md hover:shadow-lg",
                 "transition-all duration-300",
+                // Layout
+                "rounded-lg",
                 // Interactions
                 "transform hover:scale-[1.02]",
               )}
@@ -216,6 +232,8 @@ export default function AccountTab() {
                 "text-white",
                 "shadow-md hover:shadow-lg",
                 "transition-all duration-300",
+                // Layout
+                "rounded-lg",
                 // Interactions
                 "transform hover:scale-[1.02]",
               )}
@@ -238,6 +256,8 @@ export default function AccountTab() {
                 "hover:bg-red-50",
                 "text-red-600 hover:text-red-700",
                 "transition-all duration-300",
+                // Layout
+                "rounded-lg",
                 // Interactions
                 "transform hover:scale-[1.02]",
               )}
@@ -348,11 +368,30 @@ export default function AccountTab() {
                 placeholder="example@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                startContent={<span className="text-gray-400">📧</span>}
                 required
                 classNames={{
-                  input: "text-right",
-                  inputWrapper: "text-right",
+                  input: clsx(
+                    // Typography
+                    "text-right text-base",
+                    // Spacing
+                    "px-4 py-3",
+                  ),
+                  inputWrapper: clsx(
+                    // Layout
+                    "text-right",
+                    // Colors & Effects
+                    "border-2 border-gray-200",
+                    "hover:border-gray-300",
+                    "focus-within:border-blue-500",
+                    "bg-gray-50 hover:bg-white",
+                    "focus-within:bg-white",
+                    // Spacing
+                    "min-h-[52px]",
+                    // Layout
+                    "rounded-lg",
+                    // Interactions
+                    "transition-all duration-200",
+                  ),
                 }}
               />
             </div>
@@ -378,7 +417,6 @@ export default function AccountTab() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                startContent={<span className="text-gray-400">🔒</span>}
                 endContent={
                   <button
                     type="button"
@@ -390,13 +428,33 @@ export default function AccountTab() {
                       "focus:outline-none",
                     )}
                   >
-                    {showPassword ? <span>🙈</span> : <span>👁️</span>}
+                    {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                   </button>
                 }
                 required
                 classNames={{
-                  input: "text-right",
-                  inputWrapper: "text-right",
+                  input: clsx(
+                    // Typography
+                    "text-right text-base",
+                    // Spacing
+                    "px-4 py-3",
+                  ),
+                  inputWrapper: clsx(
+                    // Layout
+                    "text-right",
+                    // Colors & Effects
+                    "border-2 border-gray-200",
+                    "hover:border-gray-300",
+                    "focus-within:border-blue-500",
+                    "bg-gray-50 hover:bg-white",
+                    "focus-within:bg-white",
+                    // Spacing
+                    "min-h-[52px]",
+                    // Layout
+                    "rounded-lg",
+                    // Interactions
+                    "transition-all duration-200",
+                  ),
                 }}
               />
             </div>
@@ -432,11 +490,30 @@ export default function AccountTab() {
                 placeholder="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                startContent={<span className="text-gray-400">👤</span>}
                 required
                 classNames={{
-                  input: "text-right",
-                  inputWrapper: "text-right",
+                  input: clsx(
+                    // Typography
+                    "text-right text-base",
+                    // Spacing
+                    "px-4 py-3",
+                  ),
+                  inputWrapper: clsx(
+                    // Layout
+                    "text-right",
+                    // Colors & Effects
+                    "border-2 border-gray-200",
+                    "hover:border-gray-300",
+                    "focus-within:border-blue-500",
+                    "bg-gray-50 hover:bg-white",
+                    "focus-within:bg-white",
+                    // Spacing
+                    "min-h-[52px]",
+                    // Interactions
+                    "transition-all duration-200",
+                    // Layout
+                    "rounded-lg",
+                  ),
                 }}
               />
             </div>
@@ -462,11 +539,30 @@ export default function AccountTab() {
                 placeholder="example@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                startContent={<span className="text-gray-400">📧</span>}
                 required
                 classNames={{
-                  input: "text-right",
-                  inputWrapper: "text-right",
+                  input: clsx(
+                    // Typography
+                    "text-right text-base",
+                    // Spacing
+                    "px-4 py-3",
+                  ),
+                  inputWrapper: clsx(
+                    // Layout
+                    "text-right",
+                    // Colors & Effects
+                    "border-2 border-gray-200",
+                    "hover:border-gray-300",
+                    "focus-within:border-blue-500",
+                    "bg-gray-50 hover:bg-white",
+                    "focus-within:bg-white",
+                    // Spacing
+                    "min-h-[52px]",
+                    // Interactions
+                    "transition-all duration-200",
+                    // Layout
+                    "rounded-lg",
+                  ),
                 }}
               />
             </div>
@@ -487,105 +583,236 @@ export default function AccountTab() {
               >
                 تصویر پروفایل (اختیاری)
               </label>
-              <Input
-                type="url"
-                placeholder="https://example.com/avatar.jpg"
-                value={avatar}
-                onChange={(e) => setAvatar(e.target.value)}
-                startContent={<span className="text-gray-400">🖼️</span>}
-                classNames={{
-                  input: "text-right",
-                  inputWrapper: "text-right",
-                }}
-              />
+              <div
+                className={clsx(
+                  // Layout
+                  "flex items-center gap-3",
+                )}
+              >
+                <div
+                  className={clsx(
+                    // Layout
+                    "relative",
+                  )}
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setAvatarFile(file);
+                        // Create preview URL
+                        const url = URL.createObjectURL(file);
+                        setAvatar(url);
+                      }
+                    }}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    id="avatar-upload"
+                  />
+                  <label
+                    htmlFor="avatar-upload"
+                    className={clsx(
+                      // Layout
+                      "inline-flex items-center gap-2",
+                      // Typography
+                      "text-sm font-medium",
+                      // Colors & Effects
+                      "bg-gradient-to-r from-purple-500 to-pink-500",
+                      "hover:from-purple-600 hover:to-pink-600",
+                      "text-white",
+                      "shadow-md hover:shadow-lg",
+                      "transition-all duration-200",
+                      // Spacing
+                      "px-4 py-2",
+                      // Layout
+                      "rounded-lg",
+                      // Interactions
+                      "cursor-pointer",
+                      "transform hover:scale-[1.02]",
+                    )}
+                  >
+                    <span className="text-base">📸</span>
+                    <span>{avatarFile ? "تغییر عکس" : "انتخاب عکس"}</span>
+                  </label>
+                </div>
+
+                {(avatar || avatarFile) && (
+                  <div
+                    className={clsx(
+                      // Layout
+                      "flex items-center gap-2",
+                    )}
+                  >
+                    <Avatar src={avatar} size="sm" className="w-10 h-10" showFallback />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAvatar(user?.avatar || "");
+                        setAvatarFile(null);
+                      }}
+                      className={clsx(
+                        // Layout
+                        "inline-flex items-center",
+                        // Typography
+                        "text-xs",
+                        // Colors & Effects
+                        "text-red-500 hover:text-red-700",
+                        "hover:bg-red-50",
+                        // Spacing
+                        "p-1",
+                        // Layout
+                        "rounded",
+                        // Interactions
+                        "transition-colors duration-200",
+                        "cursor-pointer",
+                      )}
+                      title="حذف عکس"
+                    >
+                      <span className="text-sm">🗑️</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div
               className={clsx(
+                // Layout
+                "flex gap-4",
                 // Spacing
-                "space-y-2",
+                "space-y-0",
               )}
             >
-              <label
+              <div
                 className={clsx(
-                  // Typography
-                  "block text-sm font-medium text-gray-700",
                   // Layout
-                  "text-right",
+                  "flex-1",
+                  // Spacing
+                  "space-y-2",
                 )}
               >
-                رمز عبور
-              </label>
-              <Input
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                startContent={<span className="text-gray-400">🔒</span>}
-                endContent={
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className={clsx(
-                      // Colors
-                      "text-gray-400 hover:text-gray-600",
+                <label
+                  className={clsx(
+                    // Typography
+                    "block text-sm font-medium text-gray-700",
+                    // Layout
+                    "text-right",
+                  )}
+                >
+                  رمز عبور
+                </label>
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  endContent={
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className={clsx(
+                        // Colors
+                        "text-gray-400 hover:text-gray-600",
+                        // Interactions
+                        "focus:outline-none",
+                      )}
+                    >
+                      {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                    </button>
+                  }
+                  required
+                  classNames={{
+                    input: clsx(
+                      // Typography
+                      "text-right text-base",
+                      // Spacing
+                      "px-4 py-3",
+                    ),
+                    inputWrapper: clsx(
+                      // Layout
+                      "text-right",
+                      // Colors & Effects
+                      "border-2 border-gray-200",
+                      "hover:border-gray-300",
+                      "focus-within:border-blue-500",
+                      "bg-gray-50 hover:bg-white",
+                      "focus-within:bg-white",
+                      // Spacing
+                      "min-h-[52px]",
+                      // Layout
+                      "rounded-lg",
                       // Interactions
-                      "focus:outline-none",
-                    )}
-                  >
-                    {showPassword ? <span>🙈</span> : <span>👁️</span>}
-                  </button>
-                }
-                required
-                classNames={{
-                  input: "text-right",
-                  inputWrapper: "text-right",
-                }}
-              />
-            </div>
+                      "transition-all duration-200",
+                    ),
+                  }}
+                />
+              </div>
 
-            <div
-              className={clsx(
-                // Spacing
-                "space-y-2",
-              )}
-            >
-              <label
+              <div
                 className={clsx(
-                  // Typography
-                  "block text-sm font-medium text-gray-700",
                   // Layout
-                  "text-right",
+                  "flex-1",
+                  // Spacing
+                  "space-y-2",
                 )}
               >
-                تکرار رمز عبور
-              </label>
-              <Input
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="••••••••"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                startContent={<span className="text-gray-400">🔒</span>}
-                endContent={
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className={clsx(
-                      // Colors
-                      "text-gray-400 hover:text-gray-600",
+                <label
+                  className={clsx(
+                    // Typography
+                    "block text-sm font-medium text-gray-700",
+                    // Layout
+                    "text-right",
+                  )}
+                >
+                  تکرار رمز عبور
+                </label>
+                <Input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  endContent={
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className={clsx(
+                        // Colors
+                        "text-gray-400 hover:text-gray-600",
+                        // Interactions
+                        "focus:outline-none",
+                      )}
+                    >
+                      {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                    </button>
+                  }
+                  required
+                  classNames={{
+                    input: clsx(
+                      // Typography
+                      "text-right text-base",
+                      // Spacing
+                      "px-4 py-3",
+                    ),
+                    inputWrapper: clsx(
+                      // Layout
+                      "text-right",
+                      // Colors & Effects
+                      "border-2 border-gray-200",
+                      "hover:border-gray-300",
+                      "focus-within:border-blue-500",
+                      "bg-gray-50 hover:bg-white",
+                      "focus-within:bg-white",
+                      // Spacing
+                      "min-h-[52px]",
+                      // Layout
+                      "rounded-lg",
                       // Interactions
-                      "focus:outline-none",
-                    )}
-                  >
-                    {showConfirmPassword ? <span>🙈</span> : <span>👁️</span>}
-                  </button>
-                }
-                required
-                classNames={{
-                  input: "text-right",
-                  inputWrapper: "text-right",
-                }}
-              />
+                      "transition-all duration-200",
+                    ),
+                  }}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -619,11 +846,30 @@ export default function AccountTab() {
                 placeholder="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                startContent={<span className="text-gray-400">👤</span>}
                 required
                 classNames={{
-                  input: "text-right",
-                  inputWrapper: "text-right",
+                  input: clsx(
+                    // Typography
+                    "text-right text-base",
+                    // Spacing
+                    "px-4 py-3",
+                  ),
+                  inputWrapper: clsx(
+                    // Layout
+                    "text-right",
+                    // Colors & Effects
+                    "border-2 border-gray-200",
+                    "hover:border-gray-300",
+                    "focus-within:border-blue-500",
+                    "bg-gray-50 hover:bg-white",
+                    "focus-within:bg-white",
+                    // Spacing
+                    "min-h-[52px]",
+                    // Interactions
+                    "transition-all duration-200",
+                    // Layout
+                    "rounded-lg",
+                  ),
                 }}
               />
             </div>
@@ -644,17 +890,97 @@ export default function AccountTab() {
               >
                 تصویر پروفایل
               </label>
-              <Input
-                type="url"
-                placeholder="https://example.com/avatar.jpg"
-                value={avatar}
-                onChange={(e) => setAvatar(e.target.value)}
-                startContent={<span className="text-gray-400">🖼️</span>}
-                classNames={{
-                  input: "text-right",
-                  inputWrapper: "text-right",
-                }}
-              />
+              <div
+                className={clsx(
+                  // Layout
+                  "flex items-center gap-3",
+                )}
+              >
+                <div
+                  className={clsx(
+                    // Layout
+                    "relative",
+                  )}
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setAvatarFile(file);
+                        // Create preview URL
+                        const url = URL.createObjectURL(file);
+                        setAvatar(url);
+                      }
+                    }}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    id="avatar-upload-edit"
+                  />
+                  <label
+                    htmlFor="avatar-upload-edit"
+                    className={clsx(
+                      // Layout
+                      "inline-flex items-center gap-2",
+                      // Typography
+                      "text-sm font-medium",
+                      // Colors & Effects
+                      "bg-gradient-to-r from-purple-500 to-pink-500",
+                      "hover:from-purple-600 hover:to-pink-600",
+                      "text-white",
+                      "shadow-md hover:shadow-lg",
+                      "transition-all duration-200",
+                      // Spacing
+                      "px-4 py-2",
+                      // Layout
+                      "rounded-lg",
+                      // Interactions
+                      "cursor-pointer",
+                      "transform hover:scale-[1.02]",
+                    )}
+                  >
+                    <span className="text-base">📸</span>
+                    <span>{avatarFile ? "تغییر عکس" : "انتخاب عکس"}</span>
+                  </label>
+                </div>
+
+                {(avatar || avatarFile) && (
+                  <div
+                    className={clsx(
+                      // Layout
+                      "flex items-center gap-2",
+                    )}
+                  >
+                    <Avatar src={avatar} size="sm" className="w-10 h-10" showFallback />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAvatar(user?.avatar || "");
+                        setAvatarFile(null);
+                      }}
+                      className={clsx(
+                        // Layout
+                        "inline-flex items-center",
+                        // Typography
+                        "text-xs",
+                        // Colors & Effects
+                        "text-red-500 hover:text-red-700",
+                        "hover:bg-red-50",
+                        // Spacing
+                        "p-1",
+                        // Layout
+                        "rounded",
+                        // Interactions
+                        "transition-colors duration-200",
+                        "cursor-pointer",
+                      )}
+                      title="حذف عکس"
+                    >
+                      <span className="text-sm">🗑️</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -688,11 +1014,30 @@ export default function AccountTab() {
                 placeholder="••••••••"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                startContent={<span className="text-gray-400">🔒</span>}
                 required
                 classNames={{
-                  input: "text-right",
-                  inputWrapper: "text-right",
+                  input: clsx(
+                    // Typography
+                    "text-right text-base",
+                    // Spacing
+                    "px-4 py-3",
+                  ),
+                  inputWrapper: clsx(
+                    // Layout
+                    "text-right",
+                    // Colors & Effects
+                    "border-2 border-gray-200",
+                    "hover:border-gray-300",
+                    "focus-within:border-blue-500",
+                    "bg-gray-50 hover:bg-white",
+                    "focus-within:bg-white",
+                    // Spacing
+                    "min-h-[52px]",
+                    // Interactions
+                    "transition-all duration-200",
+                    // Layout
+                    "rounded-lg",
+                  ),
                 }}
               />
             </div>
@@ -718,7 +1063,6 @@ export default function AccountTab() {
                 placeholder="••••••••"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                startContent={<span className="text-gray-400">🔒</span>}
                 endContent={
                   <button
                     type="button"
@@ -730,13 +1074,33 @@ export default function AccountTab() {
                       "focus:outline-none",
                     )}
                   >
-                    {showPassword ? <span>🙈</span> : <span>👁️</span>}
+                    {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                   </button>
                 }
                 required
                 classNames={{
-                  input: "text-right",
-                  inputWrapper: "text-right",
+                  input: clsx(
+                    // Typography
+                    "text-right text-base",
+                    // Spacing
+                    "px-4 py-3",
+                  ),
+                  inputWrapper: clsx(
+                    // Layout
+                    "text-right",
+                    // Colors & Effects
+                    "border-2 border-gray-200",
+                    "hover:border-gray-300",
+                    "focus-within:border-blue-500",
+                    "bg-gray-50 hover:bg-white",
+                    "focus-within:bg-white",
+                    // Spacing
+                    "min-h-[52px]",
+                    // Interactions
+                    "transition-all duration-200",
+                    // Layout
+                    "rounded-lg",
+                  ),
                 }}
               />
             </div>
@@ -761,6 +1125,8 @@ export default function AccountTab() {
             // Interactions
             "transform hover:scale-[1.02]",
             "active:scale-[0.98]",
+            // Layout
+            "rounded-lg",
           )}
           startContent={
             mode === "login" ? (
@@ -799,6 +1165,8 @@ export default function AccountTab() {
               "hover:border-gray-400",
               "hover:bg-gray-50",
               "transition-all duration-200",
+              // Layout
+              "rounded-lg",
             )}
             startContent={<span className="text-lg">↩️</span>}
             onClick={() => {
@@ -833,6 +1201,8 @@ export default function AccountTab() {
                 "transition-all duration-200",
                 // Spacing
                 "py-2",
+                // Layout
+                "rounded-lg",
               )}
               startContent={<span className="text-base">👋</span>}
               onClick={() => {
@@ -859,6 +1229,8 @@ export default function AccountTab() {
                 "transition-all duration-200",
                 // Spacing
                 "py-2",
+                // Layout
+                "rounded-lg",
               )}
               startContent={<span className="text-base">🔑</span>}
               onClick={() => {
