@@ -1,15 +1,6 @@
 import { useState } from "react";
-import {
-  Button,
-  Input,
-  Link,
-  Divider,
-  Avatar,
-  Spinner,
-  Card,
-  CardHeader,
-  CardBody,
-} from "@heroui/react";
+import { Button, Input, Divider, Avatar, Spinner, Card, CardHeader, CardBody } from "@heroui/react";
+import clsx from "clsx";
 import { useAuth } from "../../../context/AuthContext";
 
 type FormMode = "login" | "register" | "profile" | "editProfile" | "changePassword";
@@ -117,7 +108,14 @@ export default function AccountTab() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div
+        className={clsx(
+          // Layout
+          "flex justify-center items-center",
+          // Spacing
+          "h-64",
+        )}
+      >
         <Spinner size="lg" color="primary" />
       </div>
     );
@@ -126,9 +124,23 @@ export default function AccountTab() {
   // Profile View
   if (mode === "profile" && isAuthenticated && user) {
     return (
-      <div className="max-w-md mx-auto space-y-6">
+      <div
+        className={clsx(
+          // Layout
+          "max-w-md mx-auto",
+          // Spacing
+          "space-y-6",
+        )}
+      >
         <Card className="p-6">
-          <CardHeader className="flex flex-col items-center space-y-4">
+          <CardHeader
+            className={clsx(
+              // Layout
+              "flex flex-col items-center",
+              // Spacing
+              "space-y-4",
+            )}
+          >
             <Avatar
               src={user.avatar}
               icon={<div className="text-2xl">👤</div>}
@@ -137,28 +149,77 @@ export default function AccountTab() {
               showFallback
             />
             <div className="text-center">
-              <h3 className="text-xl font-bold">{user.username}</h3>
-              <p className="text-gray-600 text-sm">{user.email}</p>
-              <p className="text-xs text-gray-400 mt-1">
+              <h3
+                className={clsx(
+                  // Typography
+                  "text-xl font-bold",
+                )}
+              >
+                {user.username}
+              </h3>
+              <p
+                className={clsx(
+                  // Typography
+                  "text-gray-600 text-sm",
+                )}
+              >
+                {user.email}
+              </p>
+              <p
+                className={clsx(
+                  // Typography
+                  "text-xs text-gray-400",
+                  // Spacing
+                  "mt-1",
+                )}
+              >
                 عضو از {new Date(user.createdAt).toLocaleDateString("fa-IR")}
               </p>
             </div>
           </CardHeader>
-          <CardBody className="space-y-3">
+          <CardBody
+            className={clsx(
+              // Spacing
+              "space-y-3",
+            )}
+          >
             <Button
               color="primary"
-              variant="light"
+              variant="solid"
               fullWidth
-              startContent={<span>✏️</span>}
+              className={clsx(
+                // Typography
+                "font-semibold",
+                // Colors & Effects
+                "bg-gradient-to-r from-blue-500 to-indigo-500",
+                "hover:from-blue-600 hover:to-indigo-600",
+                "shadow-md hover:shadow-lg",
+                "transition-all duration-300",
+                // Interactions
+                "transform hover:scale-[1.02]",
+              )}
+              startContent={<span className="text-lg">✏️</span>}
               onClick={() => setMode("editProfile")}
             >
               ویرایش پروفایل
             </Button>
             <Button
               color="default"
-              variant="light"
+              variant="solid"
               fullWidth
-              startContent={<span>🔒</span>}
+              className={clsx(
+                // Typography
+                "font-semibold",
+                // Colors & Effects
+                "bg-gradient-to-r from-gray-500 to-gray-600",
+                "hover:from-gray-600 hover:to-gray-700",
+                "text-white",
+                "shadow-md hover:shadow-lg",
+                "transition-all duration-300",
+                // Interactions
+                "transform hover:scale-[1.02]",
+              )}
+              startContent={<span className="text-lg">🔒</span>}
               onClick={() => setMode("changePassword")}
             >
               تغییر رمز عبور
@@ -166,9 +227,21 @@ export default function AccountTab() {
             <Divider />
             <Button
               color="danger"
-              variant="light"
+              variant="bordered"
               fullWidth
-              startContent={<span>🚪</span>}
+              className={clsx(
+                // Typography
+                "font-semibold",
+                // Colors & Effects
+                "border-2 border-red-300",
+                "hover:border-red-400",
+                "hover:bg-red-50",
+                "text-red-600 hover:text-red-700",
+                "transition-all duration-300",
+                // Interactions
+                "transform hover:scale-[1.02]",
+              )}
+              startContent={<span className="text-lg">🚪</span>}
               onClick={handleLogout}
             >
               خروج از حساب کاربری
@@ -182,9 +255,29 @@ export default function AccountTab() {
   // Auth Forms
   return (
     <div className="max-w-md mx-auto">
-      <form onSubmit={handleSubmit} className="space-y-6 text-right">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">
+      <form
+        onSubmit={handleSubmit}
+        className={clsx(
+          // Spacing
+          "space-y-6",
+          // Typography
+          "text-right",
+        )}
+      >
+        <div
+          className={clsx(
+            // Typography
+            "text-center",
+            // Spacing
+            "mb-6",
+          )}
+        >
+          <h2
+            className={clsx(
+              // Typography
+              "text-2xl font-bold text-gray-900",
+            )}
+          >
             {mode === "login" && "ورود به حساب کاربری"}
             {mode === "register" && "ثبت‌نام"}
             {mode === "editProfile" && "ویرایش پروفایل"}
@@ -193,214 +286,498 @@ export default function AccountTab() {
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm text-right">
+          <div
+            className={clsx(
+              // Colors
+              "bg-red-50 border border-red-200 text-red-700",
+              // Spacing
+              "px-4 py-3",
+              // Typography
+              "text-sm text-right",
+              // Layout
+              "rounded-md",
+            )}
+          >
             {error}
           </div>
         )}
 
         {success && (
-          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-sm text-right">
+          <div
+            className={clsx(
+              // Colors
+              "bg-green-50 border border-green-200 text-green-700",
+              // Spacing
+              "px-4 py-3",
+              // Typography
+              "text-sm text-right",
+              // Layout
+              "rounded-md",
+            )}
+          >
             {success}
           </div>
         )}
 
         {/* Login Form */}
         {mode === "login" && (
-          <>
-            <Input
-              type="email"
-              placeholder="example@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              startContent={<span className="text-gray-400">📧</span>}
-              required
-              classNames={{
-                input: "text-right",
-                inputWrapper: "text-right",
-              }}
-            />
-            <Input
-              type={showPassword ? "text" : "password"}
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              startContent={<span className="text-gray-400">🔒</span>}
-              endContent={
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="text-gray-400 hover:text-gray-600 focus:outline-none"
-                >
-                  {showPassword ? <span>🙈</span> : <span>👁️</span>}
-                </button>
-              }
-              required
-              classNames={{
-                input: "text-right",
-                inputWrapper: "text-right",
-              }}
-            />
-          </>
+          <div
+            className={clsx(
+              // Spacing
+              "space-y-4",
+            )}
+          >
+            <div
+              className={clsx(
+                // Spacing
+                "space-y-2",
+              )}
+            >
+              <label
+                className={clsx(
+                  // Typography
+                  "block text-sm font-medium text-gray-700",
+                  // Layout
+                  "text-right",
+                )}
+              >
+                ایمیل
+              </label>
+              <Input
+                type="email"
+                placeholder="example@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                startContent={<span className="text-gray-400">📧</span>}
+                required
+                classNames={{
+                  input: "text-right",
+                  inputWrapper: "text-right",
+                }}
+              />
+            </div>
+
+            <div
+              className={clsx(
+                // Spacing
+                "space-y-2",
+              )}
+            >
+              <label
+                className={clsx(
+                  // Typography
+                  "block text-sm font-medium text-gray-700",
+                  // Layout
+                  "text-right",
+                )}
+              >
+                رمز عبور
+              </label>
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                startContent={<span className="text-gray-400">🔒</span>}
+                endContent={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className={clsx(
+                      // Colors
+                      "text-gray-400 hover:text-gray-600",
+                      // Interactions
+                      "focus:outline-none",
+                    )}
+                  >
+                    {showPassword ? <span>🙈</span> : <span>👁️</span>}
+                  </button>
+                }
+                required
+                classNames={{
+                  input: "text-right",
+                  inputWrapper: "text-right",
+                }}
+              />
+            </div>
+          </div>
         )}
 
         {/* Register Form */}
         {mode === "register" && (
-          <>
-            <Input
-              type="text"
-              placeholder="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              startContent={<span className="text-gray-400">👤</span>}
-              required
-              classNames={{
-                input: "text-right",
-                inputWrapper: "text-right",
-              }}
-            />
-            <Input
-              type="email"
-              placeholder="example@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              startContent={<span className="text-gray-400">📧</span>}
-              required
-              classNames={{
-                input: "text-right",
-                inputWrapper: "text-right",
-              }}
-            />
-            <Input
-              type="url"
-              placeholder="https://example.com/avatar.jpg"
-              value={avatar}
-              onChange={(e) => setAvatar(e.target.value)}
-              classNames={{
-                input: "text-right",
-                inputWrapper: "text-right",
-              }}
-            />
-            <Input
-              type={showPassword ? "text" : "password"}
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              startContent={<span className="text-gray-400">🔒</span>}
-              endContent={
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="text-gray-400 hover:text-gray-600 focus:outline-none"
-                >
-                  {showPassword ? <span>🙈</span> : <span>👁️</span>}
-                </button>
-              }
-              required
-              classNames={{
-                input: "text-right",
-                inputWrapper: "text-right",
-              }}
-            />
-            <Input
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="••••••••"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              startContent={<span className="text-gray-400">🔒</span>}
-              endContent={
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="text-gray-400 hover:text-gray-600 focus:outline-none"
-                >
-                  {showConfirmPassword ? <span>🙈</span> : <span>👁️</span>}
-                </button>
-              }
-              required
-              classNames={{
-                input: "text-right",
-                inputWrapper: "text-right",
-              }}
-            />
-          </>
+          <div
+            className={clsx(
+              // Spacing
+              "space-y-4",
+            )}
+          >
+            <div
+              className={clsx(
+                // Spacing
+                "space-y-2",
+              )}
+            >
+              <label
+                className={clsx(
+                  // Typography
+                  "block text-sm font-medium text-gray-700",
+                  // Layout
+                  "text-right",
+                )}
+              >
+                نام کاربری
+              </label>
+              <Input
+                type="text"
+                placeholder="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                startContent={<span className="text-gray-400">👤</span>}
+                required
+                classNames={{
+                  input: "text-right",
+                  inputWrapper: "text-right",
+                }}
+              />
+            </div>
+
+            <div
+              className={clsx(
+                // Spacing
+                "space-y-2",
+              )}
+            >
+              <label
+                className={clsx(
+                  // Typography
+                  "block text-sm font-medium text-gray-700",
+                  // Layout
+                  "text-right",
+                )}
+              >
+                ایمیل
+              </label>
+              <Input
+                type="email"
+                placeholder="example@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                startContent={<span className="text-gray-400">📧</span>}
+                required
+                classNames={{
+                  input: "text-right",
+                  inputWrapper: "text-right",
+                }}
+              />
+            </div>
+
+            <div
+              className={clsx(
+                // Spacing
+                "space-y-2",
+              )}
+            >
+              <label
+                className={clsx(
+                  // Typography
+                  "block text-sm font-medium text-gray-700",
+                  // Layout
+                  "text-right",
+                )}
+              >
+                تصویر پروفایل (اختیاری)
+              </label>
+              <Input
+                type="url"
+                placeholder="https://example.com/avatar.jpg"
+                value={avatar}
+                onChange={(e) => setAvatar(e.target.value)}
+                startContent={<span className="text-gray-400">🖼️</span>}
+                classNames={{
+                  input: "text-right",
+                  inputWrapper: "text-right",
+                }}
+              />
+            </div>
+
+            <div
+              className={clsx(
+                // Spacing
+                "space-y-2",
+              )}
+            >
+              <label
+                className={clsx(
+                  // Typography
+                  "block text-sm font-medium text-gray-700",
+                  // Layout
+                  "text-right",
+                )}
+              >
+                رمز عبور
+              </label>
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                startContent={<span className="text-gray-400">🔒</span>}
+                endContent={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className={clsx(
+                      // Colors
+                      "text-gray-400 hover:text-gray-600",
+                      // Interactions
+                      "focus:outline-none",
+                    )}
+                  >
+                    {showPassword ? <span>🙈</span> : <span>👁️</span>}
+                  </button>
+                }
+                required
+                classNames={{
+                  input: "text-right",
+                  inputWrapper: "text-right",
+                }}
+              />
+            </div>
+
+            <div
+              className={clsx(
+                // Spacing
+                "space-y-2",
+              )}
+            >
+              <label
+                className={clsx(
+                  // Typography
+                  "block text-sm font-medium text-gray-700",
+                  // Layout
+                  "text-right",
+                )}
+              >
+                تکرار رمز عبور
+              </label>
+              <Input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                startContent={<span className="text-gray-400">🔒</span>}
+                endContent={
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className={clsx(
+                      // Colors
+                      "text-gray-400 hover:text-gray-600",
+                      // Interactions
+                      "focus:outline-none",
+                    )}
+                  >
+                    {showConfirmPassword ? <span>🙈</span> : <span>👁️</span>}
+                  </button>
+                }
+                required
+                classNames={{
+                  input: "text-right",
+                  inputWrapper: "text-right",
+                }}
+              />
+            </div>
+          </div>
         )}
 
         {/* Edit Profile Form */}
         {mode === "editProfile" && (
-          <>
-            <Input
-              type="text"
-              placeholder="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              startContent={<span className="text-gray-400">👤</span>}
-              required
-              classNames={{
-                input: "text-right",
-                inputWrapper: "text-right",
-              }}
-            />
-            <Input
-              type="url"
-              placeholder="https://example.com/avatar.jpg"
-              value={avatar}
-              onChange={(e) => setAvatar(e.target.value)}
-              classNames={{
-                input: "text-right",
-                inputWrapper: "text-right",
-              }}
-            />
-          </>
+          <div
+            className={clsx(
+              // Spacing
+              "space-y-4",
+            )}
+          >
+            <div
+              className={clsx(
+                // Spacing
+                "space-y-2",
+              )}
+            >
+              <label
+                className={clsx(
+                  // Typography
+                  "block text-sm font-medium text-gray-700",
+                  // Layout
+                  "text-right",
+                )}
+              >
+                نام کاربری
+              </label>
+              <Input
+                type="text"
+                placeholder="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                startContent={<span className="text-gray-400">👤</span>}
+                required
+                classNames={{
+                  input: "text-right",
+                  inputWrapper: "text-right",
+                }}
+              />
+            </div>
+
+            <div
+              className={clsx(
+                // Spacing
+                "space-y-2",
+              )}
+            >
+              <label
+                className={clsx(
+                  // Typography
+                  "block text-sm font-medium text-gray-700",
+                  // Layout
+                  "text-right",
+                )}
+              >
+                تصویر پروفایل
+              </label>
+              <Input
+                type="url"
+                placeholder="https://example.com/avatar.jpg"
+                value={avatar}
+                onChange={(e) => setAvatar(e.target.value)}
+                startContent={<span className="text-gray-400">🖼️</span>}
+                classNames={{
+                  input: "text-right",
+                  inputWrapper: "text-right",
+                }}
+              />
+            </div>
+          </div>
         )}
 
         {/* Change Password Form */}
         {mode === "changePassword" && (
-          <>
-            <Input
-              type="password"
-              placeholder="••••••••"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              startContent={<span className="text-gray-400">🔒</span>}
-              required
-              classNames={{
-                input: "text-right",
-                inputWrapper: "text-right",
-              }}
-            />
-            <Input
-              type={showPassword ? "text" : "password"}
-              placeholder="••••••••"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              startContent={<span className="text-gray-400">🔒</span>}
-              endContent={
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="text-gray-400 hover:text-gray-600 focus:outline-none"
-                >
-                  {showPassword ? <span>🙈</span> : <span>👁️</span>}
-                </button>
-              }
-              required
-              classNames={{
-                input: "text-right",
-                inputWrapper: "text-right",
-              }}
-            />
-          </>
+          <div
+            className={clsx(
+              // Spacing
+              "space-y-4",
+            )}
+          >
+            <div
+              className={clsx(
+                // Spacing
+                "space-y-2",
+              )}
+            >
+              <label
+                className={clsx(
+                  // Typography
+                  "block text-sm font-medium text-gray-700",
+                  // Layout
+                  "text-right",
+                )}
+              >
+                رمز عبور فعلی
+              </label>
+              <Input
+                type="password"
+                placeholder="••••••••"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                startContent={<span className="text-gray-400">🔒</span>}
+                required
+                classNames={{
+                  input: "text-right",
+                  inputWrapper: "text-right",
+                }}
+              />
+            </div>
+
+            <div
+              className={clsx(
+                // Spacing
+                "space-y-2",
+              )}
+            >
+              <label
+                className={clsx(
+                  // Typography
+                  "block text-sm font-medium text-gray-700",
+                  // Layout
+                  "text-right",
+                )}
+              >
+                رمز عبور جدید
+              </label>
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                startContent={<span className="text-gray-400">🔒</span>}
+                endContent={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className={clsx(
+                      // Colors
+                      "text-gray-400 hover:text-gray-600",
+                      // Interactions
+                      "focus:outline-none",
+                    )}
+                  >
+                    {showPassword ? <span>🙈</span> : <span>👁️</span>}
+                  </button>
+                }
+                required
+                classNames={{
+                  input: "text-right",
+                  inputWrapper: "text-right",
+                }}
+              />
+            </div>
+          </div>
         )}
 
         <Button
           type="submit"
           color="primary"
-          className="w-full font-bold"
+          className={clsx(
+            // Layout
+            "w-full",
+            // Typography
+            "font-bold text-lg",
+            // Spacing
+            "py-3 px-6",
+            // Colors & Effects
+            "bg-gradient-to-r from-blue-600 to-purple-600",
+            "hover:from-blue-700 hover:to-purple-700",
+            "shadow-lg hover:shadow-xl",
+            "transition-all duration-300",
+            // Interactions
+            "transform hover:scale-[1.02]",
+            "active:scale-[0.98]",
+          )}
+          startContent={
+            mode === "login" ? (
+              <span className="text-xl">🚀</span>
+            ) : mode === "register" ? (
+              <span className="text-xl">✨</span>
+            ) : mode === "editProfile" ? (
+              <span className="text-xl">💾</span>
+            ) : (
+              <span className="text-xl">🔐</span>
+            )
+          }
           isLoading={isSubmitting}
           disabled={isSubmitting}
         >
           {mode === "login" && "ورود به حساب"}
-          {mode === "register" && "ثبت‌نام"}
+          {mode === "register" && "ایجاد حساب جدید"}
           {mode === "editProfile" && "ذخیره تغییرات"}
           {mode === "changePassword" && "تغییر رمز عبور"}
         </Button>
@@ -409,8 +786,21 @@ export default function AccountTab() {
           <Button
             type="button"
             color="default"
-            variant="light"
-            className="w-full"
+            variant="bordered"
+            className={clsx(
+              // Layout
+              "w-full",
+              // Typography
+              "font-medium",
+              // Spacing
+              "py-2",
+              // Colors & Effects
+              "border-2 border-gray-300",
+              "hover:border-gray-400",
+              "hover:bg-gray-50",
+              "transition-all duration-200",
+            )}
+            startContent={<span className="text-lg">↩️</span>}
             onClick={() => {
               setMode("profile");
               resetForm();
@@ -420,37 +810,64 @@ export default function AccountTab() {
           </Button>
         )}
 
-        <Divider className="my-4" />
+        <Divider
+          className={clsx(
+            // Spacing
+            "my-4",
+          )}
+        />
 
         {mode === "login" ? (
           <div className="text-center">
-            <Link
-              as="button"
+            <Button
               type="button"
-              color="primary"
+              color="secondary"
+              variant="light"
+              fullWidth
+              className={clsx(
+                // Typography
+                "text-sm font-medium",
+                // Colors & Effects
+                "hover:bg-purple-50",
+                "text-purple-600 hover:text-purple-700",
+                "transition-all duration-200",
+                // Spacing
+                "py-2",
+              )}
+              startContent={<span className="text-base">👋</span>}
               onClick={() => {
                 setMode("register");
                 resetForm();
               }}
-              className="text-sm"
             >
               حساب کاربری ندارید؟ ثبت‌نام کنید
-            </Link>
+            </Button>
           </div>
         ) : mode === "register" ? (
           <div className="text-center">
-            <Link
-              as="button"
+            <Button
               type="button"
               color="primary"
+              variant="light"
+              fullWidth
+              className={clsx(
+                // Typography
+                "text-sm font-medium",
+                // Colors & Effects
+                "hover:bg-blue-50",
+                "text-blue-600 hover:text-blue-700",
+                "transition-all duration-200",
+                // Spacing
+                "py-2",
+              )}
+              startContent={<span className="text-base">🔑</span>}
               onClick={() => {
                 setMode("login");
                 resetForm();
               }}
-              className="text-sm"
             >
               حساب کاربری دارید؟ وارد شوید
-            </Link>
+            </Button>
           </div>
         ) : null}
       </form>
