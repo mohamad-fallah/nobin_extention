@@ -79,7 +79,7 @@ class AuthService {
       if (refreshToken) {
         await apiClient.post("/auth/logout", { refreshToken });
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.warn("Logout request failed:", error);
     } finally {
       // Clear local storage
@@ -93,7 +93,7 @@ class AuthService {
     try {
       const response = await apiClient.get("/auth/profile");
       return response.data;
-    } catch (error) {
+    } catch {
       return { success: false };
     }
   }

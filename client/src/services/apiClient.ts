@@ -49,7 +49,7 @@ apiClient.interceptors.response.use(
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return apiClient(originalRequest);
         }
-      } catch (refreshError) {
+      } catch {
         // Refresh failed, logout user
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");

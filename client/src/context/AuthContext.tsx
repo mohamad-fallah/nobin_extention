@@ -3,6 +3,15 @@ import type { ReactNode } from "react";
 import type { User, LoginData, RegisterData, ChangePasswordData } from "../services/authService";
 import authService from "../services/authService";
 
+// Helper to safely extract error message
+const getErrorMessage = (error: unknown, fallback: string): string => {
+  if (error && typeof error === "object" && "response" in error) {
+    const response = (error as { response?: { data?: { message?: string } } }).response;
+    return response?.data?.message || fallback;
+  }
+  return fallback;
+};
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -19,6 +28,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
@@ -73,10 +83,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         success: response.success,
         message: response.message,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         success: false,
-        message: error.response?.data?.message || "خطا در ورود به حساب کاربری",
+        message: getErrorMessage(error, "خطا در ورود به حساب کاربری"),
       };
     }
   };
@@ -91,10 +101,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         success: response.success,
         message: response.message,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         success: false,
-        message: error.response?.data?.message || "خطا در ثبت‌نام",
+        message: getErrorMessage(error, "خطا در ثبت‌نام"),
       };
     }
   };
@@ -110,10 +120,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authService.changePassword(data);
       return response;
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         success: false,
-        message: error.response?.data?.message || "خطا در تغییر رمز عبور",
+        message: getErrorMessage(error, "خطا در تغییر رمز عبور"),
       };
     }
   };
@@ -131,10 +141,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         success: response.success,
         message: response.message,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         success: false,
-        message: error.response?.data?.message || "خطا در به‌روزرسانی پروفایل",
+        message: getErrorMessage(error, "خطا در به‌روزرسانی پروفایل"),
       };
     }
   };

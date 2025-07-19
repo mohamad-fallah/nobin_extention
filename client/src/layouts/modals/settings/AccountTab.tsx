@@ -102,8 +102,8 @@ export default function AccountTab() {
       if (result && !result.success) {
         setError(result.message);
       }
-    } catch (err: any) {
-      setError(err.message || "خطای غیرمنتظره‌ای رخ داد");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "خطای غیرمنتظره‌ای رخ داد");
     } finally {
       setIsSubmitting(false);
     }
