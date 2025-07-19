@@ -1,14 +1,31 @@
 import { Request, Response } from "express";
 import { User, IUser } from "../models/User";
 
-// Get all users
+// Get all users (Admin only)
 export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   try {
-    const users = await User.find({ isActive: true }).select("-password");
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+
+    const users = await User.find({ isActive: true })
+      .select("-password -refreshTokens")
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    const totalUsers = await User.countDocuments({ isActive: true });
+
     res.status(200).json({
       success: true,
       data: users,
-      count: users.length,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalUsers / limit),
+        totalUsers,
+        hasNextPage: page * limit < totalUsers,
+        hasPrevPage: page > 1,
+      },
     });
   } catch (error) {
     res.status(500).json({
@@ -19,16 +36,42 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-// Get single user by ID
+// Get single user by ID (Users can only access their own data unless admin)
 export const getUserById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id).select("-password");
+    const currentUserId = req.user?._id;
 
-    if (!user) {
+    if (!currentUserId) {
+      res.status(401).json({
+        success: false,
+        message: "احراز هویت مورد نیاز است",
+        code: "AUTHENTICATION_REQUIRED",
+      });
+      return;
+    }
+
+    // Check if user is trying to access their own data or is admin
+    const currentUser = await User.findById(currentUserId);
+    const isAdmin =
+      currentUser && (currentUser.username === "admin" || (currentUser as any).isAdmin);
+
+    if (id !== currentUserId && !isAdmin) {
+      res.status(403).json({
+        success: false,
+        message: "شما فقط می‌توانید اطلاعات خود را مشاهده کنید",
+        code: "ACCESS_DENIED",
+      });
+      return;
+    }
+
+    const user = await User.findById(id).select("-password -refreshTokens");
+
+    if (!user || !user.isActive) {
       res.status(404).json({
         success: false,
         message: "کاربر یافت نشد",
+        code: "USER_NOT_FOUND",
       });
       return;
     }
@@ -46,7 +89,7 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-// Create new user
+// Create new user (Admin only)
 export const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { username, email, password, avatar } = req.body;
@@ -59,7 +102,11 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     if (existingUser) {
       res.status(400).json({
         success: false,
-        message: "کاربر با این ایمیل یا نام کاربری قبلاً وجود دارد",
+        message:
+          existingUser.email === email
+            ? "کاربری با این ایمیل قبلاً وجود دارد"
+            : "نام کاربری قبلاً استفاده شده است",
+        code: "USER_EXISTS",
       });
       return;
     }
@@ -67,12 +114,13 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     const newUser = new User({
       username,
       email,
-      password, // در حالت واقعی باید hash شود
+      password, // Will be hashed by pre-save hook
       avatar,
+      isVerified: false, // Admin created users should verify themselves
     });
 
     const savedUser = await newUser.save();
-    const { password: _, ...userResponse } = savedUser.toObject();
+    const { password: _, refreshTokens: __, ...userResponse } = savedUser.toObject();
 
     res.status(201).json({
       success: true,
@@ -88,24 +136,77 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-// Update user
+// Update user (Users can only update their own data unless admin)
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
+    const currentUserId = req.user?._id;
     const updateData = req.body;
 
-    // Remove password from update data for security
+    if (!currentUserId) {
+      res.status(401).json({
+        success: false,
+        message: "احراز هویت مورد نیاز است",
+        code: "AUTHENTICATION_REQUIRED",
+      });
+      return;
+    }
+
+    // Check if user is trying to update their own data or is admin
+    const currentUser = await User.findById(currentUserId);
+    const isAdmin =
+      currentUser && (currentUser.username === "admin" || (currentUser as any).isAdmin);
+
+    if (id !== currentUserId && !isAdmin) {
+      res.status(403).json({
+        success: false,
+        message: "شما فقط می‌توانید اطلاعات خود را ویرایش کنید",
+        code: "ACCESS_DENIED",
+      });
+      return;
+    }
+
+    // Remove sensitive fields that shouldn't be updated through this endpoint
     delete updateData.password;
+    delete updateData.refreshTokens;
+    delete updateData.isVerified; // Only admin should be able to change this
+    delete updateData.isActive; // Only admin should be able to change this
+
+    // Non-admin users can't change certain fields
+    if (!isAdmin) {
+      delete updateData.loginAttempts;
+      delete updateData.lockUntil;
+      delete updateData.passwordResetToken;
+      delete updateData.passwordResetExpires;
+    }
+
+    // Check if username is already taken
+    if (updateData.username) {
+      const existingUser = await User.findOne({
+        username: updateData.username,
+        _id: { $ne: id },
+      });
+
+      if (existingUser) {
+        res.status(400).json({
+          success: false,
+          message: "نام کاربری قبلاً استفاده شده است",
+          code: "USERNAME_EXISTS",
+        });
+        return;
+      }
+    }
 
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
-    }).select("-password");
+    }).select("-password -refreshTokens");
 
     if (!updatedUser) {
       res.status(404).json({
         success: false,
         message: "کاربر یافت نشد",
+        code: "USER_NOT_FOUND",
       });
       return;
     }
@@ -124,19 +225,36 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-// Delete user (soft delete)
+// Delete user (Admin only - soft delete)
 export const deleteUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
+    const currentUserId = req.user?._id;
 
-    const deletedUser = await User.findByIdAndUpdate(id, { isActive: false }, { new: true }).select(
-      "-password",
-    );
+    // Prevent admin from deleting themselves
+    if (id === currentUserId) {
+      res.status(400).json({
+        success: false,
+        message: "نمی‌توانید حساب کاربری خود را حذف کنید",
+        code: "CANNOT_DELETE_SELF",
+      });
+      return;
+    }
+
+    const deletedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        isActive: false,
+        refreshTokens: [], // Clear all sessions
+      },
+      { new: true },
+    ).select("-password -refreshTokens");
 
     if (!deletedUser) {
       res.status(404).json({
         success: false,
         message: "کاربر یافت نشد",
+        code: "USER_NOT_FOUND",
       });
       return;
     }

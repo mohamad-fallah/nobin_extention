@@ -6,23 +6,18 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/userController";
+import { authenticate, requireAdmin } from "../middleware/auth";
 import { validateCreateUser, validateUpdateUser, validateId } from "../middleware/validation";
 
 const router: Router = Router();
 
-// GET /api/users - Get all users
-router.get("/", getAllUsers);
+// Admin routes - require admin privileges
+router.get("/", authenticate, requireAdmin, getAllUsers);
+router.post("/", authenticate, requireAdmin, validateCreateUser, createUser);
+router.delete("/:id", authenticate, requireAdmin, validateId, deleteUser);
 
-// GET /api/users/:id - Get single user
-router.get("/:id", validateId, getUserById);
-
-// POST /api/users - Create new user
-router.post("/", validateCreateUser, createUser);
-
-// PUT /api/users/:id - Update user
-router.put("/:id", validateId, validateUpdateUser, updateUser);
-
-// DELETE /api/users/:id - Delete user
-router.delete("/:id", validateId, deleteUser);
+// User routes - require authentication, users can access their own data
+router.get("/:id", authenticate, validateId, getUserById);
+router.put("/:id", authenticate, validateId, validateUpdateUser, updateUser);
 
 export default router;

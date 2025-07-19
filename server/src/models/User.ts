@@ -1,5 +1,8 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { hashPassword, comparePassword } from "../utils/auth";
+import { hashPassword, comparePassword, getSecurityConstants } from "../utils/auth";
+
+// Get security constants
+const { MAX_LOGIN_ATTEMPTS, ACCOUNT_LOCK_TIME } = getSecurityConstants();
 
 export interface IUser extends Document {
   username: string;
@@ -14,6 +17,8 @@ export interface IUser extends Document {
   lockUntil?: Date;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
+  emailVerificationToken?: string;
+  emailVerificationExpires?: Date;
   createdAt: Date;
   updatedAt: Date;
 
@@ -21,67 +26,117 @@ export interface IUser extends Document {
   comparePassword(candidatePassword: string): Promise<boolean>;
   isLocked(): boolean;
   incrementLoginAttempts(): Promise<void>;
+  resetLoginAttempts(): Promise<void>;
+  generatePasswordResetToken(): string;
+  generateEmailVerificationToken(): string;
 }
 
 const userSchema = new Schema<IUser>(
   {
     username: {
       type: String,
-      required: true,
+      required: [true, "نام کاربری مورد نیاز است"],
       unique: true,
       trim: true,
-      minlength: 3,
-      maxlength: 30,
+      minlength: [3, "نام کاربری باید حداقل 3 کاراکتر باشد"],
+      maxlength: [30, "نام کاربری نمی‌تواند بیشتر از 30 کاراکتر باشد"],
+      match: [/^[a-zA-Z0-9_-]+$/, "نام کاربری فقط می‌تواند شامل حروف، اعداد، _ و - باشد"],
+      lowercase: true,
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "ایمیل مورد نیاز است"],
       unique: true,
       trim: true,
       lowercase: true,
+      maxlength: [254, "ایمیل نمی‌تواند بیشتر از 254 کاراکتر باشد"],
+      match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "فرمت ایمیل معتبر نیست"],
     },
     password: {
       type: String,
-      required: true,
-      minlength: 6,
+      required: [true, "رمز عبور مورد نیاز است"],
+      minlength: [6, "رمز عبور باید حداقل 6 کاراکتر باشد"],
+      maxlength: [128, "رمز عبور نمی‌تواند بیشتر از 128 کاراکتر باشد"],
       select: false, // Don't include password in queries by default
     },
     avatar: {
       type: String,
       default: "",
+      maxlength: [500, "آدرس تصویر نمی‌تواند بیشتر از 500 کاراکتر باشد"],
     },
     isActive: {
       type: Boolean,
       default: true,
+      // Remove index: true since we'll define compound indexes
     },
     isVerified: {
       type: Boolean,
       default: false,
+      // Remove index: true since we'll define compound indexes
     },
-    refreshTokens: [
-      {
-        type: String,
-      },
-    ],
+    refreshTokens: {
+      type: [String],
+      default: [],
+      select: false, // Don't include refresh tokens in queries by default
+    },
     lastLoginAt: {
       type: Date,
+      // Remove index: true since we'll define it separately
     },
     loginAttempts: {
       type: Number,
       default: 0,
+      min: [0, "تعداد تلاش‌های ورود نمی‌تواند منفی باشد"],
     },
     lockUntil: {
       type: Date,
+      // Remove index: true since we'll define it separately
     },
     passwordResetToken: {
       type: String,
+      // Remove index: true since we'll define it separately
     },
     passwordResetExpires: {
       type: Date,
+      // Remove index: true since we'll define it separately
+    },
+    emailVerificationToken: {
+      type: String,
+      // Remove index: true since we'll define it separately
+    },
+    emailVerificationExpires: {
+      type: Date,
+      // Remove index: true since we'll define it separately
     },
   },
   {
     timestamps: true,
+    toJSON: {
+      transform: function (doc, ret: any) {
+        // Remove sensitive fields when converting to JSON
+        delete ret.password;
+        delete ret.refreshTokens;
+        delete ret.passwordResetToken;
+        delete ret.passwordResetExpires;
+        delete ret.emailVerificationToken;
+        delete ret.emailVerificationExpires;
+        delete ret.__v;
+        return ret;
+      },
+    },
+    toObject: {
+      transform: function (doc, ret: any) {
+        // Remove sensitive fields when converting to Object
+        delete ret.password;
+        delete ret.refreshTokens;
+        delete ret.passwordResetToken;
+        delete ret.passwordResetExpires;
+        delete ret.emailVerificationToken;
+        delete ret.emailVerificationExpires;
+        delete ret.__v;
+        return ret;
+      },
+    },
   },
 );
 
@@ -91,12 +146,29 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   try {
-    // Hash password with cost of 12
+    // Hash password
     this.password = await hashPassword(this.password);
     next();
   } catch (error) {
     next(error as Error);
   }
+});
+
+// Clean up expired tokens before saving
+userSchema.pre("save", function (next) {
+  // Remove expired password reset tokens
+  if (this.passwordResetExpires && this.passwordResetExpires < new Date()) {
+    this.passwordResetToken = undefined;
+    this.passwordResetExpires = undefined;
+  }
+
+  // Remove expired email verification tokens
+  if (this.emailVerificationExpires && this.emailVerificationExpires < new Date()) {
+    this.emailVerificationToken = undefined;
+    this.emailVerificationExpires = undefined;
+  }
+
+  next();
 });
 
 // Instance method to compare password
@@ -111,9 +183,6 @@ userSchema.methods.isLocked = function (): boolean {
 
 // Instance method to increment login attempts
 userSchema.methods.incrementLoginAttempts = async function (): Promise<void> {
-  const maxAttempts = 5;
-  const lockTime = 2 * 60 * 60 * 1000; // 2 hours
-
   // If we have a previous lock that has expired, restart at 1
   if (this.lockUntil && this.lockUntil < new Date()) {
     return this.updateOne({
@@ -125,17 +194,53 @@ userSchema.methods.incrementLoginAttempts = async function (): Promise<void> {
   const updates = { $inc: { loginAttempts: 1 } };
 
   // If we've reached max attempts and it's not locked, lock the account
-  if (this.loginAttempts + 1 >= maxAttempts && !this.isLocked()) {
-    (updates as any).$set = { lockUntil: new Date(Date.now() + lockTime) };
+  if (this.loginAttempts + 1 >= MAX_LOGIN_ATTEMPTS && !this.isLocked()) {
+    (updates as any).$set = { lockUntil: new Date(Date.now() + ACCOUNT_LOCK_TIME) };
   }
 
   return this.updateOne(updates);
 };
 
-// Index for better query performance
-userSchema.index({ email: 1 });
-userSchema.index({ username: 1 });
+// Instance method to reset login attempts
+userSchema.methods.resetLoginAttempts = async function (): Promise<void> {
+  return this.updateOne({
+    $unset: { loginAttempts: 1, lockUntil: 1 },
+  });
+};
+
+// Instance method to generate password reset token
+userSchema.methods.generatePasswordResetToken = function (): string {
+  const crypto = require("crypto");
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.passwordResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+  this.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+  return resetToken;
+};
+
+// Instance method to generate email verification token
+userSchema.methods.generateEmailVerificationToken = function (): string {
+  const crypto = require("crypto");
+  const verificationToken = crypto.randomBytes(32).toString("hex");
+
+  this.emailVerificationToken = crypto.createHash("sha256").update(verificationToken).digest("hex");
+  this.emailVerificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+  return verificationToken;
+};
+
+// Indexes for better query performance
+// Note: email and username already have unique indexes from field definition
 userSchema.index({ passwordResetToken: 1 });
+userSchema.index({ emailVerificationToken: 1 });
 userSchema.index({ lockUntil: 1 });
+userSchema.index({ isActive: 1, isVerified: 1 });
+userSchema.index({ createdAt: -1 });
+userSchema.index({ lastLoginAt: -1 });
+
+// Compound indexes for better performance
+userSchema.index({ email: 1, isActive: 1 });
+userSchema.index({ username: 1, isActive: 1 });
 
 export const User = mongoose.model<IUser>("User", userSchema);

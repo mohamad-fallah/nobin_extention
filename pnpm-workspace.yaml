@@ -1,8 +1,9 @@
 packages:
-  - "client"
-  - "server"
+  - client
+  - server
 
 ignoredBuiltDependencies:
-  - "@heroui/shared-utils"
-  - "@tailwindcss/oxide"
+  - '@heroui/shared-utils'
+  - '@tailwindcss/oxide'
+  - bcrypt
   - esbuild

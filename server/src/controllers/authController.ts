@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Types } from "mongoose";
 import { User } from "../models/User";
-import { generateTokens, verifyRefreshToken, TokenPayload } from "../utils/auth";
+import { generateTokens, verifyRefreshToken, TokenPayload, validatePassword } from "../utils/auth";
 import crypto from "crypto";
 
 /**
@@ -127,9 +127,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     // Reset login attempts on successful login
     if (user.loginAttempts > 0) {
-      await user.updateOne({
-        $unset: { loginAttempts: 1, lockUntil: 1 },
-      });
+      await user.resetLoginAttempts();
     }
 
     // Update last login
@@ -432,6 +430,94 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
       success: false,
       message: "خطا در به‌روزرسانی پروفایل",
       error: error instanceof Error ? error.message : "Update profile failed",
+    });
+  }
+};
+
+/**
+ * Change password
+ */
+export const changePassword = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user?._id;
+    const { currentPassword, newPassword } = req.body;
+
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: "احراز هویت مورد نیاز است",
+      });
+      return;
+    }
+
+    if (!currentPassword || !newPassword) {
+      res.status(400).json({
+        success: false,
+        message: "رمز عبور فعلی و جدید مورد نیاز است",
+      });
+      return;
+    }
+
+    // Validate new password
+    const passwordValidation = validatePassword(newPassword);
+    if (!passwordValidation.valid) {
+      res.status(400).json({
+        success: false,
+        message: "رمز عبور جدید معتبر نیست",
+        errors: passwordValidation.errors,
+      });
+      return;
+    }
+
+    // Find user and include password
+    const user = await User.findById(userId).select("+password");
+
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "کاربر یافت نشد",
+      });
+      return;
+    }
+
+    // Verify current password
+    const isCurrentPasswordValid = await user.comparePassword(currentPassword);
+
+    if (!isCurrentPasswordValid) {
+      res.status(400).json({
+        success: false,
+        message: "رمز عبور فعلی اشتباه است",
+      });
+      return;
+    }
+
+    // Check if new password is different from current
+    const isSamePassword = await user.comparePassword(newPassword);
+    if (isSamePassword) {
+      res.status(400).json({
+        success: false,
+        message: "رمز عبور جدید نمی‌تواند مشابه رمز عبور فعلی باشد",
+      });
+      return;
+    }
+
+    // Update password (will be hashed by pre-save hook)
+    user.password = newPassword;
+
+    // Clear all refresh tokens to force re-login on all devices
+    user.refreshTokens = [];
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "رمز عبور با موفقیت تغییر یافت. لطفاً دوباره وارد شوید",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "خطا در تغییر رمز عبور",
+      error: error instanceof Error ? error.message : "Password change failed",
     });
   }
 };
