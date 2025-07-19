@@ -5,6 +5,8 @@ import morgan from "morgan";
 import compression from "compression";
 import dotenv from "dotenv";
 import apiRoutes from "./routes/api";
+import { connectDB } from "./config/database";
+import { globalErrorHandler, notFoundHandler } from "./controllers/errorController";
 
 // Load environment variables
 dotenv.config();
@@ -33,27 +35,28 @@ app.get("/", (req, res) => {
 app.use("/api", apiRoutes);
 
 // 404 handler
-app.use("*", (req, res) => {
-  res.status(404).json({
-    error: "Route not found",
-    message: `The requested route ${req.originalUrl} was not found on this server.`,
-  });
-});
+app.use("*", notFoundHandler);
 
 // Error handling middleware
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error("Error:", err);
-  res.status(500).json({
-    error: "Internal Server Error",
-    message: process.env.NODE_ENV === "development" ? err.message : "Something went wrong",
-  });
-});
+app.use(globalErrorHandler);
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
-  console.log(`📝 Environment: ${process.env.NODE_ENV || "development"}`);
-  console.log(`⏰ Started at: ${new Date().toISOString()}`);
-});
+const startServer = async () => {
+  try {
+    // Connect to MongoDB
+    await connectDB();
+    
+    app.listen(PORT, () => {
+      console.log(`🚀 Server is running on http://localhost:${PORT}`);
+      console.log(`📝 Environment: ${process.env.NODE_ENV || "development"}`);
+      console.log(`⏰ Started at: ${new Date().toISOString()}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+};
+
+startServer();
 
 export default app; 
