@@ -12,7 +12,7 @@ export default function MainSection({ children }: PropsWithChildren) {
         overflow: "hidden",
       }}
     >
-      <Container maxWidth="xl" sx={{ flex: 1, py: 4 }}>
+      <Container>
         <Grid container spacing={3} sx={{ height: "100%" }}>
           {children}
         </Grid>

@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
-import { Box, Container } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Header from "./Header";
 import MainSection from "./MainSection";
 import Footer from "./Footer";
@@ -34,25 +34,26 @@ export default function MainLayout({ children }: PropsWithChildren) {
   }, []);
 
   return (
-    <Container maxWidth={false} disableGutters>
-      <Box
+    <>
+      {/* Portal container for modals */}
+      <Box id="modal-root" />
+
+      <Stack
         sx={{
           minHeight: "100vh",
-          width: "100%",
+          width: "100vw",
           position: "relative",
-          display: "flex",
-          flexDirection: "column",
           overflow: "hidden",
           ...backgroundStyle,
         }}
         data-main-layout
       >
         <Header />
+
         <MainSection>{children}</MainSection>
+
         <Footer />
-      </Box>
-      {/* Portal container for modals */}
-      <Box id="modal-root" />
-    </Container>
+      </Stack>
+    </>
   );
 }

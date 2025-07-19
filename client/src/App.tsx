@@ -3,7 +3,7 @@ import CalendarWidget from "./widgets/calendar/CalendarWidget";
 import CurrencyWidget from "./widgets/currency/CurrencyWidget";
 import ProfileWidget from "./widgets/profile/ProfileWidget";
 import SearchWidget from "./widgets/search/SearchWidget";
-import TodoWidget from "./widgets/todo/TodoWidget";
+import BookMarkWidget from "./widgets/bookmark/BookMarkWidget";
 import WeatherWidget from "./widgets/weather/WeatherWidget";
 import { Box, Grid } from "@mui/material";
 
@@ -25,7 +25,7 @@ function App() {
             <CurrencyWidget />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <TodoWidget />
+            <BookMarkWidget />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <CalendarWidget />
