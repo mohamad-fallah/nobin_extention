@@ -32,13 +32,11 @@ export default function Header() {
       </div>
       <div className="flex items-center gap-2">
         <span className="text-white text-lg font-semibold">نوبین</span>
-        <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm">
-          <Avatar
-            src="/images/brand/ChatGPT Image Jul 18, 2025, 12_02_21 PM.png"
-            alt="logo"
-            size="sm"
-          />
-        </div>
+        <Avatar
+          src="/images/brand/ChatGPT Image Jul 18, 2025, 12_02_21 PM.png"
+          alt="نوبین"
+          size="sm"
+        />
       </div>
       <SettingsModals isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </header>
